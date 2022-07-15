@@ -1,0 +1,61 @@
+services:
+  cosmonaut:
+    image: cosmonaut
+    container_name: cosmonaut-1
+    restart: always
+    build:
+      context: ./cosmonaut-api
+      dockerfile: Dockerfile
+    depends_on:
+      - pgdb
+      - redis-sess
+    environment:
+      - COMPOSE=true
+    env_file:
+      - ./cosmonaut-api/.env
+    ports:
+      - 3334:3334
+    networks:
+      - myproxy
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: bind
+        source: ./cosmonaut-frontend/build
+        target: /workspace/front-build
+      - type: volume
+        source: cosmproj
+        target: /workspace/cargo-projects
+  redis-sess:
+    image: redis
+    restart: always
+    ports:
+      - 6380:6379
+    networks:
+      - myproxy
+  pgdb:
+    image: postgres
+    restart: always
+    ports:
+      - 5433:5432
+    networks:
+      - myproxy
+    environment:
+      - POSTGRES_USER=ljs
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=cosmonaut
+    volumes:
+      - pgdb:/var/lib/postgresql/data
+      - ./cosmonaut-api/compose.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  pgdb:
+    driver: local
+  cosmproj:
+    driver: local
+
+networks:
+  myproxy:
+    driver: bridge
+    name: cosmonaut_proxy
