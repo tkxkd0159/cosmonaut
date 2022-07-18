@@ -12,4 +12,8 @@ router.get('/', (req, res) => {
     res.sendFile(conf.staticPath + "/index.html")
 })
 
+router.get('*', (req, res) => {
+    res.sendFile(conf.staticPath + "/index.html")
+})
+
 export default router

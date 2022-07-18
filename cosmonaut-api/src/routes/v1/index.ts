@@ -27,8 +27,4 @@ subRoutes.forEach((r) => {
     router.use(r.path, r.route);
 });
 
-router.get('*', (req, res) => {
-    res.sendFile(conf.staticPath + "/index.html")
-})
-
 export default router
