@@ -78,6 +78,10 @@ app.use(
 );
 app.use("/v1", v1Route)
 
+app.get('*', (req, res) => {
+    res.sendFile(conf.staticPath + "/index.html")
+})
+
 app.use((req, res, next) => {
     next(new APIError(httpStatus.NOT_FOUND, "Not found"));
 });
