@@ -21,6 +21,7 @@ import { APIError } from "@d3lab/types";
 
 const app = express();
 app.use(express.static(join(process.cwd(), "front-build")))
+app.use("/assets", express.static(join(process.cwd(), "assets")))
 app.locals.cargoPrefix = "cargo-projects/cosm";
 
 app.use(apiLimiter);
