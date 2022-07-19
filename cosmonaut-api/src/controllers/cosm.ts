@@ -1,29 +1,35 @@
-import fs from "fs";
+import { existsSync } from "fs";
 import path from "path";
 import { Request, Response, NextFunction } from "express";
 import httpStatus from "http-status";
-import { rust, cosm, getUid } from "@d3lab/services";
-import { APIError } from "@d3lab/types";
-import { sleep, saveCodeFiles, lodeCodeFiles } from "@d3lab/utils";
+import { cosm, getUid } from "@d3lab/services";
+import { APIError, CosmAns } from "@d3lab/types";
+import {
+    sleep,
+    saveCodeFiles,
+    lodeCodeFiles,
+    srcStrip,
+    asyncUtil,
+} from "@d3lab/utils";
+import {
+    getAssetLoc,
+    setAssetLoc,
+    getProgress,
+    setProgress,
+    getChapterThreshold,
+} from "@d3lab/models/cosm";
 
 const cosminit = async (req: Request, res: Response, next: NextFunction) => {
-    const uid = getUid(req);
-    if (uid === undefined) {
-        return next(
-            new APIError(
-                httpStatus.BAD_REQUEST,
-                "your login session was expired"
-            )
-        );
-    }
-
-    if (!cosm.checkTarget(req)) {
-        return next(
-            new APIError(
-                httpStatus.BAD_REQUEST,
-                "you must fill lesson & chapter name"
-            )
-        );
+    let uid;
+    const lesson = Number(req.body.lesson);
+    const chapter = Number(req.body.chapter);
+    try {
+        uid = getUid(req);
+        cosm.checkTarget(lesson, chapter);
+        await cosm.checkLessonRange(lesson, chapter);
+        await cosm.checkProjOrder(req, lesson, chapter);
+    } catch (error) {
+        return next(error);
     }
 
     try {
@@ -31,15 +37,24 @@ const cosminit = async (req: Request, res: Response, next: NextFunction) => {
             cosm.getCosmFilePath(
                 req.app.locals.cargoPrefix,
                 uid,
-                req.body.lesson,
-                req.body.chapter,
+                lesson,
+                chapter,
                 true
             ),
             "main.rs"
         );
-        await rust.cosmRun("cosm-init", genfilePath.split('/src')[0].split('/cargo-projects/')[1]);
+        await cosm.Run(
+            "cosm-init",
+            srcStrip(genfilePath).split("/cargo-projects/")[1]
+        );
         await sleep(1000);
-        if (fs.existsSync(genfilePath)) {
+        if (existsSync(genfilePath)) {
+            await setProgress(req, lesson, chapter);
+            if (chapter === 1) {
+                await setAssetLoc(req, "start");
+            } else {
+                await setAssetLoc(req, "doing");
+            }
             res.json({ isGen: true });
         } else {
             res.json({ isGen: false });
@@ -55,40 +70,49 @@ const cosminit = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const cosmBuild = async (req: Request, res: Response, next: NextFunction) => {
-    const uid = getUid(req);
-    if (uid === undefined) {
-        return next(
-            new APIError(
-                httpStatus.BAD_REQUEST,
-                "your login session was expired"
-            )
-        );
-    }
-    if (!cosm.checkTarget(req)) {
-        return next(
-            new APIError(
-                httpStatus.BAD_REQUEST,
-                "you must fill lesson & chapter name"
-            )
-        );
+    let uid;
+    const lesson = Number(req.body.lesson);
+    const chapter = Number(req.body.chapter);
+
+    try {
+        uid = getUid(req);
+        cosm.checkTarget(lesson, chapter);
+        await cosm.checkLessonRange(lesson, chapter);
+    } catch (error) {
+        return next(error);
     }
 
     const srcpath = cosm.getCosmFilePath(
         req.app.locals.cargoPrefix,
         uid,
-        req.body.lesson,
-        req.body.chapter,
+        lesson,
+        chapter,
         true
     );
+    if (!existsSync(srcpath)) {
+        return next(new Error("This chapter does not exist on you"));
+    }
     await saveCodeFiles(req.body["files"], srcpath);
 
-    const dirpath = srcpath.split('/src')[0]
+    const dirpath = srcStrip(srcpath);
     try {
-        const data = await rust.cosmRun(
-            "cosm-build",
-            dirpath
-        );
-        res.json({ answer: data });
+        const data = await cosm.Run("cosm-build", dirpath);
+        // const parsedData: CosmAns = JSON.parse(data)
+        // if (parsedData.result === "success") {
+        //     const threshold = await getChapterThreshold(lesson)
+        //     if (chapter === threshold) {
+        //         setAssetLoc(req, "done");
+        //         await setProgress(req, lesson, 0);
+        //     } else {
+        //         await setProgress(req, lesson, chapter);
+        //     }
+        // }
+
+        if (true) {
+            await setProgress(req, lesson, chapter);
+        }
+
+        res.json({ data });
     } catch (err) {
         if (typeof err === "string") {
             return next(new APIError(httpStatus.BAD_REQUEST, err));
@@ -101,33 +125,45 @@ const cosmLoadCodes = async (
     res: Response,
     next: NextFunction
 ) => {
-    const uid = getUid(req);
-    if (uid === undefined) {
-        return next(
-            new APIError(
-                httpStatus.BAD_REQUEST,
-                "your login session was expired"
-            )
-        );
+    let uid;
+    const lesson = Number(req.query.lesson);
+    const chapter = Number(req.query.chapter);
+    try {
+        uid = getUid(req);
+        cosm.checkTarget(lesson, chapter);
+        await cosm.checkLessonRange(lesson, chapter);
+    } catch (error) {
+        return next(error);
     }
-    if (req.query.lesson && req.query.chapter) {
-        const srcpath = cosm.getCosmFilePath(
-            req.app.locals.cargoPrefix,
-            uid,
-            req.query.lesson as string,
-            req.query.chapter as string,
-            true
-        );
-        const files = await lodeCodeFiles(srcpath);
-        res.json(files);
-    } else {
-        return next(
-            new APIError(
-                httpStatus.BAD_REQUEST,
-                "you must fill lesson & chapter name"
-            )
-        );
+
+    const srcpath = cosm.getCosmFilePath(
+        req.app.locals.cargoPrefix,
+        uid,
+        lesson,
+        chapter,
+        true
+    );
+    if (!existsSync(srcpath)) {
+        next(new Error("This chapter does not exist on you"));
     }
+
+    const files = await lodeCodeFiles(srcpath);
+    res.json(files);
 };
 
-export { cosminit, cosmBuild, cosmLoadCodes };
+const getLessonPicture = asyncUtil(async (req, res, next) => {
+    const lesson = Number(req.query.lesson);
+    await cosm.checkLessonRange(lesson);
+    let assetSuffix = await getAssetLoc(req);
+    const assetPath = path.join(process.cwd(), assetSuffix);
+    res.sendFile(assetPath);
+});
+
+const userProgress = asyncUtil(async (req, res, next) => {
+    const lesson = Number(req.query.lesson);
+    await cosm.checkLessonRange(lesson);
+    const p = await getProgress(req, lesson);
+    res.json(p);
+});
+
+export { cosminit, cosmBuild, cosmLoadCodes, getLessonPicture, userProgress };

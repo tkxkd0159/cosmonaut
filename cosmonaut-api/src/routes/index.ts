@@ -1,15 +1,23 @@
 import express from 'express';
-import timeout from 'connect-timeout';
+import {join} from 'path';
+import authRoute from './auth.route';
 import conf from '@d3lab/config'
 
-import authRoute from './auth.route'
-
 const router = express.Router()
-router.use('/auth', authRoute)
-router.use(timeout(conf.timeout.express));
 
 router.get('/', (req, res) => {
-    res.sendFile(conf.staticPath + "/index.html")
+    res.sendFile(join(conf.reactPath, "index.html"));
 })
+
+const subRoutes = [
+    {
+        path: '/auth',
+        route: authRoute
+    }
+];
+
+subRoutes.forEach((r) => {
+    router.use(r.path, r.route);
+});
 
 export default router

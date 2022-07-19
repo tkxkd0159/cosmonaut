@@ -12,4 +12,10 @@ router.route('/build')
 router.route('/code')
     .get(cosm.cosmLoadCodes)
 
+router.route('/picture')
+    .get(cosm.getLessonPicture)
+
+router.route('/progress')
+    .get(cosm.userProgress)
+
 export default router;

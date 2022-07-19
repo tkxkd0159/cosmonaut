@@ -12,8 +12,8 @@ global.MY_CWD = process.cwd();
 
         const prefix = 'cargo-projects/cosm'
         const userid = 'github-41176085'
-        const lesson = '1'
-        const chapter = '5'
+        const lesson = 1
+        const chapter = 5
         const projPath =  cosm.getCosmFilePath(prefix, userid, lesson, chapter, true)
         try {
             /*
@@ -31,9 +31,9 @@ global.MY_CWD = process.cwd();
             }
             console.log(result)
             // if (process.argv[2] == "clippy") {
-            //     res = await rust.cosmRun("clippy", userid, lesson, chapter);
+            //     res = await cosm.Run("clippy", userid, lesson, chapter);
             // } else {
-            //     res = await rust.cosmRun("cosm-build", userid, lesson, chapter);
+            //     res = await cosm.Run("cosm-build", userid, lesson, chapter);
             //     console.log(res)
             // }
 

@@ -1,3 +1,4 @@
+import {join} from "path";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
@@ -9,6 +10,7 @@ import { createClient } from "redis";
 import connectredis from "connect-redis";
 import httpStatus from "http-status";
 import passport from "passport";
+import timeout from 'connect-timeout';
 
 import { default as conf, log } from "./config";
 import baseRoute from "./routes";
@@ -18,7 +20,7 @@ import { errorConverter, errorHandler } from "./middlewares/error";
 import { APIError } from "@d3lab/types";
 
 const app = express();
-app.use(express.static(conf.staticPath))
+app.use(express.static(join(process.cwd(), "front-build")))
 app.locals.cargoPrefix = "cargo-projects/cosm";
 
 app.use(apiLimiter);
@@ -69,18 +71,10 @@ app.locals.redis = redisClient;
 app.use(helmet());
 app.use(compression());
 
-app.use(
-    "/",
-    (req, res, next) => {
-        next();
-    },
-    baseRoute
-);
-app.use("/v1", v1Route)
-
-app.get('*', (req, res) => {
-    res.sendFile(conf.staticPath + "/index.html")
-})
+app.use(timeout(conf.timeout.express));
+app.use("/", baseRoute);
+app.use('/v1', v1Route);
+app.get('*', (req, res) => {res.sendFile(join(conf.reactPath, "index.html"))});
 
 app.use((req, res, next) => {
     next(new APIError(httpStatus.NOT_FOUND, "Not found"));

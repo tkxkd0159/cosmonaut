@@ -1,6 +1,8 @@
 import path from "path";
 import { writeFile, readFile, readdir } from "fs/promises";
-import { Base64, RustFiles } from "@d3lab/types";
+import {createHash} from 'crypto';
+import { NextFunction } from "express";
+import { Base64, RustFiles, expressAsyncHandler } from "@d3lab/types";
 
 function sleep(ms: number) {
     return new Promise((resolve) => {
@@ -47,9 +49,47 @@ async function lodeCodeFiles(projPath: string): Promise<RustFiles | undefined> {
     }
 }
 
+function makeLessonPicturePath(lesson: number): string {
+    const dirPrefix = createHash('sha256').update(`cosmonaut-lesson${lesson}`).digest('hex') + `-${lesson}`
+    const dirPath = path.join('assets', dirPrefix)
+    return dirPath
+}
+
+function srcStrip(origin: string): string {
+    const target = '/src'
+    let cursor = 0
+    let isStart = true
+
+    while (true) {
+        let tmpCursor = origin.indexOf(target, isStart ? cursor : cursor + target.length)
+        isStart = false
+        if (tmpCursor === -1) {
+            break
+        } else {
+            cursor = tmpCursor
+        }
+    }
+
+    if (cursor <= 0 ) {
+        return origin
+    } else {
+        return origin.slice(0, cursor)
+    }
+}
+
+const asyncUtil: expressAsyncHandler = fn =>
+function asyncUtilWrap(...args) {
+  const fnReturn = fn(...args)
+  const next = args[args.length-1] as NextFunction
+  return Promise.resolve(fnReturn).catch(next)
+}
+
 export {
     sleep,
     b64ToStr,
     lodeCodeFiles,
     saveCodeFiles,
+    srcStrip,
+    makeLessonPicturePath,
+    asyncUtil
 };

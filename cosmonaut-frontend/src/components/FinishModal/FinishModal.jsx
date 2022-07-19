@@ -10,13 +10,16 @@ const ProgressBar = tw.div`grid grid-cols-6 justify-between my-2 gap-1`;
 const Button = tw.button`animate-bounce block mx-auto lg:mt-8 md:mt-4 md:mb-4 text-center lg:text-lg md:text-sm border-3 transition duration-200 rounded-full py-2 px-8 bg-gradient-to-r to-orange-400 from-yellow-500 font-heading text-indigo-900 hover:from-green-500 border-indigo-900 hover:border-white hover:to-blue-500 hover:text-white mt-3 text-xs`;
 
 function FinishModal() {
-  const { lessonID, chID, uID } = useParams();
+  const { lessonID } = useParams();
   const lessonInfos = useRecoilValue(lessonEngInfo);
   const navigate = useNavigate();
   const nextL = Number(lessonID) + 1;
 
   const nextLesson = () => {
     navigate(`/lesson/${nextL}/chapter/1/unit/0`);
+  };
+  const finishLesson = () => {
+    navigate(`/`);
   };
   return (
     <>
@@ -62,7 +65,11 @@ function FinishModal() {
               <br />
               You can check out this mission badge in your Journey Page.
             </h4>
-            <Button onClick={nextLesson}>Ready for Next Lesson?</Button>
+            {lessonID === "4" ? (
+              <Button onClick={finishLesson}>Ready for Next Lesson?</Button>
+            ) : (
+              <Button onClick={nextLesson}>Ready for Next Lesson?</Button>
+            )}
           </div>
         </div>
       </Container>

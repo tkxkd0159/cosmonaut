@@ -1,5 +1,5 @@
-import joi from 'joi';
 import path from 'path';
+import joi from 'joi';
 import * as dotenv from 'dotenv';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -14,7 +14,7 @@ import './auth'
 const envScheme = joi.object({
     HOST_ADDR: joi.string().required(),
     PORT: joi.string().min(4).max(5).required(),
-    NODE_ENV: joi.string().valid('development', 'production').required(),
+    NODE_ENV: joi.string().valid('development', 'production', 'test').default('development'),
     LOCAL_RUST_SET: joi.string().valid('true', 'false').required(),
     SESS_SECRET: joi.string().required(),
     PGHOST: joi.string().required(),
@@ -64,13 +64,14 @@ const front = {
     login: envs.FRONT_LOGIN_ADDR
 }
 
+
 export default {
     nodeEnv: envs.NODE_ENV,
     port: envs.PORT,
     sessSecret: envs.SESS_SECRET,
-    isLocalRust: envs.LOCAL_RUST_SET,
+    reactPath: path.join(process.cwd(), 'front-build'),
+    isLocalRust: JSON.parse(envs.LOCAL_RUST_SET),
     corsWhiteList: [/127\.0\.0\.1/, envs.FRONT_HOST_ADDR],
-    staticPath: path.join(process.cwd(), 'front-build'),
     timeout,
     redis,
     pg,

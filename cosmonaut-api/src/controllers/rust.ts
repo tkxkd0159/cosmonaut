@@ -1,22 +1,23 @@
+import { existsSync } from 'fs';
 import httpStatus from 'http-status';
 import { NextFunction, Request, Response } from "express";
 import { rust, cosm, getUid } from "@d3lab/services";
 import { RustFiles, APIError } from "@d3lab/types";
 import conf from "@d3lab/config";
-import {saveCodeFiles} from '@d3lab/utils'
+import {saveCodeFiles, srcStrip} from '@d3lab/utils'
 
 const fmtCodes = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const beforeFmtFiles: RustFiles = req.body["files"];
         const afterFmtFiles: RustFiles = {};
 
-        if (conf.isLocalRust === "true") {
+        if (conf.isLocalRust === true) {
             for (let [key, value] of Object.entries(beforeFmtFiles)) {
-                afterFmtFiles[key] = await rust.rustfmt(value);
+                afterFmtFiles[key] = await rust.rustfmt(value, conf.isLocalRust);
             }
         } else {
             for (let [key, value] of Object.entries(beforeFmtFiles)) {
-                afterFmtFiles[key] = await rust.rustfmt2(value);
+                afterFmtFiles[key] = await rust.rustfmt(value);
             }
         }
 
@@ -29,20 +30,26 @@ const fmtCodes = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const clippy = async (req: Request, res: Response, next: NextFunction) => {
-    const uid = getUid(req)
-    if (uid === undefined) {
-        return next(new APIError(httpStatus.BAD_REQUEST, "your login session was expired"));
-    }
-    if (!cosm.checkTarget(req)) {
-        return next(new APIError(httpStatus.BAD_REQUEST, "you must fill lesson & chapter name"))
+    let uid;
+    const lesson = Number(req.body.lesson);
+    const chapter = Number(req.body.chapter);
+    try {
+        uid = getUid(req);
+        cosm.checkTarget(lesson, chapter);
+        await cosm.checkLessonRange(lesson, chapter);
+    } catch (error) {
+        return next(error);
     }
 
-    const srcpath = cosm.getCosmFilePath(req.app.locals.cargoPrefix, uid, req.body.lesson, req.body.chapter, true)
+    const srcpath = cosm.getCosmFilePath(req.app.locals.cargoPrefix, uid, lesson, chapter, true)
+    if (!existsSync(srcpath)) {
+        next(new Error("This chapter does not exist on you"))
+    }
     await saveCodeFiles(req.body['files'], srcpath)
 
-    const dirpath = srcpath.split('/src')[0]
+    const dirpath = srcStrip(srcpath)
     try {
-        const result = await rust.cosmRun("clippy", dirpath);
+        const result = await cosm.Run("clippy", dirpath);
         res.json({result})
 
     } catch (err) {

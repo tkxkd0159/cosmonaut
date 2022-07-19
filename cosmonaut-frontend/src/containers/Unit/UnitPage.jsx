@@ -10,9 +10,21 @@ function UnitPage() {
 
   if (lessonID === "0") {
     return <DescSchema />;
+  } else if (lessonID === "4" && chID === "3" && uID === "1") {
+    return <DescSchema />;
   } else if (uID === "0") {
     return <LsDescSchema />;
   } else if (lessonID === "1" && (chID === "1" || "2" || "3") && uID === "1") {
+    return <ChDescSchema />;
+  } else if (
+    lessonID === "2" &&
+    (chID === "1" || "2" || "3" || "4" || "5") &&
+    uID === "1"
+  ) {
+    return <ChDescSchema />;
+  } else if (lessonID === "3" && (chID === "1" || "3") && uID === "1") {
+    return <ChDescSchema />;
+  } else if (lessonID === "4" && chID === "1" && uID === "1") {
     return <ChDescSchema />;
   } else {
     return <UnDescSchema />;
