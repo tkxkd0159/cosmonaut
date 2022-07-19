@@ -22,7 +22,7 @@ CREATE TABLE users(
          REFERENCES federated_credentials(provider, subject) ON DELETE CASCADE
 );
 INSERT INTO users(provider, subject, lesson, chapter)
-VALUES('github', '41176085', 1, 0),
+VALUES('github', '41176085', 0, 1),
       ('google', '123456789', 2, 3);
 
 CREATE TABLE assets(

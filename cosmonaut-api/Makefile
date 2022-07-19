@@ -4,7 +4,7 @@ DOCKER_IMG ?="cosmo-rust:1.0"
 TARGET_PATH =
 SAVE_PATH ?="cargo-projects"
 
-COMPOSE_MAIN ?= "cosmonaut-api-1"
+COMPOSE_MAIN ?= "cosmonaut-1"
 COMPOSE_COSM_IMG ?= "cosmo-rust:dind"
 
 .PHONY: test
