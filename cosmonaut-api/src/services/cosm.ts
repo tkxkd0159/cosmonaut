@@ -36,7 +36,7 @@ function checkTarget(lesson: number, chapter: number) {
     if (isNaN(lesson) || isNaN(chapter)) {
         throw new APIError(
             httpStatus.BAD_REQUEST,
-            "you must fill lesson & chapter name"
+            `you must fill lesson & chapter name correctly (got => lesson : ${lesson}, chapter : ${chapter}`
         );
     }
 }
@@ -125,7 +125,11 @@ async function checkLessonRange(lesson: number, chapter?: number) {
 
 async function checkProjOrder(req: Request, lesson: number, chapter: number) {
     try {
-        if (chapter === 1 && lesson !== 0) {
+        if (lesson === 0 && chapter === 1) {
+            return
+        }
+
+        if (lesson !== 0 && chapter === 1) {
             const currentUserProgress = await getProgress(req, lesson - 1);
             if (currentUserProgress["chapter"] !== 0) {
                 throw new APIError(
@@ -150,7 +154,7 @@ async function checkProjOrder(req: Request, lesson: number, chapter: number) {
             if (lesson !== savedLesson || chapter !== savedChapter + 1) {
                 throw new APIError(
                     httpStatus.BAD_REQUEST,
-                    "You must finish previous chapter first"
+                    `You must set correct chapter => got: ${chapter}, expected: ${savedChapter + 1}`
                 );
             }
         }
