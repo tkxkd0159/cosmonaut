@@ -1,4 +1,4 @@
-# Docker Compose testbed
+# Docker Compose Testbed
 ## 1) set .env in cosmonaut-api folder
 ```sh
 HOST_ADDR=0.0.0.0
@@ -24,24 +24,22 @@ GOOGLE_CLIENT_SECRET=
 GITHUB_CLIENT_ID=
 GITHUB_CLIENT_SECRET=
 ```
-## 2) build cosmo-rust image
+## 2) Run
 ```sh
+# Build cosmo-rust image
 docker build -t cosmo-rust:dind .
-```
-## 3) Serve react-front
-```sh
-cd ..
+
+# Build react
 ./react-build.sh
-```
-## 4) Use docker compose to serve
-```sh
-cd ..
+
+# Build api-server
 docker compose build
 
-docker compose up # start app
-
-# Reset
+# Start app
+docker compose up
+```
+## * Reset
+```sh
 docker compose down
 docker volume prune
-docker image prune
 ```
