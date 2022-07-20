@@ -3,7 +3,6 @@
 ```sh
 HOST_ADDR=0.0.0.0
 PORT=3334
-OAUTH_REDIRECT="http://127.0.0.1:8080"
 LOCAL_RUST_SET=false
 SESS_SECRET=YOURSECRETKEYGOESHERE
 PGHOST=pgdb
@@ -19,11 +18,23 @@ TS_NODE_PROJECT=./tsconfig.prod.json
 FRONT_HOST_ADDR="http://127.0.0.1:8080"
 FRONT_MAIN_ADDR=/
 FRONT_LOGIN_ADDR=/signUp
+OAUTH_REDIRECT="http://127.0.0.1:8080"
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 GITHUB_CLIENT_ID=
 GITHUB_CLIENT_SECRET=
 ```
+#### For maximum timeout of HTTP request (ms) :
+Set `REQ_TIMEOUT`
+#### For maximum timeout of CosmWasm project build (ms) :
+Set `RUST_TIMEOUT`
+#### For OAuth redirect from provider:
+Set `OAUTH_REDIRECT`
+#### For redirect address based on user login status:
+Set `FRONT_MAIN_ADDR`, `FRONT_LOGIN_ADDR`
+#### For CORS:
+Set `FRONT_HOST_ADDR`
+
 ## 2) Run
 ```sh
 # Build cosmo-rust image
