@@ -25,8 +25,7 @@ GITHUB_CLIENT_SECRET=
 ```
 ## 2) build cosmo-rust image
 ```sh
-cd cosmonaut-api
-docker build -f compose.rust.Dockerfile -t cosmo-rust:dind .
+docker build -t cosmo-rust:dind .
 ```
 ## 3) Serve react-front
 ```sh
