@@ -125,36 +125,37 @@ async function checkLessonRange(lesson: number, chapter?: number) {
 
 async function checkProjOrder(req: Request, lesson: number, chapter: number) {
     try {
-        if (lesson === 0 && chapter === 1) {
-            return
-        }
-
-        if (lesson !== 0 && chapter === 1) {
-            const currentUserProgress = await getProgress(req, lesson - 1);
-            if (currentUserProgress["chapter"] !== 0) {
-                throw new APIError(
-                    httpStatus.BAD_REQUEST,
-                    "You should finish previous lesson before start new lesson"
-                );
+        if (chapter === 1) {
+            if (lesson === 0) {
+                return;
+            } else {
+                const currentUserProgress = await getProgress(req, lesson - 1);
+                if (currentUserProgress["chapter"] !== 0) {
+                    throw new APIError(
+                        httpStatus.BAD_REQUEST,
+                        "You should finish previous lesson before start new lesson"
+                    );
+                } else {
+                    return;
+                }
             }
         }
 
         const currentUserProgress = await getProgress(req, lesson);
-        const savedLesson = currentUserProgress["lesson"];
         const savedChapter = currentUserProgress["chapter"];
 
-        if (savedChapter === -1 && chapter !== 1) {
+        if (savedChapter === -1) {
             throw new APIError(
                 httpStatus.BAD_REQUEST,
-                "You must start new lesson first"
+                `You must finish previous lesson`
             );
-        }
-
-        if (chapter !== 1) {
-            if (lesson !== savedLesson || chapter !== savedChapter + 1) {
+        } else {
+            if (chapter !== savedChapter) {
                 throw new APIError(
                     httpStatus.BAD_REQUEST,
-                    `You must set correct chapter => got: ${chapter}, expected: ${savedChapter + 1}`
+                    `You must set correct chapter => got: ${chapter}, expected: ${
+                        savedChapter
+                    }`
                 );
             }
         }

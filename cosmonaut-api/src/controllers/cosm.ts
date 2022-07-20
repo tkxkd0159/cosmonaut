@@ -49,7 +49,6 @@ const cosminit = async (req: Request, res: Response, next: NextFunction) => {
         );
         await sleep(1000);
         if (existsSync(genfilePath)) {
-            await setProgress(req, lesson, chapter);
             if (chapter === 1) {
                 await setAssetLoc(req, "start");
             } else {
@@ -97,6 +96,7 @@ const cosmBuild = async (req: Request, res: Response, next: NextFunction) => {
     const dirpath = srcStrip(srcpath);
     try {
         const data = await cosm.Run("cosm-build", dirpath);
+
         // const parsedData: CosmAns = JSON.parse(data)
         // if (parsedData.result === "success") {
         //     const threshold = await getChapterThreshold(lesson)
@@ -104,12 +104,18 @@ const cosmBuild = async (req: Request, res: Response, next: NextFunction) => {
         //         setAssetLoc(req, "done");
         //         await setProgress(req, lesson, 0);
         //     } else {
-        //         await setProgress(req, lesson, chapter);
+        //         await setProgress(req, lesson, chapter + 1);
         //     }
         // }
 
         if (true) {
-            await setProgress(req, lesson, chapter);
+            const threshold = await getChapterThreshold(lesson)
+            if (chapter === threshold) {
+                setAssetLoc(req, "done");
+                await setProgress(req, lesson, 0);
+            } else {
+                await setProgress(req, lesson, chapter + 1);
+            }
         }
 
         res.json({ data });
