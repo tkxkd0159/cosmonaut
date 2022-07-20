@@ -13,8 +13,6 @@ services:
       - COMPOSE=true
     env_file:
       - ./cosmonaut-api/.env
-    ports:
-      - 3334:3334
     networks:
       - myproxy
     volumes:

@@ -3,6 +3,7 @@
 ```sh
 HOST_ADDR=0.0.0.0
 PORT=3334
+OAUTH_REDIRECT="http://127.0.0.1:8080"
 LOCAL_RUST_SET=false
 SESS_SECRET=YOURSECRETKEYGOESHERE
 PGHOST=pgdb
@@ -38,5 +39,9 @@ cd ..
 docker compose build
 
 docker compose up # start app
-docker compose down # stop app
+
+# Reset
+docker compose down
+docker volume prune
+docker image prune
 ```

@@ -4,12 +4,14 @@ import {Strategy as GithubStrategy} from "passport-github";
 import { pg } from "@d3lab/db";
 import { PassportProfile } from "@d3lab/types";
 
+const oauth = process.env["OAUTH_REDIRECT"];
+
 passport.use(
     new GoogleStrategy(
         {
             clientID: process.env["GOOGLE_CLIENT_ID"],
             clientSecret: process.env["GOOGLE_CLIENT_SECRET"],
-            callbackURL: "/auth/oauth2/redirect/google",
+            callbackURL: oauth !== undefined ? `${oauth}/auth/oauth2/redirect/google` : "/auth/oauth2/redirect/google",
             scope: ["profile"],
         },
         async function verify(
@@ -53,7 +55,7 @@ passport.use(
         {
             clientID: process.env["GITHUB_CLIENT_ID"]!,
             clientSecret: process.env["GITHUB_CLIENT_SECRET"]!,
-            callbackURL: "/auth/oauth2/redirect/github"
+            callbackURL: oauth !== undefined ? `${oauth}/auth/oauth2/redirect/github` : "/auth/oauth2/redirect/github",
         },
         async function verify(
             accessToken: string,
