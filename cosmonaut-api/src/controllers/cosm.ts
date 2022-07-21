@@ -44,11 +44,10 @@ const cosminit = async (req: Request, res: Response, next: NextFunction) => {
             "main.rs"
         );
 
-        const dirpath = process.env.COMPOSE ? srcStrip(genfilePath) : srcStrip(genfilePath).split('/cargo-projects/')[1];
-        await cosm.Run(
-            "cosm-init",
-            dirpath
-        );
+        const dirpath = process.env.COMPOSE
+            ? srcStrip(genfilePath)
+            : srcStrip(genfilePath).split("/cargo-projects/")[1];
+        await cosm.Run("cosm-init", dirpath);
         await sleep(1000);
         if (existsSync(genfilePath)) {
             if (chapter === 1) {
@@ -70,18 +69,30 @@ const cosminit = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const cosmBuild = async (req: Request, res: Response, next: NextFunction) => {
+const cosmDiff = asyncUtil(async (req, res, next) => {
     let uid;
     const lesson = Number(req.body.lesson);
     const chapter = Number(req.body.chapter);
 
-    try {
-        uid = getUid(req);
-        cosm.checkTarget(lesson, chapter);
-        await cosm.checkLessonRange(lesson, chapter);
-    } catch (error) {
-        return next(error);
+    uid = getUid(req);
+    cosm.checkTarget(lesson, chapter);
+    await cosm.checkLessonRange(lesson, chapter);
+
+    res.locals.threshold = await getChapterThreshold(lesson);
+    if (chapter === res.locals.threshold) {
+        next();
+    } else {
+        if (true) {
+            await setProgress(req, lesson, chapter + 1);
+            res.json({ status: "success" });
+        }
     }
+});
+
+const cosmBuild = async (req: Request, res: Response, next: NextFunction) => {
+    const uid = getUid(req);
+    const lesson = Number(req.body.lesson);
+    const chapter = Number(req.body.chapter);
 
     const srcpath = cosm.getCosmFilePath(
         req.app.locals.cargoPrefix,
@@ -103,7 +114,7 @@ const cosmBuild = async (req: Request, res: Response, next: NextFunction) => {
         // if (parsedData.result === "success") {
         //     const threshold = await getChapterThreshold(lesson)
         //     if (chapter === threshold) {
-        //         setAssetLoc(req, "done");
+        //         await setAssetLoc(req, "done");
         //         await setProgress(req, lesson, 0);
         //     } else {
         //         await setProgress(req, lesson, chapter + 1);
@@ -111,16 +122,17 @@ const cosmBuild = async (req: Request, res: Response, next: NextFunction) => {
         // }
 
         if (true) {
-            const threshold = await getChapterThreshold(lesson)
-            if (chapter === threshold) {
-                setAssetLoc(req, "done");
-                await setProgress(req, lesson, 0);
-            } else {
-                await setProgress(req, lesson, chapter + 1);
-            }
+            await setAssetLoc(req, "done");
+            await setProgress(req, lesson, 0);
+            const result: CosmAns = {
+                answer_type: "execute",
+                result: "success",
+                lesson: lesson,
+                errors: [],
+                differences: [data],
+            };
+            res.json(result);
         }
-
-        res.json({ data });
     } catch (err) {
         if (typeof err === "string") {
             return next(new APIError(httpStatus.BAD_REQUEST, err));
@@ -174,4 +186,11 @@ const userProgress = asyncUtil(async (req, res, next) => {
     res.json(p);
 });
 
-export { cosminit, cosmBuild, cosmLoadCodes, getLessonPicture, userProgress };
+export {
+    cosminit,
+    cosmDiff,
+    cosmBuild,
+    cosmLoadCodes,
+    getLessonPicture,
+    userProgress,
+};

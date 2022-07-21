@@ -7,7 +7,7 @@ router.route('/init')
     .post(cosm.cosminit)
 
 router.route('/build')
-    .post(cosm.cosmBuild)
+    .post(cosm.cosmDiff, cosm.cosmBuild)
 
 router.route('/code')
     .get(cosm.cosmLoadCodes)

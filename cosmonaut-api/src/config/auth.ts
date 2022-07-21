@@ -5,6 +5,8 @@ import { pg } from "@d3lab/db";
 import { PassportProfile } from "@d3lab/types";
 
 const oauth = process.env["OAUTH_REDIRECT"];
+const START_LESSON = 1;
+const START_CHAPTER = 1;
 
 passport.use(
     new GoogleStrategy(
@@ -34,7 +36,7 @@ passport.use(
                     );
                     await pgdb.query(
                         "INSERT INTO users (provider, subject, disp_name, lesson, chapter) VALUES($1, $2, $3, $4, $5)",
-                        [provider, profile.id, profile.displayName, 0, 1]
+                        [provider, profile.id, profile.displayName, START_LESSON, START_CHAPTER]
                     );
 
                     return cb(null, { id: profile.id, issuer: provider, displayName: profile.displayName });
@@ -77,7 +79,7 @@ passport.use(
                     );
                     await pgdb.query(
                         "INSERT INTO users (provider, subject, disp_name, lesson, chapter) VALUES($1, $2, $3, $4, $5)",
-                        [profile.provider, profile.id, profile.displayName, 0, 1]
+                        [profile.provider, profile.id, profile.displayName, START_LESSON, START_CHAPTER]
                     );
 
                     return cb(null, { id: profile.id, issuer: profile.provider, displayName: profile.displayName });
