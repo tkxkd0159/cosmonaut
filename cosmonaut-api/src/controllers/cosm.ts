@@ -43,9 +43,11 @@ const cosminit = async (req: Request, res: Response, next: NextFunction) => {
             ),
             "main.rs"
         );
+
+        const dirpath = process.env.COMPOSE ? srcStrip(genfilePath) : srcStrip(genfilePath).split('/cargo-projects/')[1];
         await cosm.Run(
             "cosm-init",
-            srcStrip(genfilePath).split("/cargo-projects/")[1]
+            dirpath
         );
         await sleep(1000);
         if (existsSync(genfilePath)) {

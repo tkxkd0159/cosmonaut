@@ -1,9 +1,14 @@
 .PHONY: rust-build clippy clean rust-init cargofmt rustfmt
 
-DOCKER_IMG ?="cosmo-rust:1.0"
+
 TARGET_PATH =
+COSM_ROOT = "/workspace/cargo-projects"
+
+# For local machine
+DOCKER_IMG ?="cosmo-rust:1.0"
 SAVE_PATH ?="cargo-projects"
 
+# For Docker Compose
 COMPOSE_MAIN ?= "cosmonaut-1"
 COMPOSE_COSM_IMG ?= "cosmo-rust:dind"
 
@@ -18,10 +23,10 @@ endif
 
 cosm-init:
 ifeq (${COMPOSE},true)
-	@docker run -d --rm --volumes-from $(COMPOSE_MAIN) -w /workspace $(COMPOSE_COSM_IMG) \
-	bash -c "cd $(SAVE_PATH) && ./scripts/init.sh --path $(TARGET_PATH) --clean"
+	@docker run -d --rm --volumes-from $(COMPOSE_MAIN) -w $(COSM_ROOT) $(COMPOSE_COSM_IMG) \
+	bash -c "./scripts/init.sh --path $(TARGET_PATH) --clean"
 else
-	@docker run -d --rm -v $(CURDIR)/$(SAVE_PATH):/workspace -w /workspace $(DOCKER_IMG) \
+	@docker run -d --rm -v $(CURDIR)/$(SAVE_PATH):$(COSM_ROOT) -w $(COSM_ROOT) $(DOCKER_IMG) \
 	bash -c "./scripts/init.sh --path $(TARGET_PATH) --clean"
 endif
 
@@ -30,7 +35,7 @@ ifeq (${COMPOSE},true)
 	@docker run -d --rm --volumes-from $(COMPOSE_MAIN) -w $(TARGET_PATH) $(COMPOSE_COSM_IMG) \
 	bash -c "cargo fmt"
 else
-	@docker run -d --rm -v $(TARGET_PATH):/workspace -w /workspace $(DOCKER_IMG) \
+	@docker run -d --rm -v $(TARGET_PATH):$(TARGET_PATH) -w $(TARGET_PATH) $(DOCKER_IMG) \
 	bash -c "cargo fmt
 endif
 
@@ -39,7 +44,7 @@ ifeq (${COMPOSE},true)
 	@docker run --rm -a stderr -a stdout --volumes-from $(COMPOSE_MAIN) -w $(TARGET_PATH) $(COMPOSE_COSM_IMG) \
 	bash -c "cargo run"
 else
-	@docker run --rm -a stderr -a stdout -v $(TARGET_PATH):/workspace -w /workspace $(DOCKER_IMG) \
+	@docker run --rm -a stderr -a stdout -v $(TARGET_PATH):$(TARGET_PATH) -w $(TARGET_PATH) $(DOCKER_IMG) \
 	bash -c "cargo run"
 endif
 
@@ -48,7 +53,7 @@ ifeq (${COMPOSE},true)
 	@docker run -d --rm --volumes-from $(COMPOSE_MAIN) -w $(TARGET_PATH) $(COMPOSE_COSM_IMG) \
 	bash -c "cargo clean"
 else
-	@docker run -d --rm -v $(TARGET_PATH):/workspace -w /workspace $(DOCKER_IMG) \
+	@docker run -d --rm -v $(TARGET_PATH):$(TARGET_PATH) -w $(TARGET_PATH) $(DOCKER_IMG) \
 	bash -c "cargo clean"
 endif
 
@@ -57,6 +62,6 @@ ifeq (${COMPOSE},true)
 	@docker run --rm -a stderr -a stdout --volumes-from $(COMPOSE_MAIN) -w $(TARGET_PATH) $(COMPOSE_COSM_IMG) \
 	bash -c "cargo clippy 2>&1"
 else
-	@docker run --rm -a stderr -a stdout -v $(TARGET_PATH):/workspace -w /workspace $(DOCKER_IMG) \
+	@docker run --rm -a stderr -a stdout -v $(TARGET_PATH):$(TARGET_PATH) -w $(TARGET_PATH) $(DOCKER_IMG) \
 	bash -c "cargo clippy 2>&1"
 endif
