@@ -52,5 +52,5 @@ docker compose up
 ## * Reset
 ```sh
 docker compose down
-docker volume prune
+docker volume rm pgdb cosmproj
 ```
