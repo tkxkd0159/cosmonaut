@@ -28,8 +28,8 @@ GITHUB_CLIENT_SECRET=
 Set `REQ_TIMEOUT`
 #### For maximum timeout of CosmWasm project build (ms) :
 Set `RUST_TIMEOUT`
-#### For OAuth redirect from provider:
-Set `OAUTH_REDIRECT`
+#### For OAuth redirect from provider (optional) :
+Set `OAUTH_REDIRECT` only when you use proxy server
 #### For redirect address based on user login status:
 Set `FRONT_MAIN_ADDR`, `FRONT_LOGIN_ADDR`
 #### For CORS:
