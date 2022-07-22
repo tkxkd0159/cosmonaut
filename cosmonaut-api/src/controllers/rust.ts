@@ -1,62 +1,52 @@
-import { existsSync } from 'fs';
-import httpStatus from 'http-status';
-import { NextFunction, Request, Response } from "express";
+import { existsSync } from "fs";
 import { rust, cosm, getUid } from "@d3lab/services";
-import { RustFiles, APIError } from "@d3lab/types";
+import { RustFiles } from "@d3lab/types";
 import conf from "@d3lab/config";
-import {saveCodeFiles, srcStrip} from '@d3lab/utils'
+import { saveCodeFiles, srcStrip, asyncUtil } from "@d3lab/utils";
 
-const fmtCodes = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const beforeFmtFiles: RustFiles = req.body["files"];
-        const afterFmtFiles: RustFiles = {};
+const fmtCodes = asyncUtil(async (req, res, next) => {
+    const beforeFmtFiles: RustFiles = req.body["files"];
+    const afterFmtFiles: RustFiles = {};
 
-        if (conf.isLocalRust === true) {
-            for (let [key, value] of Object.entries(beforeFmtFiles)) {
-                afterFmtFiles[key] = await rust.rustfmt(value, conf.isLocalRust);
-            }
-        } else {
-            for (let [key, value] of Object.entries(beforeFmtFiles)) {
-                afterFmtFiles[key] = await rust.rustfmt(value);
-            }
+    if (conf.isLocalRust === true) {
+        for (let [key, value] of Object.entries(beforeFmtFiles)) {
+            afterFmtFiles[key] = await rust.rustfmt(value, conf.isLocalRust);
         }
-
-        res.send({
-            result: afterFmtFiles,
-        });
-    } catch (err) {
-        next(err);
+    } else {
+        for (let [key, value] of Object.entries(beforeFmtFiles)) {
+            afterFmtFiles[key] = await rust.rustfmt(value);
+        }
     }
-};
 
-const clippy = async (req: Request, res: Response, next: NextFunction) => {
+    res.send({
+        result: afterFmtFiles,
+    });
+});
+
+const clippy = asyncUtil(async (req, res, next) => {
     let uid;
     const lesson = Number(req.body.lesson);
     const chapter = Number(req.body.chapter);
-    try {
-        uid = getUid(req);
-        cosm.checkTarget(lesson, chapter);
-        await cosm.checkLessonRange(lesson, chapter);
-    } catch (error) {
-        return next(error);
-    }
+    uid = getUid(req);
+    cosm.checkTarget(lesson, chapter);
+    await cosm.checkLessonRange(lesson, chapter);
 
-    const srcpath = cosm.getCosmFilePath(req.app.locals.cargoPrefix, uid, lesson, chapter, true)
+    const srcpath = cosm.getCosmFilePath(
+        req.app.locals.cargoPrefix,
+        uid,
+        lesson,
+        chapter,
+        true
+    );
     if (!existsSync(srcpath)) {
-        next(new Error("This chapter does not exist on you"))
+        next(new Error("This chapter does not exist on you"));
     }
-    await saveCodeFiles(req.body['files'], srcpath)
+    await saveCodeFiles(req.body["files"], srcpath);
 
-    const dirpath = srcStrip(srcpath)
-    try {
-        const result = await cosm.Run("clippy", dirpath);
-        res.json({result})
+    const dirpath = srcStrip(srcpath);
 
-    } catch (err) {
-        if (typeof err === 'string') {
-            return next(new APIError(httpStatus.BAD_REQUEST, err));
-        }
-    }
-}
+    const result = await cosm.Run("clippy", dirpath);
+    res.json({ result });
+});
 
 export { fmtCodes, clippy };
