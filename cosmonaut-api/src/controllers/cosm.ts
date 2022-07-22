@@ -109,6 +109,7 @@ const cosmBuild = asyncUtil(async (req, res, next) => {
     if (true) {
         await setAssetLoc(req, "done");
         await setProgress(req, lesson, 0);
+        await setProgress(req, lesson+1, 1);
         const result: CosmAns = {
             answer_type: "execute",
             result: "success",
@@ -154,8 +155,13 @@ const getLessonPicture = asyncUtil(async (req, res, next) => {
 
 const userProgress = asyncUtil(async (req, res, next) => {
     const lesson = Number(req.query.lesson);
-    await cosm.checkLessonRange(lesson);
-    const p = await getProgress(req, lesson);
+    let p;
+    if (!isNaN(lesson)) {
+        await cosm.checkLessonRange(lesson);
+        p = await getProgress(req, lesson);
+    } else {
+        p = await getProgress(req);
+    }
     res.json(p);
 });
 

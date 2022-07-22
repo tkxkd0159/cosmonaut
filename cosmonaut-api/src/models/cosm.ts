@@ -61,23 +61,36 @@ async function setAssetLoc(req: Request, status: string) {
 
 async function getProgress(
     req: Request,
-    lesson: number
+    lesson?: number
 ): Promise<{ lesson: number; chapter: number }> {
     const issuer = req.session.passport?.user.issuer;
     const id = req.session.passport?.user.id;
     let pgClient;
     try {
         pgClient = await pg.getClient();
-        const res = await pgClient.query(
-            "SELECT * FROM get_progress($1, $2, $3)",
-            [issuer, id, lesson]
-        );
 
-        const progress = res.rows[0];
-        if (progress === undefined) {
-            return { lesson, chapter: -1 };
+        if (lesson !== undefined) {
+            const res = await pgClient.query(
+                "SELECT * FROM get_progress($1, $2, $3)",
+                [issuer, id, lesson]
+            );
+
+            const progress = res.rows[0];
+            if (progress === undefined) {
+                return { lesson, chapter: -1 };
+            } else {
+                return {
+                    lesson: res.rows[0]["res_lesson"],
+                    chapter: res.rows[0]["res_chapter"],
+                };
+            }
         } else {
-            return {lesson: res.rows[0]["res_lesson"], chapter: res.rows[0]["res_chapter"]};
+            const res = await pgClient.query(
+                "SELECT lesson, chapter FROM users WHERE provider = $1 AND subject = $2 ORDER BY lesson desc",
+                [issuer, id]
+            );
+
+            return res.rows[0];
         }
     } catch (error) {
         throw error;
@@ -105,7 +118,9 @@ async function setProgress(req: Request, lesson: number, chapter: number) {
     }
 }
 
-async function getChapterThreshold(lesson: number): Promise<number|undefined> {
+async function getChapterThreshold(
+    lesson: number
+): Promise<number | undefined> {
     let pgClient;
     try {
         pgClient = await pg.getClient();
@@ -113,7 +128,7 @@ async function getChapterThreshold(lesson: number): Promise<number|undefined> {
             "SELECT threshold FROM lesson_range WHERE lesson = $1",
             [lesson]
         );
-        return res.rows[0]['threshold']
+        return res.rows[0]["threshold"];
     } catch (error) {
         console.error(error);
     } finally {
@@ -132,4 +147,10 @@ async function getChapterThreshold(lesson: number): Promise<number|undefined> {
 //     }
 // }
 
-export { getAssetLoc, setAssetLoc, getProgress, setProgress, getChapterThreshold };
+export {
+    getAssetLoc,
+    setAssetLoc,
+    getProgress,
+    setProgress,
+    getChapterThreshold,
+};
