@@ -21,6 +21,10 @@ function Navigator() {
       return navigate(`/lesson/0/chapter/3/unit/1`);
     } else if (lessonID === "0" && chID === "3" && uID === "2") {
       return navigate(`/lesson/0/chapter/4/unit/1`);
+    } else if (lessonID === "0" && chID === "4" && uID === "2") {
+      return navigate(`/lesson/1/chapter/1/unit/0`);
+
+      // lesson 1
     } else if (lessonID === "1" && chID === "1" && uID === "3") {
       return navigate(`/lesson/1/chapter/2/unit/1`);
     } else if (lessonID === "1" && chID === "2" && uID === "1") {
@@ -31,6 +35,8 @@ function Navigator() {
       return navigate(`/lesson/1/chapter/4/unit/1/small/1`);
     } else if (lessonID === "1" && chID === "5" && uID === "1" && sID === "0") {
       return navigate(`/lesson/1/chapter/5/unit/1/small/1`);
+
+      // lesson 2
     } else if (lessonID === "2" && chID === "7" && uID === "1" && sID === "0") {
       return navigate(`/lesson/2/chapter/7/unit/1/small/1`);
     } else if (lessonID === "2" && chID === "1" && uID === "3") {
@@ -43,10 +49,14 @@ function Navigator() {
       return navigate(`/lesson/2/chapter/5/unit/1`);
     } else if (lessonID === "2" && chID === "5" && uID === "2") {
       return navigate(`/lesson/2/chapter/6/unit/1/small/0`);
+
+      // lesson 3
     } else if (lessonID === "3" && chID === "1" && uID === "1") {
       return navigate(`/lesson/3/chapter/1/unit/2/small/1`);
     } else if (lessonID === "3" && chID === "1" && uID === "3" && sID === "1") {
       return navigate(`/lesson/3/chapter/2/unit/1/small/1`);
+
+      // lesson 4
     } else if (lessonID === "4" && chID === "1" && uID === "2") {
       return navigate(`/lesson/4/chapter/2/unit/1/small/1`);
     } else if (lessonID === "4" && chID === "3" && uID === "1") {
@@ -83,7 +93,6 @@ function Navigator() {
 
   window.addEventListener("scroll", e => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-      console.log("bottom");
       const navigator = document.querySelectorAll("#navigator");
       navigator[0].classList.add("opacity-100");
       navigator[0].classList.remove("opacity-0");
@@ -112,20 +121,12 @@ function Navigator() {
           <div class="w-full flex flex-wrap items-center justify-end ">
             <button onClick={handleLeft}>
               <div class="bg-green-500 inline-block lg:h-10 h-9 md:w-16 w-10 md:mr-6 mr-2 border-3 border-indigo-900 lg:shadow shadow-sm rounded ease-in-out duration-300 transform hover:scale-110 hover:translate-x-2">
-                <img
-                  class="lg:h-6 lg:w-5 w-3 h-3 mx-auto mt-1"
-                  src={Arrowleft}
-                  alt=""
-                />
+                <img class="w-6 h-5 mx-auto mt-1" src={Arrowleft} alt="" />
               </div>
             </button>
             <button onClick={handleRight}>
               <div class="bg-blue-500 inline-block lg:h-10 h-9 md:w-16 w-10 md:mr-6 mr-2 border-3 border-indigo-900 lg:shadow shadow-sm rounded ease-in-out duration-300 transform hover:scale-110 hover:translate-x-2">
-                <img
-                  class="lg:h-6 lg:w-5 w-3 h-3 mx-auto mt-1"
-                  src={Arrowright}
-                  alt=""
-                />
+                <img class="w-6 h-5 mx-auto mt-1" src={Arrowright} alt="" />
               </div>
             </button>
           </div>

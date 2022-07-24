@@ -39,7 +39,6 @@
     "@types/passport": "^1.0.9",
     "@types/passport-github": "^1.1.7",
     "@types/pg": "^8.6.5",
-    "@types/validator": "^13.7.2",
     "axios": "^0.27.2",
     "husky": "^8.0.1",
     "jest": "^28.1.0",
@@ -68,10 +67,9 @@
     "pidtree": "^0.6.0",
     "pm2": "^5.2.0",
     "redis": "^4.1.1",
-    "validator": "^13.7.0",
-    "winston": "^3.7.2",
-    "winston-daily-rotate-file": "^4.6.1",
     "tsconfig-paths": "^4.0.0",
-    "tslib": "^2.4.0"
+    "tslib": "^2.4.0",
+    "winston": "^3.7.2",
+    "winston-daily-rotate-file": "^4.6.1"
   }
 }

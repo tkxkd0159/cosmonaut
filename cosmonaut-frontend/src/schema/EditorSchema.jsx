@@ -26,18 +26,44 @@ function EditorSchema() {
   return (
     <>
       <Navbar />
-      <StartModal />
-      <Background style={{ backgroundImage: `url(${ShortBg})` }}>
+
+      {uID === "0" || sID === "0" ? <StartModal /> : null}
+      {lessonID === "2" && chID === "7" && uID === "1" && sID === "1" ? (
+        <StartModal />
+      ) : null}
+      {lessonID === "2" && chID === "8" && uID === "1" && sID === "1" ? (
+        <StartModal />
+      ) : null}
+      {lessonID === "3" && chID === "2" && uID === "1" && sID === "1" ? (
+        <StartModal />
+      ) : null}
+      {lessonID === "3" && chID === "3" && uID === "1" && sID === "1" ? (
+        <StartModal />
+      ) : null}
+      {lessonID === "4" && chID === "2" && uID === "1" && sID === "1" ? (
+        <StartModal />
+      ) : null}
+      {lessonID === "4" && chID === "3" && uID === "1" && sID === "1" ? (
+        <StartModal />
+      ) : null}
+
+      <Background
+        style={{
+          backgroundImage: `url(${ShortBg})`,
+        }}
+      >
         <BackToOverview />
         <ChapterTitle chInfo={chInfo[lessonID]} unitInfo={unitData[chID - 1]} />
       </Background>
       <EditorContents />
       <Footer />
-      {lessonID === "1" && chID === "5" && uID === "2" && sID === "2" ? (
+      {lessonID === "1" && chID === "6" && uID === "1" && sID === "2" ? (
         <FinishModal />
-      ) : lessonID === "2" && chID === "7" && uID === "2" && sID === "2" ? (
+      ) : lessonID === "2" && chID === "8" && uID === "1" && sID === "2" ? (
         <FinishModal />
-      ) : lessonID === "3" && chID === "2" && uID === "2" && sID === "5" ? (
+      ) : lessonID === "3" && chID === "3" && uID === "1" && sID === "2" ? (
+        <FinishModal />
+      ) : lessonID === "4" && chID === "3" && uID === "1" && sID === "2" ? (
         <FinishModal />
       ) : null}
       <SmallNavigator />

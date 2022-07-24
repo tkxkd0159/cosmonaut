@@ -8,29 +8,41 @@ import SignUp from "./containers/SignUp/SignUp";
 import ScrollToTop from "./components/Common/ScrollToTop";
 import SmallPage from "./containers/Small/SmallPage";
 import FinishModal from "./components/FinishModal/FinishModal";
+import { EpiloguePage } from "./containers/Epilogue/EpiloguePage";
+import { AppendixPage } from "./containers/Appendix/AppendixPage";
+import IndexInitialPage from "./containers/Index/IndexInitialPage";
 
 function App() {
   return (
-    <div>
+    <>
       <ScrollToTop>
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/signUp" element={<SignUp />} />
+          <Route path="/index" element={<IndexInitialPage />} />
           <Route path="/lesson/:lessonID" element={<IndexPage />} />
           <Route
+            exact
             path="/lesson/:lessonID/chapter/:chID/unit/:uID"
             element={<UnitPage />}
           />
           <Route
+            exact
             path="/lesson/:lessonID/chapter/:chID/unit/:uID/small/:sID"
             element={<SmallPage />}
           />
-          <Route path="/lesson/:lessonID/finish" element={<FinishModal />} />
+          <Route
+            exact
+            path="/lesson/:lessonID/finish"
+            element={<FinishModal />}
+          />
+          <Route exact path="/epilogue" element={<EpiloguePage />} />
+          <Route exact path="/appendix/:aID" element={<AppendixPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </ScrollToTop>
-    </div>
+    </>
   );
 }
 
