@@ -84,7 +84,7 @@ impl Result for ExecuteAllResult {
                 lesson: lesson.to_string(),
                 chapter: chapter.to_string(),
                 result: "error".to_string(),
-                errors: vec![],
+                errors: self.errors.clone(),
                 differences: vec![],
             };
         }
@@ -119,7 +119,7 @@ impl Result for ExecuteAllResult {
                 lesson: lesson.to_string(),
                 chapter: chapter.to_string(),
                 result: "incorrect".to_string(),
-                errors: self.errors.clone(),
+                errors: vec![],
                 differences,
             }
         }
@@ -179,7 +179,7 @@ where
                 lesson: lesson.to_string(),
                 chapter: chapter.to_string(),
                 result: "incorrect".to_string(),
-                errors: self.errors.clone(),
+                errors: vec![],
                 differences,
             }
         }

@@ -2,12 +2,7 @@ import { existsSync } from "fs";
 import path from "path";
 import { cosm, getUid } from "@d3lab/services";
 import { APIError, CosmAns } from "@d3lab/types";
-import {
-    saveCodeFiles,
-    lodeCodeFiles,
-    asyncUtil,
-    sleep
-} from "@d3lab/utils";
+import { saveCodeFiles, lodeCodeFiles, asyncUtil, sleep } from "@d3lab/utils";
 import {
     getAssetLoc,
     setAssetLoc,
@@ -32,7 +27,7 @@ const cosminit = asyncUtil(async (req, res, next) => {
         } else {
             await setAssetLoc(req, "doing");
         }
-        res.sendStatus(200)
+        res.sendStatus(200);
     }
 
     const genfilePath = path.join(
@@ -47,7 +42,7 @@ const cosminit = asyncUtil(async (req, res, next) => {
     );
 
     if (existsSync(genfilePath)) {
-        return next(new APIError(400, "the project was already generated"))
+        return next(new APIError(400, "the project was already generated"));
     }
 
     await cosm.Run("cosm-init", uid, lesson, chapter);
@@ -69,13 +64,13 @@ const readDone = asyncUtil(async (req, res, next) => {
     if (chapter === chLimit) {
         await setAssetLoc(req, "done");
         await setProgress(req, lesson, 0);
-        await setProgress(req, lesson+1, 1);
+        await setProgress(req, lesson + 1, 1);
     } else {
         await setProgress(req, lesson, chapter + 1);
     }
     const p = await getProgress(req, lesson);
-    res.json(p)
-})
+    res.json(p);
+});
 
 const cosmDiff = asyncUtil(async (req, res, next) => {
     const lesson = Number(req.body.lesson);
@@ -86,12 +81,10 @@ const cosmDiff = asyncUtil(async (req, res, next) => {
 
     res.locals.threshold = await getChapterThreshold(lesson);
     if (chapter === res.locals.threshold) {
-        return next();
+        next();
     } else {
-        if (true) {
-            await setProgress(req, lesson, chapter + 1);
-            res.json({ status: "success" });
-        }
+        await setProgress(req, lesson, chapter + 1);
+        res.json({ status: "success" });
     }
 });
 
@@ -113,29 +106,28 @@ const cosmBuild = asyncUtil(async (req, res, next) => {
     await saveCodeFiles(req.body["files"], srcpath);
 
     const data = await cosm.Run("cosm-build", uid, lesson, chapter);
-    const parsedData = data.trim().split('\n')
+    const parsedData = data.trim().split("\n");
 
     let isSuccess = true;
-    const out = []
+    const out = [];
     for (let d of parsedData) {
-        const res: CosmAns = JSON.parse(d)
+        const res: CosmAns = JSON.parse(d);
         if (res.result !== "success") {
             isSuccess = false;
         }
-        out.push(res)
+        out.push(res);
     }
     if (isSuccess === true) {
         if (chapter === res.locals.threshold) {
             await setAssetLoc(req, "done");
             await setProgress(req, lesson, 0);
-            await setProgress(req, lesson+1, 1);
+            await setProgress(req, lesson + 1, 1);
         } else {
             await setProgress(req, lesson, chapter + 1);
         }
     }
 
-    res.json({result: out})
-
+    res.json({ result: out });
 });
 
 const cosmLoadCodes = asyncUtil(async (req, res, next) => {

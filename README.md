@@ -52,5 +52,5 @@ docker compose up
 ## * Reset
 ```sh
 docker compose down
-docker volume rm pgdb cosmproj
+docker volume rm cosmonaut_pgdb cosmonaut_cosmproj cosmonaut_cargo cosmonaut_cosmbase
 ```

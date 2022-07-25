@@ -43,13 +43,13 @@ endif
 
 cargofmt:
 ifeq (${COMPOSE},true)
-	@docker run --rm -a stderr -a stdout \
+	@docker run --rm -a stderr \
 	-v $(COMPOSE_COSM_BASE):$(COSM_ROOT)/$(COSM_LIB) -v $(COMPOSE_COSM_USER):$(COSM_ROOT)/$(USER_PATH_PREFIX) -v $(COMPOSE_CARGO_REG):/usr/local/cargo/registry \
 	-w $(TARGET_PATH) $(COMPOSE_COSM_IMG) \
 	bash -c "cargo fmt"
 else
 	@docker run -d --rm -v $(SAVE_ROOT):$(COSM_ROOT) -w $(TARGET_PATH) $(DOCKER_IMG) \
-	bash -c "cargo fmt
+	bash -c "cargo fmt"
 endif
 
 cosm-build:
@@ -65,7 +65,7 @@ endif
 
 cosm-clean:
 ifeq (${COMPOSE},true)
-	@docker run --rm -a stderr -a stdout \
+	@docker run --rm \
 	-v $(COMPOSE_COSM_BASE):$(COSM_ROOT)/$(COSM_LIB) -v $(COMPOSE_COSM_USER):$(COSM_ROOT)/$(USER_PATH_PREFIX) -v $(COMPOSE_CARGO_REG):/usr/local/cargo/registry \
 	-w $(TARGET_PATH) $(COMPOSE_COSM_IMG) \
 	bash -c "cargo clean"
