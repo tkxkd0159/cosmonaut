@@ -39,7 +39,7 @@ const clippy = asyncUtil(async (req, res, next) => {
         true
     );
     if (!existsSync(srcpath)) {
-        next(new Error("This chapter does not exist on you"));
+        throw new Error("This chapter does not exist on you");
     }
     await saveCodeFiles(req.body["files"], srcpath);
 

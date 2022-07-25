@@ -9,8 +9,11 @@ router.route('/init')
 router.route('/read')
     .post(cosm.readDone)
 
+router.route('/diff')
+    .post(cosm.cosmDiff)
+
 router.route('/build')
-    .post(cosm.cosmDiff, cosm.cosmBuild)
+    .post(cosm.cosmBuild)
 
 router.route('/code')
     .get(cosm.cosmLoadCodes)

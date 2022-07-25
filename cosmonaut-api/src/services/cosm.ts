@@ -161,12 +161,18 @@ async function checkLessonRange(lesson: number, chapter?: number) {
 
 async function checkProjOrder(req: Request, lesson: number, chapter: number) {
     try {
+        const currentUserProgress = await getProgress(req, lesson);
+        const savedChapter = currentUserProgress["chapter"];
+        if (savedChapter === 0) {
+            return
+        }
+
         if (chapter === 1) {
             if (lesson === 0) {
                 return;
             } else {
-                const currentUserProgress = await getProgress(req, lesson - 1);
-                if (currentUserProgress["chapter"] !== 0) {
+                const prevUserProgress = await getProgress(req, lesson - 1);
+                if (prevUserProgress["chapter"] !== 0) {
                     throw new APIError(
                         httpStatus.BAD_REQUEST,
                         "You should finish previous lesson before start new lesson"
@@ -176,9 +182,6 @@ async function checkProjOrder(req: Request, lesson: number, chapter: number) {
                 }
             }
         }
-
-        const currentUserProgress = await getProgress(req, lesson);
-        const savedChapter = currentUserProgress["chapter"];
 
         if (savedChapter === -1) {
             throw new APIError(
