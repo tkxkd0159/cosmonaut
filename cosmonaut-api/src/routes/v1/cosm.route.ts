@@ -6,6 +6,9 @@ const router = express.Router();
 router.route('/init')
     .post(cosm.cosminit)
 
+router.route('/read')
+    .post(cosm.readDone)
+
 router.route('/build')
     .post(cosm.cosmDiff, cosm.cosmBuild)
 

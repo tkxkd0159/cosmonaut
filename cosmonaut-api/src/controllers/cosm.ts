@@ -20,10 +20,20 @@ const cosminit = asyncUtil(async (req, res, next) => {
     const uid = getUid(req);
     const lesson = Number(req.body.lesson);
     const chapter = Number(req.body.chapter);
+    const isBuild = req.body.needBuild;
 
     cosm.checkTarget(lesson, chapter);
     await cosm.checkLessonRange(lesson, chapter);
     await cosm.checkProjOrder(req, lesson, chapter);
+
+    if (!isBuild) {
+        if (chapter === 1) {
+            await setAssetLoc(req, "start");
+        } else {
+            await setAssetLoc(req, "doing");
+        }
+        res.sendStatus(200)
+    }
 
     const genfilePath = path.join(
         cosm.getCosmFilePath(
@@ -43,16 +53,29 @@ const cosminit = asyncUtil(async (req, res, next) => {
     await cosm.Run("cosm-init", uid, lesson, chapter);
     await sleep(1000);
     if (existsSync(genfilePath)) {
-        if (chapter === 1) {
-            await setAssetLoc(req, "start");
-        } else {
-            await setAssetLoc(req, "doing");
-        }
         res.json({ isGen: true });
     } else {
         res.json({ isGen: false });
     }
 });
+
+const readDone = asyncUtil(async (req, res, next) => {
+    const lesson = Number(req.body.lesson);
+    const chapter = Number(req.body.chapter);
+
+    cosm.checkTarget(lesson, chapter);
+    await cosm.checkLessonRange(lesson, chapter);
+    const chLimit = await getChapterThreshold(lesson);
+    if (chapter === chLimit) {
+        await setAssetLoc(req, "done");
+        await setProgress(req, lesson, 0);
+        await setProgress(req, lesson+1, 1);
+    } else {
+        await setProgress(req, lesson, chapter + 1);
+    }
+    const p = await getProgress(req, lesson);
+    res.json(p)
+})
 
 const cosmDiff = asyncUtil(async (req, res, next) => {
     const lesson = Number(req.body.lesson);
@@ -102,8 +125,7 @@ const cosmBuild = asyncUtil(async (req, res, next) => {
         out.push(res)
     }
     if (isSuccess === true) {
-        const threshold = await getChapterThreshold(lesson)
-        if (chapter === threshold) {
+        if (chapter === res.locals.threshold) {
             await setAssetLoc(req, "done");
             await setProgress(req, lesson, 0);
             await setProgress(req, lesson+1, 1);
@@ -161,6 +183,7 @@ const userProgress = asyncUtil(async (req, res, next) => {
 
 export {
     cosminit,
+    readDone,
     cosmDiff,
     cosmBuild,
     cosmLoadCodes,

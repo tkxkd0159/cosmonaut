@@ -130,7 +130,7 @@ async function getChapterThreshold(
         );
         return res.rows[0]["threshold"];
     } catch (error) {
-        console.error(error);
+        throw(error);
     } finally {
         pgClient?.release();
     }
