@@ -5,9 +5,6 @@ CREATE TABLE federated_credentials(
    created_at TIMESTAMPTZ,
    UNIQUE (provider, subject)
 );
-INSERT INTO federated_credentials(provider, subject)
-VALUES('github', '41176085'),
-      ('google', '123456789');
 
 CREATE TABLE users(
    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -21,10 +18,6 @@ CREATE TABLE users(
       FOREIGN KEY(provider, subject)
          REFERENCES federated_credentials(provider, subject) ON DELETE CASCADE
 );
-INSERT INTO users(provider, subject, lesson, chapter)
-VALUES('github', '41176085', 1, 0),
-      ('github', '41176085', 2, 3),
-      ('google', '123456789', 2, 3);
 
 CREATE TABLE assets(
    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -38,10 +31,6 @@ CREATE TABLE assets(
       FOREIGN KEY(provider, subject)
          REFERENCES federated_credentials(provider, subject) ON DELETE CASCADE
 );
-INSERT INTO assets (provider, subject, lesson, status, loc)
-VALUES('github', '41176085', 1, 'done', 'assets/f03b9b48acf40d25882e7afc0a64573358ca5e9d15a0d343e657ba04b81c44ea-1/done.jpg'),
-      ('github', '41176085', 2, 'doing', 'assets/2bf83c540ee563217f2c18e26ce2660a8302f28105c2328d27aa7eef7e0dca3b-2/doing.png'),
-      ('github', '41176085', 3, 'start', 'assets/8da88b2d24e891496a3a921d47d873d34de670bd3eb8215222c97d6a63f597f5-3/start.png');
 
 CREATE TABLE lesson_range(
    lesson INTEGER NOT NULL,
@@ -49,7 +38,7 @@ CREATE TABLE lesson_range(
    PRIMARY KEY (lesson)
 );
 INSERT INTO lesson_range (lesson, threshold)
-VALUES(1, 6),(2, 8),(3, 3),(4, 3);
+VALUES(0, 1),(1, 6),(2, 8),(3, 3),(4, 3);
 
 CREATE OR REPLACE PROCEDURE update_asset(newp TEXT, news TEXT, newl INTEGER, new_status TEXT, new_loc TEXT)
 LANGUAGE SQL

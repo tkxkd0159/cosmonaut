@@ -1,16 +1,25 @@
 .PHONY: rust-build clippy clean rust-init cargofmt rustfmt
 
-
-TARGET_PATH =
+USER_ID =
+LESSON =
+CHAPTER =
 COSM_ROOT = "/workspace/cargo-projects"
+COSM_LIB = "cosm-base"
+SKELETON_PATH = "skeleton/lesson${LESSON}/chapter${CHAPTER}/contracts"
+RUNNER_PATH = "lessons/lesson$(LESSON)/chapter$(CHAPTER)"
+USER_PATH_PREFIX = "cosm"
+USER_CONTRACT_PATH = "$(USER_PATH_PREFIX)/${USER_ID}/lesson${LESSON}/chapter${CHAPTER}"
+TARGET_PATH = "$(COSM_ROOT)/$(USER_CONTRACT_PATH)"
 
 # For local machine
 DOCKER_IMG ?="cosmo-rust:1.0"
-SAVE_PATH ?="cargo-projects"
+SAVE_ROOT ?="$(CURDIR)/cargo-projects"
 
 # For Docker Compose
-COMPOSE_MAIN ?= "cosmonaut-1"
-COMPOSE_COSM_IMG ?= "cosmo-rust:dind"
+COMPOSE_COSM_BASE ?= cosmonaut_cosmbase
+COMPOSE_COSM_USER ?= cosmonaut_cosmproj
+COMPOSE_CARGO_REG ?= cosmonaut_cargo
+COMPOSE_COSM_IMG ?= "tkxkd0159/cosmo-rust:dind"
 
 .PHONY: test
 
@@ -23,45 +32,55 @@ endif
 
 cosm-init:
 ifeq (${COMPOSE},true)
-	@docker run -d --rm --volumes-from $(COMPOSE_MAIN) -w $(COSM_ROOT) $(COMPOSE_COSM_IMG) \
-	bash -c "./scripts/init.sh --path $(TARGET_PATH) --clean"
+	@mkdir -p $(COSM_ROOT)/$(USER_CONTRACT_PATH)
+	@cp -r $(COSM_ROOT)/$(COSM_LIB)/$(SKELETON_PATH) $(COSM_ROOT)/$(USER_CONTRACT_PATH)
+	@cp -r $(COSM_ROOT)/$(COSM_LIB)/$(RUNNER_PATH)/* $(COSM_ROOT)/$(USER_CONTRACT_PATH)/
 else
-	@docker run -d --rm -v $(CURDIR)/$(SAVE_PATH):$(COSM_ROOT) -w $(COSM_ROOT) $(DOCKER_IMG) \
-	bash -c "./scripts/init.sh --path $(TARGET_PATH) --clean"
+	@mkdir -p $(SAVE_ROOT)/$(USER_CONTRACT_PATH)
+	@cp -r $(SAVE_ROOT)/$(COSM_LIB)/$(SKELETON_PATH) $(SAVE_ROOT)/$(USER_CONTRACT_PATH)
+	@cp -r $(SAVE_ROOT)/$(COSM_LIB)/$(RUNNER_PATH)/* $(SAVE_ROOT)/$(USER_CONTRACT_PATH)/
 endif
 
 cargofmt:
 ifeq (${COMPOSE},true)
-	@docker run -d --rm --volumes-from $(COMPOSE_MAIN) -w $(TARGET_PATH) $(COMPOSE_COSM_IMG) \
+	@docker run --rm -a stderr -a stdout \
+	-v $(COMPOSE_COSM_BASE):$(COSM_ROOT)/$(COSM_LIB) -v $(COMPOSE_COSM_USER):$(COSM_ROOT)/$(USER_PATH_PREFIX) -v $(COMPOSE_CARGO_REG):/usr/local/cargo/registry \
+	-w $(TARGET_PATH) $(COMPOSE_COSM_IMG) \
 	bash -c "cargo fmt"
 else
-	@docker run -d --rm -v $(TARGET_PATH):$(TARGET_PATH) -w $(TARGET_PATH) $(DOCKER_IMG) \
+	@docker run -d --rm -v $(SAVE_ROOT):$(COSM_ROOT) -w $(TARGET_PATH) $(DOCKER_IMG) \
 	bash -c "cargo fmt
 endif
 
 cosm-build:
 ifeq (${COMPOSE},true)
-	@docker run --rm -a stderr -a stdout --volumes-from $(COMPOSE_MAIN) -w $(TARGET_PATH) $(COMPOSE_COSM_IMG) \
+	@docker run --rm -a stderr -a stdout \
+	-v $(COMPOSE_COSM_BASE):$(COSM_ROOT)/$(COSM_LIB) -v $(COMPOSE_COSM_USER):$(COSM_ROOT)/$(USER_PATH_PREFIX) -v $(COMPOSE_CARGO_REG):/usr/local/cargo/registry \
+	-w $(TARGET_PATH) $(COMPOSE_COSM_IMG) \
 	bash -c "cargo run"
 else
-	@docker run --rm -a stderr -a stdout -v $(TARGET_PATH):$(TARGET_PATH) -w $(TARGET_PATH) $(DOCKER_IMG) \
+	@docker run --rm -a stderr -a stdout -v $(SAVE_ROOT):$(COSM_ROOT) -w $(TARGET_PATH) $(DOCKER_IMG) \
 	bash -c "cargo run"
 endif
 
 cosm-clean:
 ifeq (${COMPOSE},true)
-	@docker run -d --rm --volumes-from $(COMPOSE_MAIN) -w $(TARGET_PATH) $(COMPOSE_COSM_IMG) \
+	@docker run --rm -a stderr -a stdout \
+	-v $(COMPOSE_COSM_BASE):$(COSM_ROOT)/$(COSM_LIB) -v $(COMPOSE_COSM_USER):$(COSM_ROOT)/$(USER_PATH_PREFIX) -v $(COMPOSE_CARGO_REG):/usr/local/cargo/registry \
+	-w $(TARGET_PATH) $(COMPOSE_COSM_IMG) \
 	bash -c "cargo clean"
 else
-	@docker run -d --rm -v $(TARGET_PATH):$(TARGET_PATH) -w $(TARGET_PATH) $(DOCKER_IMG) \
+	@docker run -d --rm -v $(SAVE_ROOT):$(COSM_ROOT) -w $(TARGET_PATH) $(DOCKER_IMG) \
 	bash -c "cargo clean"
 endif
 
 clippy:
 ifeq (${COMPOSE},true)
-	@docker run --rm -a stderr -a stdout --volumes-from $(COMPOSE_MAIN) -w $(TARGET_PATH) $(COMPOSE_COSM_IMG) \
+	@docker run --rm -a stderr -a stdout \
+	-v $(COMPOSE_COSM_BASE):$(COSM_ROOT)/$(COSM_LIB) -v $(COMPOSE_COSM_USER):$(COSM_ROOT)/$(USER_PATH_PREFIX) -v $(COMPOSE_CARGO_REG):/usr/local/cargo/registry \
+	-w $(TARGET_PATH) $(COMPOSE_COSM_IMG) \
 	bash -c "cargo clippy 2>&1"
 else
-	@docker run --rm -a stderr -a stdout -v $(TARGET_PATH):$(TARGET_PATH) -w $(TARGET_PATH) $(DOCKER_IMG) \
+	@docker run --rm -a stderr -a stdout -v $(SAVE_ROOT):$(COSM_ROOT) -w $(TARGET_PATH) $(DOCKER_IMG) \
 	bash -c "cargo clippy 2>&1"
 endif

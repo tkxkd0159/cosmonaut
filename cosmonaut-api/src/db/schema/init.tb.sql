@@ -22,7 +22,7 @@ CREATE TABLE users(
          REFERENCES federated_credentials(provider, subject) ON DELETE CASCADE
 );
 INSERT INTO users(provider, subject, lesson, chapter)
-VALUES('github', '41176085', 1, 1),
+VALUES('github', '41176085', 1, 6),
       ('google', '123456789', 2, 3);
 
 -- CREATE TABLE assets(
@@ -59,4 +59,4 @@ CREATE TABLE lesson_range(
    PRIMARY KEY (lesson)
 );
 INSERT INTO lesson_range (lesson, threshold)
-VALUES(1, 6),(2, 8),(3, 3),(4, 3);
+VALUES(0, 1),(1, 6),(2, 8),(3, 3),(4, 3);

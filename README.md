@@ -12,8 +12,8 @@ PGPASSWORD=secret
 PGDATABASE=cosmonaut
 REDISHOST=redis-sess
 REDISPORT=6379
-REQ_TIMEOUT=5000
-RUST_TIMEOUT=4000
+REQ_TIMEOUT=130000
+RUST_TIMEOUT=120000
 TS_NODE_PROJECT=./tsconfig.prod.json
 FRONT_HOST_ADDR="http://127.0.0.1:8080"
 FRONT_MAIN_ADDR=/
@@ -37,8 +37,8 @@ Set `FRONT_HOST_ADDR`
 
 ## 2) Run
 ```sh
-# Build cosmo-rust image
-docker build -t cosmo-rust:dind .
+# Pull cosmo-rust image
+docker pull tkxkd0159/cosmo-rust:dind
 
 # Build react
 ./react-build.sh

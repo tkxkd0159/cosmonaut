@@ -24,10 +24,10 @@ const fmtCodes = asyncUtil(async (req, res, next) => {
 });
 
 const clippy = asyncUtil(async (req, res, next) => {
-    let uid;
+    const uid = getUid(req);
     const lesson = Number(req.body.lesson);
     const chapter = Number(req.body.chapter);
-    uid = getUid(req);
+
     cosm.checkTarget(lesson, chapter);
     await cosm.checkLessonRange(lesson, chapter);
 
@@ -43,9 +43,7 @@ const clippy = asyncUtil(async (req, res, next) => {
     }
     await saveCodeFiles(req.body["files"], srcpath);
 
-    const dirpath = srcStrip(srcpath);
-
-    const result = await cosm.Run("clippy", dirpath);
+    const result = await cosm.Run("clippy", uid, lesson, chapter);
     res.json({ result });
 });
 

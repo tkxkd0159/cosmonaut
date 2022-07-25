@@ -24,7 +24,10 @@ services:
         target: /workspace/front-build
       - type: volume
         source: cosmproj
-        target: /workspace/cargo-projects
+        target: /workspace/cargo-projects/cosm
+      - type: volume
+        source: cosmbase
+        target: /workspace/cargo-projects/cosm-base
   redis-sess:
     image: redis
     restart: always
@@ -67,6 +70,10 @@ volumes:
   pgdb:
     driver: local
   cosmproj:
+    driver: local
+  cosmbase:
+    driver: local
+  cargo:
     driver: local
 
 networks:

@@ -1,13 +1,12 @@
 import { existsSync } from "fs";
 import path from "path";
 import { cosm, getUid } from "@d3lab/services";
-import { CosmAns } from "@d3lab/types";
+import { APIError, CosmAns } from "@d3lab/types";
 import {
-    sleep,
     saveCodeFiles,
     lodeCodeFiles,
-    srcStrip,
     asyncUtil,
+    sleep
 } from "@d3lab/utils";
 import {
     getAssetLoc,
@@ -18,10 +17,10 @@ import {
 } from "@d3lab/models/cosm";
 
 const cosminit = asyncUtil(async (req, res, next) => {
-    let uid;
+    const uid = getUid(req);
     const lesson = Number(req.body.lesson);
     const chapter = Number(req.body.chapter);
-    uid = getUid(req);
+
     cosm.checkTarget(lesson, chapter);
     await cosm.checkLessonRange(lesson, chapter);
     await cosm.checkProjOrder(req, lesson, chapter);
@@ -34,13 +33,14 @@ const cosminit = asyncUtil(async (req, res, next) => {
             chapter,
             true
         ),
-        "main.rs"
+        "lib.rs"
     );
 
-    const dirpath = process.env.COMPOSE
-        ? srcStrip(genfilePath)
-        : srcStrip(genfilePath).split("/cargo-projects/")[1];
-    await cosm.Run("cosm-init", dirpath);
+    if (existsSync(genfilePath)) {
+        return next(new APIError(400, "the project was already generated"))
+    }
+
+    await cosm.Run("cosm-init", uid, lesson, chapter);
     await sleep(1000);
     if (existsSync(genfilePath)) {
         if (chapter === 1) {
@@ -55,17 +55,15 @@ const cosminit = asyncUtil(async (req, res, next) => {
 });
 
 const cosmDiff = asyncUtil(async (req, res, next) => {
-    let uid;
     const lesson = Number(req.body.lesson);
     const chapter = Number(req.body.chapter);
 
-    uid = getUid(req);
     cosm.checkTarget(lesson, chapter);
     await cosm.checkLessonRange(lesson, chapter);
 
     res.locals.threshold = await getChapterThreshold(lesson);
     if (chapter === res.locals.threshold) {
-        next();
+        return next();
     } else {
         if (true) {
             await setProgress(req, lesson, chapter + 1);
@@ -91,42 +89,38 @@ const cosmBuild = asyncUtil(async (req, res, next) => {
     }
     await saveCodeFiles(req.body["files"], srcpath);
 
-    const dirpath = srcStrip(srcpath);
+    const data = await cosm.Run("cosm-build", uid, lesson, chapter);
+    const parsedData = data.trim().split('\n')
 
-    const data = await cosm.Run("cosm-build", dirpath);
-
-    // const parsedData: CosmAns = JSON.parse(data)
-    // if (parsedData.result === "success") {
-    //     const threshold = await getChapterThreshold(lesson)
-    //     if (chapter === threshold) {
-    //         await setAssetLoc(req, "done");
-    //         await setProgress(req, lesson, 0);
-    //     } else {
-    //         await setProgress(req, lesson, chapter + 1);
-    //     }
-    // }
-
-    if (true) {
-        await setAssetLoc(req, "done");
-        await setProgress(req, lesson, 0);
-        await setProgress(req, lesson+1, 1);
-        const result: CosmAns = {
-            answer_type: "execute",
-            result: "success",
-            lesson: lesson,
-            errors: [],
-            differences: [data],
-        };
-        res.json(result);
+    let isSuccess = true;
+    const out = []
+    for (let d of parsedData) {
+        const res: CosmAns = JSON.parse(d)
+        if (res.result !== "success") {
+            isSuccess = false;
+        }
+        out.push(res)
     }
+    if (isSuccess === true) {
+        const threshold = await getChapterThreshold(lesson)
+        if (chapter === threshold) {
+            await setAssetLoc(req, "done");
+            await setProgress(req, lesson, 0);
+            await setProgress(req, lesson+1, 1);
+        } else {
+            await setProgress(req, lesson, chapter + 1);
+        }
+    }
+
+    res.json({result: out})
+
 });
 
 const cosmLoadCodes = asyncUtil(async (req, res, next) => {
-    let uid;
+    const uid = getUid(req);
     const lesson = Number(req.query.lesson);
     const chapter = Number(req.query.chapter);
 
-    uid = getUid(req);
     cosm.checkTarget(lesson, chapter);
     await cosm.checkLessonRange(lesson, chapter);
 
@@ -138,7 +132,7 @@ const cosmLoadCodes = asyncUtil(async (req, res, next) => {
         true
     );
     if (!existsSync(srcpath)) {
-        next(new Error("This chapter does not exist on you"));
+        return next(new Error("This chapter does not exist on you"));
     }
 
     const files = await lodeCodeFiles(srcpath);

@@ -15,12 +15,29 @@ function getCosmFilePath(
     chapter: number,
     withSrc: boolean
 ): string {
+    const r: { [key: number]: any } = {
+        1: {
+            6: "cosmonaut-cw721"
+        },
+        2: {
+            8: "cosmonaut-cw20"
+        },
+        3: {
+            8: "cosmonaut-main"
+        },
+        4: {
+            2: "cosmonaut-main"
+        }
+    }
+    const l = lesson
+    const c = chapter
+
     let cosmPath;
     if (withSrc) {
         cosmPath = path.join(
             process.cwd(),
             prefix,
-            `${uid}/lesson${lesson}/chapter${chapter}/src`
+            `${uid}/lesson${l}/chapter${c}/contracts/${r[l][c]}/src`
         );
     } else {
         cosmPath = path.join(
@@ -41,50 +58,69 @@ function checkTarget(lesson: number, chapter: number) {
     }
 }
 
-async function Run(cmd: string, projPath: string): Promise<string> {
-    let subprocess = spawn("make", [cmd, `TARGET_PATH=${projPath}`]);
+async function Run(
+    cmd: string,
+    userid: string,
+    lesson: number,
+    chapter: number
+): Promise<string> {
+    let subprocess = spawn("make", [
+        cmd,
+        `USER_ID=${userid}`,
+        `LESSON=${lesson}`,
+        `CHAPTER=${chapter}`,
+    ]);
     let result = "";
     let error = "";
+    let subTimeout: NodeJS.Timeout;
 
-    const subTimeout = setTimeout(() => {
-        result = "";
-        error = "Your code execution time is over the maximum\n";
+    if (cmd !== "cosm-init") {
+        subTimeout = setTimeout(() => {
+            result = "";
+            error = "Your code execution time is over the maximum\n";
 
-        pidtree(subprocess.pid as number, (err, pids) => {
-            if (pids === undefined) {
-                return;
-            } else {
-                for (let i = 0; i < pids.length; i++) {
-                    if (i === 0) {
-                        process.kill(pids[i], "SIGTERM");
-                    } else {
-                        process.kill(pids[i], "SIGKILL");
+            pidtree(subprocess.pid as number, (err, pids) => {
+                if (pids === undefined) {
+                    return;
+                } else {
+                    for (let i = 0; i < pids.length; i++) {
+                        if (i === 0) {
+                            process.kill(pids[i], "SIGTERM");
+                        } else {
+                            process.kill(pids[i], "SIGKILL");
+                        }
                     }
                 }
+            });
+        }, conf.timeout.rust);
+
+        subprocess.stdout.on("data", (data) => {
+            if (data instanceof Buffer) {
+                result += data.toString();
             }
         });
-    }, conf.timeout.rust);
 
-    subprocess.stdout.on("data", (data) => {
-        if (data instanceof Buffer) {
-            result += data.toString();
-        }
-    });
-
-    subprocess.stderr.on("data", (data) => {
-        if (data instanceof Buffer) {
-            error += data.toString();
-        }
-    });
+        subprocess.stderr.on("data", (data) => {
+            if (data instanceof Buffer) {
+                error += data.toString();
+            }
+        });
+    }
 
     return new Promise((resolve, reject) => {
         subprocess.on("close", (exitCode) => {
-            clearTimeout(subTimeout);
-            if (result !== "") {
-                resolve(result);
+            if (cmd !== "cosm-init") {
+                clearTimeout(subTimeout);
+
+                if (result !== "") {
+                    resolve(result);
+                } else {
+                    reject(error.split("make")[0]);
+                }
             } else {
-                reject(error.split("make")[0]);
+                resolve("success")
             }
+
         });
     });
 }
@@ -153,9 +189,7 @@ async function checkProjOrder(req: Request, lesson: number, chapter: number) {
             if (chapter !== savedChapter) {
                 throw new APIError(
                     httpStatus.BAD_REQUEST,
-                    `You must set correct chapter => got: ${chapter}, expected: ${
-                        savedChapter
-                    }`
+                    `You must set correct chapter => got: ${chapter}, expected: ${savedChapter}`
                 );
             }
         }
