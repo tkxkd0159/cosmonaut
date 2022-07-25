@@ -5,7 +5,7 @@ import { pg } from "@d3lab/db";
 import { PassportProfile } from "@d3lab/types";
 
 const oauth = process.env["OAUTH_REDIRECT"];
-const START_LESSON = 1;
+const START_LESSON = 0;
 const START_CHAPTER = 1;
 
 passport.use(

@@ -126,7 +126,7 @@ async function checkLessonRange(lesson: number, chapter?: number) {
 async function checkProjOrder(req: Request, lesson: number, chapter: number) {
     try {
         if (chapter === 1) {
-            if (lesson === 1) {
+            if (lesson === 0) {
                 return;
             } else {
                 const currentUserProgress = await getProgress(req, lesson - 1);
