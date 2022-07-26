@@ -27,9 +27,7 @@ const clippy = asyncUtil(async (req, res, next) => {
     const uid = getUid(req);
     const lesson = Number(req.body.lesson);
     const chapter = Number(req.body.chapter);
-
     cosm.checkTarget(lesson, chapter);
-    await cosm.checkLessonRange(lesson, chapter);
 
     const srcpath = cosm.getCosmFilePath(
         req.app.locals.cargoPrefix,

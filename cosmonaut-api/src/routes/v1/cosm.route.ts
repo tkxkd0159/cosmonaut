@@ -1,19 +1,20 @@
 import express from 'express';
 import {cosm} from '@d3lab/controllers';
+import {validateCosmCond} from '@d3lab/middlewares/cosm'
 
 const router = express.Router();
 
 router.route('/init')
-    .post(cosm.cosminit)
+    .post(validateCosmCond, cosm.cosminit)
 
 router.route('/read')
-    .post(cosm.readDone)
+    .post(validateCosmCond, cosm.readDone)
 
 router.route('/diff')
-    .post(cosm.cosmDiff)
+    .post(validateCosmCond, cosm.cosmDiff)
 
 router.route('/build')
-    .post(cosm.cosmBuild)
+    .post(validateCosmCond, cosm.cosmBuild)
 
 router.route('/code')
     .get(cosm.cosmLoadCodes)

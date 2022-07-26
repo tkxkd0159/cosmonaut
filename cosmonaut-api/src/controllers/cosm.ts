@@ -20,10 +20,6 @@ const cosminit = asyncUtil(async (req, res, next) => {
     const chapter = Number(req.body.chapter);
     const isBuild = req.body.needBuild;
 
-    cosm.checkTarget(lesson, chapter);
-    await cosm.checkLessonRange(lesson, chapter);
-    await cosm.checkProjOrder(req, lesson, chapter);
-
     if (!isBuild) {
         if (chapter === 1) {
             await setAssetLoc(req, "start");
@@ -61,10 +57,6 @@ const readDone = asyncUtil(async (req, res, next) => {
     const lesson = Number(req.body.lesson);
     const chapter = Number(req.body.chapter);
 
-    cosm.checkTarget(lesson, chapter);
-    await cosm.checkLessonRange(lesson, chapter);
-    await cosm.checkProjOrder(req, lesson, chapter);
-
     let prog = await getProgress(req, lesson)
     const chLimit = await getChapterThreshold(lesson);
     if (prog.chapter !== 0) {
@@ -84,10 +76,6 @@ const cosmDiff = asyncUtil(async (req, res, next) => {
     const lesson = Number(req.body.lesson);
     const chapter = Number(req.body.chapter);
     const subchapter = Number(req.body.subchapter);
-
-    cosm.checkTarget(lesson, chapter);
-    await cosm.checkLessonRange(lesson, chapter);
-    await cosm.checkProjOrder(req, lesson, chapter);
 
     const prog = await getProgress(req, lesson)
     const chThreshold = await getChapterThreshold(lesson);
@@ -112,10 +100,6 @@ const cosmBuild = asyncUtil(async (req, res, next) => {
     const uid = getUid(req);
     const lesson = Number(req.body.lesson);
     const chapter = Number(req.body.chapter);
-
-    cosm.checkTarget(lesson, chapter);
-    await cosm.checkLessonRange(lesson, chapter);
-    await cosm.checkProjOrder(req, lesson, chapter);
 
     const srcpath = cosm.getCosmFilePath(
         req.app.locals.cargoPrefix,
@@ -160,9 +144,7 @@ const cosmLoadCodes = asyncUtil(async (req, res, next) => {
     const uid = getUid(req);
     const lesson = Number(req.query.lesson);
     const chapter = Number(req.query.chapter);
-
     cosm.checkTarget(lesson, chapter);
-    await cosm.checkLessonRange(lesson, chapter);
 
     const srcpath = cosm.getCosmFilePath(
         req.app.locals.cargoPrefix,
