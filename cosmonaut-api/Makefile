@@ -19,7 +19,7 @@ SAVE_ROOT ?="$(CURDIR)/cargo-projects"
 COMPOSE_COSM_BASE ?= cosmonaut_cosmbase
 COMPOSE_COSM_USER ?= cosmonaut_cosmproj
 COMPOSE_CARGO_REG ?= cosmonaut_cargo
-COMPOSE_COSM_IMG ?= "tkxkd0159/cosmo-rust:dind"
+COMPOSE_COSM_IMG ?= "tkxkd0159/cosmo-rust:latest"
 
 .PHONY: test
 

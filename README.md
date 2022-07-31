@@ -41,7 +41,8 @@ Set `FRONT_HOST_ADDR`
 docker pull tkxkd0159/cosmo-rust:dind
 
 # Build react
-./react-build.sh
+# if you want rebuild react code, execute a script without 'new'
+./react-build.sh [new] 
 
 # Build api-server
 docker compose build

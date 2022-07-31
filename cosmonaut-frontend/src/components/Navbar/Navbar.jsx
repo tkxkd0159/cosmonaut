@@ -2,21 +2,17 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import tw from "tailwind-styled-components";
-import Account8 from "../../assets/images/account8.svg";
 
 import LogoV4 from "../../assets/images/logo-v4.svg";
-import { useGetLessonPic } from "../../libs/api/getLessonPic";
 import { LoginState } from "../../states/login";
+import Profile from "../Common/Profile";
 import SignIn from "../Common/SignIn";
-import Version from "../Common/Version";
 
 const Container = tw.div`fixed top-0 w-full z-50`;
 const Logo = tw.a`text-lg font-bold ease-in-out duration-300 transform hover:scale-110`;
 
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
-  const [{ lessonPic }, picFetch] = useGetLessonPic(1);
-  console.log(lessonPic);
 
   const loginCheck = async () => {
     try {
@@ -34,7 +30,6 @@ function Navbar() {
     }
   };
   loginCheck();
-  console.log(isLoggedIn);
 
   window.addEventListener("scroll", e => {
     if (window.scrollY > 1) {
@@ -59,18 +54,11 @@ function Navbar() {
         </Logo>
 
         {isLoggedIn ? (
-          <div class="flex items-center">
-            <Version />
-            <Link to="/profile">
-              <button class="block w-7 h-7 rounded-full border-2 border-indigo-900 shadow-sm ease-in-out duration-300  transform hover:scale-110">
-                <img src={Account8} alt="" width="auto" />
-              </button>
-            </Link>
-          </div>
+          <Profile />
         ) : (
           <div class="flex items-center">
             <Link to="/signUp">
-              <SignIn onClick={picFetch} />
+              <SignIn />
             </Link>
           </div>
         )}
