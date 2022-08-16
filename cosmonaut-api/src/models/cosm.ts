@@ -2,21 +2,29 @@ import { Request } from "express";
 import { pg } from "@d3lab/db";
 import { makeLessonPicturePath } from "@d3lab/utils";
 
-async function getAssetLoc(req: Request): Promise<string> {
+async function getAssetLoc(req: Request, lesson?: number): Promise<(string|Error|undefined)[]> {
     let pgClient;
     try {
         const issuer = req.session.passport?.user.issuer;
         const id = req.session.passport?.user.id;
 
+        let l: number|undefined;
+
+        if (lesson === undefined) {
+            l = Number(req.query.lesson)
+        } else {
+            l = lesson
+        }
+
         pgClient = await pg.getClient();
         const res = await pgClient.query(
-            "SELECT loc FROM assets WHERE provider = $1 AND subject = $2 AND lesson = $3",
-            [issuer, id, req.query.lesson]
+            "SELECT loc, status FROM assets WHERE provider = $1 AND subject = $2 AND lesson = $3",
+            [issuer, id, l]
         );
         if (res.rows[0] !== undefined) {
-            return res.rows[0]["loc"];
+            return [res.rows[0]["loc"], res.rows[0]["status"]];
         } else {
-            throw new Error("There is no asset to load");
+            return [Error("There is no asset to load"), undefined];
         }
     } catch (error) {
         if (error instanceof Error) {
@@ -53,7 +61,7 @@ async function setAssetLoc(req: Request, status: string) {
             asset_loc,
         ]);
     } catch (error) {
-        console.error(error);
+        throw error;
     } finally {
         pgClient?.release();
     }
@@ -130,7 +138,7 @@ async function getChapterThreshold(
         );
         return res.rows[0]["threshold"];
     } catch (error) {
-        throw(error);
+        throw error;
     } finally {
         pgClient?.release();
     }

@@ -6,7 +6,12 @@ import httpStatus from "http-status";
 import conf from "@d3lab/config";
 import { APIError } from "@d3lab/types";
 import { pg } from "@d3lab/db";
-import { getProgress } from "@d3lab/models/cosm";
+import {
+    getProgress,
+    setProgress,
+    setAssetLoc,
+    getChapterThreshold,
+} from "@d3lab/models/cosm";
 
 function getCosmFilePath(
     prefix: string,
@@ -17,20 +22,20 @@ function getCosmFilePath(
 ): string {
     const r: { [key: number]: any } = {
         1: {
-            6: "cosmonaut-cw721"
+            6: "cosmonaut-cw721",
         },
         2: {
-            8: "cosmonaut-cw20"
+            8: "cosmonaut-cw20",
         },
         3: {
-            8: "cosmonaut-main"
+            8: "cosmonaut-main",
         },
         4: {
-            2: "cosmonaut-main"
-        }
-    }
-    const l = lesson
-    const c = chapter
+            2: "cosmonaut-main",
+        },
+    };
+    const l = lesson;
+    const c = chapter;
 
     let cosmPath;
     if (withSrc) {
@@ -118,9 +123,8 @@ async function Run(
                     reject(error.split("make")[0]);
                 }
             } else {
-                resolve("success")
+                resolve("success");
             }
-
         });
     });
 }
@@ -164,7 +168,7 @@ async function checkProjOrder(req: Request, lesson: number, chapter: number) {
         const currentUserProgress = await getProgress(req, lesson);
         const savedChapter = currentUserProgress["chapter"];
         if (savedChapter === 0) {
-            return
+            return;
         }
 
         if (chapter === 1) {
@@ -205,4 +209,32 @@ async function checkProjOrder(req: Request, lesson: number, chapter: number) {
     }
 }
 
-export { getCosmFilePath, checkTarget, Run, checkLessonRange, checkProjOrder };
+async function finishChapter(req: Request, lesson: number, chapter: number) {
+    let prog = await getProgress(req, lesson);
+    const chLimit = await getChapterThreshold(lesson);
+    if (prog.chapter !== 0) {
+        if (lesson <= prog.lesson && chapter < prog.chapter) {
+            throw new APIError(
+                httpStatus.BAD_REQUEST,
+                `You already finished lesson ${lesson} - chapter ${chapter}`
+            );
+        }
+
+        if (chapter === chLimit) {
+            await setAssetLoc(req, "done");
+            await setProgress(req, lesson, 0);
+            await setProgress(req, lesson + 1, 1);
+        } else {
+            await setProgress(req, lesson, chapter + 1);
+        }
+    }
+}
+
+export {
+    getCosmFilePath,
+    checkTarget,
+    Run,
+    checkLessonRange,
+    checkProjOrder,
+    finishChapter,
+};
