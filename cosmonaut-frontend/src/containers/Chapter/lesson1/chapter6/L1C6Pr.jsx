@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { JumpNextCh } from "../../../../components/CodeEditor/JumpNextCh";
 import PracticePart from "../../../../components/CodeEditor/PracticePart";
 import UnitName from "../../../../components/Common/UnitName";
-import { useDiffApi } from "../../../../libs/api/postDiff";
 import BgV4 from "../../../../assets/images/bg-v4.svg";
 import EditorDesc from "../../../../components/CodeEditor/EditorDesc";
 import ProblemSection from "../../../../components/Contents/ProblemSection";
@@ -12,23 +10,63 @@ import CodeBlock from "../../../../components/Contents/CodeBlock";
 import BasicP from "../../../../components/Contents/BasicP";
 import HintButton from "../../../../components/Contents/HintButton";
 import Hint from "../../../../components/Contents/Hint";
-import EditorCode from "../../../../components/CodeEditor/EditorCode";
-import EditorCodeHeader from "../../../../components/CodeEditor/EditorCodeHeader";
-import MultiTab from "../../../../components/Contents/MultiTab";
-import EditorResult from "../../../../components/CodeEditor/EditorResult";
+import PracticeCode from "../../../../components/CodeEditor/PracticeCode";
+import { useRunApi } from "../../../../libs/api/postRun";
+import { useNavigate, useParams } from "react-router-dom";
+import EditorAnsHeader from "../../../../components/CodeEditor/EditorAnsHeader";
+import ResultTab from "../../../../components/CodeEditor/ResultTab";
+import { codeEx } from "./L1C6Ex";
+import EditorPr from "../../../../components/CodeEditor/EditorPr";
+import { Loading } from "../../../../components/Common/Loading";
 
 export const L1C6Pr = () => {
+  const { lessonID, chID, uID } = useParams();
   const [hide, setHide] = useState(true);
-  const [tab, setTab] = useState("");
-  const [value, setValue] = useState();
-  const [code, setCode] = useState("");
   const editorRef = useRef(null);
+  const [tab, setTab] = useState("contract.rs");
+  const [code, setCode] = useState();
+
   const [files, setFiles] = useState({});
   useEffect(() => {
     setFiles({ ...files, [tab]: btoa(code) });
   }, [code]);
-  console.log(files);
 
+  const [executeRes, queryRes, runLoading, runError, runFetch] =
+    useRunApi(files);
+  console.log(executeRes);
+  console.log(queryRes);
+  console.log(runLoading);
+
+  const navigate = useNavigate();
+  const nextLesson = () => {
+    if (lessonID === "1" && chID === "6" && uID === "1") {
+      return navigate(`/lesson/1/chapter/6/unit/2`);
+    }
+  };
+
+  const handleClick = () => {
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    let raw = JSON.stringify({
+      lesson: Number(lessonID),
+      chapter: Number(chID),
+      files: files,
+    });
+    let requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch("http://127.0.0.1:8080/v1/cosm/build", requestOptions)
+      .then(response => {
+        console.log(response.status);
+        return response.text();
+      })
+      .then(result => console.log(result))
+      .catch(error => console.log("error", error));
+  };
   return (
     <>
       <UnitName color={"rgba(86, 84, 141, 1)"} />
@@ -39,289 +77,293 @@ export const L1C6Pr = () => {
         <PracticePart />
         <div class="flex container w-full mx-auto">
           {/* Problem Part */}
-          <EditorDesc>
-            <ProblemSection>
-              <Problem>Question 1.</Problem>
-              <ListStyle>
-                <li>
-                  <b>
-                    Where to Implement: <CodeBlock>state.rs</CodeBlock>
-                  </b>
-                </li>
-              </ListStyle>
-              <BasicP>
-                Declare extension as type of struct{" "}
-                <CodeBlock>Metadata</CodeBlock> below.
-              </BasicP>
-            </ProblemSection>
+          <div class="flex flex-wrap h-auto bg-indigo-900 rounded-2xl">
+            <EditorDesc>
+              <ProblemSection>
+                <Problem>Problem 1.</Problem>
+                <ListStyle>
+                  <li>
+                    <b>
+                      Where to Implement: <CodeBlock>state.rs</CodeBlock>
+                    </b>
+                  </li>
+                </ListStyle>
+                <BasicP>
+                  Declare extension as type of struct{" "}
+                  <CodeBlock>Metadata</CodeBlock> below.
+                </BasicP>
+              </ProblemSection>
 
-            <ProblemSection>
-              <Problem>Question 2.</Problem>
-              <ListStyle>
-                <li>
-                  <b>
-                    Where to Implement: <CodeBlock>state.rs</CodeBlock>
-                  </b>
-                </li>
-              </ListStyle>
-              <BasicP>
-                Declare <CodeBlock>freights</CodeBlock> as vector of{" "}
-                <CodeBlock>Freight</CodeBlock>.
-              </BasicP>
-            </ProblemSection>
+              <ProblemSection>
+                <Problem>Problem 2.</Problem>
+                <ListStyle>
+                  <li>
+                    <b>
+                      Where to Implement: <CodeBlock>state.rs</CodeBlock>
+                    </b>
+                  </li>
+                </ListStyle>
+                <BasicP>
+                  Declare <CodeBlock>freights</CodeBlock> as vector of{" "}
+                  <CodeBlock>Freight</CodeBlock>.
+                </BasicP>
+              </ProblemSection>
 
-            <ProblemSection>
-              <Problem>Question 3.</Problem>
-              <ListStyle>
-                <li>
-                  <b>
-                    Where to Implement: <CodeBlock>msg.rs</CodeBlock>
-                  </b>
-                </li>
-                <li>
-                  <b>
-                    References: <CodeBlock>state.rs</CodeBlock>
-                  </b>
-                </li>
-              </ListStyle>
-              <BasicP>
-                Declare message <CodeBlock>Mint</CodeBlock> which extends{" "}
-                <CodeBlock>MintMsg</CodeBlock> of cw721_base with
-                <CodeBlock>Extension</CodeBlock> type.
-              </BasicP>
-            </ProblemSection>
+              <ProblemSection>
+                <Problem>Problem 3.</Problem>
+                <ListStyle>
+                  <li>
+                    <b>
+                      Where to Implement: <CodeBlock>msg.rs</CodeBlock>
+                    </b>
+                  </li>
+                  <li>
+                    <b>
+                      References: <CodeBlock>state.rs</CodeBlock>
+                    </b>
+                  </li>
+                </ListStyle>
+                <BasicP>
+                  Declare message <CodeBlock>Mint</CodeBlock> which extends{" "}
+                  <CodeBlock>MintMsg</CodeBlock> of cw721_base with
+                  <CodeBlock>Extension</CodeBlock> type.
+                </BasicP>
+              </ProblemSection>
 
-            <ProblemSection>
-              <Problem>Question 4.</Problem>
-              <ListStyle>
-                <li>
-                  <b>
-                    Where to Implement: <CodeBlock>msg.rs</CodeBlock>
-                  </b>
-                </li>
-              </ListStyle>
-              <BasicP>
-                Route <CodeBlock>TransferNft</CodeBlock> from{" "}
-                <CodeBlock>ExecuteMsg</CodeBlock> to{" "}
-                <CodeBlock>Cw721ExecuteMsg</CodeBlock> with parameters{" "}
-                <CodeBlock>recipient</CodeBlock> and{" "}
-                <CodeBlock>token_id</CodeBlock>.
-              </BasicP>
-            </ProblemSection>
+              <ProblemSection>
+                <Problem>Problem 4.</Problem>
+                <ListStyle>
+                  <li>
+                    <b>
+                      Where to Implement: <CodeBlock>msg.rs</CodeBlock>
+                    </b>
+                  </li>
+                </ListStyle>
+                <BasicP>
+                  Route <CodeBlock>TransferNft</CodeBlock> from{" "}
+                  <CodeBlock>ExecuteMsg</CodeBlock> to{" "}
+                  <CodeBlock>Cw721ExecuteMsg</CodeBlock> with parameters{" "}
+                  <CodeBlock>recipient</CodeBlock> and{" "}
+                  <CodeBlock>token_id</CodeBlock>.
+                </BasicP>
+              </ProblemSection>
 
-            <ProblemSection>
-              <Problem>Question 5.</Problem>
-              <ListStyle>
-                <li>
-                  <b>
-                    Where to Implement: <CodeBlock>contract.rs</CodeBlock>
-                  </b>
-                </li>
-              </ListStyle>
-              <BasicP>
-                Instantiate cw721_contract through method{" "}
-                <CodeBlock>instantiate</CodeBlock>.
-              </BasicP>
+              <ProblemSection>
+                <Problem>Problem 5.</Problem>
+                <ListStyle>
+                  <li>
+                    <b>
+                      Where to Implement: <CodeBlock>contract.rs</CodeBlock>
+                    </b>
+                  </li>
+                </ListStyle>
+                <BasicP>
+                  Instantiate cw721_contract through method{" "}
+                  <CodeBlock>instantiate</CodeBlock>.
+                </BasicP>
 
-              <HintButton onClick={async () => setHide(!hide)}>
-                <Hint hide={hide} />
-                {hide ? null : (
-                  <>
-                    <BasicP>
-                      <CodeBlock>DepsMut</CodeBlock>, <CodeBlock>Env</CodeBlock>
-                      , <CodeBlock>MessageInfo</CodeBlock>, and{" "}
-                      <CodeBlock>InstantiateMsg</CodeBlock> should be passed to
-                      cw721_contract’s <CodeBlock>instantiate</CodeBlock>.
-                    </BasicP>
-                  </>
-                )}
-              </HintButton>
-            </ProblemSection>
+                <HintButton onClick={async () => setHide(!hide)}>
+                  <Hint hide={hide} />
+                  {hide ? null : (
+                    <>
+                      <BasicP>
+                        <CodeBlock>DepsMut</CodeBlock>,{" "}
+                        <CodeBlock>Env</CodeBlock>,{" "}
+                        <CodeBlock>MessageInfo</CodeBlock>, and{" "}
+                        <CodeBlock>InstantiateMsg</CodeBlock> should be passed
+                        to cw721_contract’s <CodeBlock>instantiate</CodeBlock>.
+                      </BasicP>
+                    </>
+                  )}
+                </HintButton>
+              </ProblemSection>
 
-            <ProblemSection>
-              <Problem>Question 6.</Problem>
-              <ListStyle>
-                <li>
-                  <b>
-                    Where to Implement: <CodeBlock>execute.rs</CodeBlock>
-                  </b>
-                </li>
-              </ListStyle>
-              <BasicP>
-                Execute <CodeBlock>msg</CodeBlock> through method{" "}
-                <CodeBlock>execute</CodeBlock>.
-              </BasicP>
+              <ProblemSection>
+                <Problem>Problem 6.</Problem>
+                <ListStyle>
+                  <li>
+                    <b>
+                      Where to Implement: <CodeBlock>execute.rs</CodeBlock>
+                    </b>
+                  </li>
+                </ListStyle>
+                <BasicP>
+                  Execute <CodeBlock>msg</CodeBlock> through method{" "}
+                  <CodeBlock>execute</CodeBlock>.
+                </BasicP>
 
-              <HintButton onClick={async () => setHide(!hide)}>
-                <Hint hide={hide} />
-                {hide ? null : (
-                  <>
-                    <BasicP>
-                      We already has method <CodeBlock>execute</CodeBlock> in{" "}
-                      <CodeBlock>self</CodeBlock>.
-                    </BasicP>
-                  </>
-                )}
-              </HintButton>
-            </ProblemSection>
+                <HintButton onClick={async () => setHide(!hide)}>
+                  <Hint hide={hide} />
+                  {hide ? null : (
+                    <>
+                      <BasicP>
+                        We already has method <CodeBlock>execute</CodeBlock> in{" "}
+                        <CodeBlock>self</CodeBlock>.
+                      </BasicP>
+                    </>
+                  )}
+                </HintButton>
+              </ProblemSection>
 
-            <ProblemSection>
-              <Problem>Question 7.</Problem>
-              <ListStyle>
-                <li>
-                  <b>
-                    Where to Implement: <CodeBlock>execute.rs</CodeBlock>
-                  </b>
-                </li>
-              </ListStyle>
-              <BasicP>
-                Declare <CodeBlock>candidated_idx</CodeBlock>.
-              </BasicP>
-              <BasicP>
-                Iterate <CodeBlock>freights</CodeBlock> at{" "}
-                <CodeBlock>extension</CodeBlock> and collect elements whose{" "}
-                <CodeBlock>denom</CodeBlock> is the same as argument's one.
-              </BasicP>
+              <ProblemSection>
+                <Problem>Problem 7.</Problem>
+                <ListStyle>
+                  <li>
+                    <b>
+                      Where to Implement: <CodeBlock>execute.rs</CodeBlock>
+                    </b>
+                  </li>
+                </ListStyle>
+                <BasicP>
+                  Declare <CodeBlock>candidated_idx</CodeBlock>.
+                </BasicP>
+                <BasicP>
+                  Iterate <CodeBlock>freights</CodeBlock> at{" "}
+                  <CodeBlock>extension</CodeBlock> and collect elements whose{" "}
+                  <CodeBlock>denom</CodeBlock> is the same as argument's one.
+                </BasicP>
 
-              <HintButton onClick={async () => setHide(!hide)}>
-                <Hint hide={hide} />
-                {hide ? null : (
-                  <>
-                    <BasicP>
-                      <CodeBlock>position</CodeBlock> searches for an element in
-                      an iterator, returning its index.
-                    </BasicP>
-                  </>
-                )}
-              </HintButton>
-            </ProblemSection>
+                <HintButton onClick={async () => setHide(!hide)}>
+                  <Hint hide={hide} />
+                  {hide ? null : (
+                    <>
+                      <BasicP>
+                        <CodeBlock>position</CodeBlock> searches for an element
+                        in an iterator, returning its index.
+                      </BasicP>
+                    </>
+                  )}
+                </HintButton>
+              </ProblemSection>
 
-            <ProblemSection>
-              <Problem>Question 8.</Problem>
-              <ListStyle>
-                <li>
-                  <b>
-                    Where to Implement: <CodeBlock>execute.rs</CodeBlock>
-                  </b>
-                </li>
-              </ListStyle>
-              <BasicP>
-                Remove <CodeBlock>freight</CodeBlock> from{" "}
-                <CodeBlock>extension</CodeBlock> if its amount is zero.
-              </BasicP>
-              <BasicP>
-                Otherwise, decrease amount of <CodeBlock>freight</CodeBlock>.
-              </BasicP>
+              <ProblemSection>
+                <Problem>Problem 8.</Problem>
+                <ListStyle>
+                  <li>
+                    <b>
+                      Where to Implement: <CodeBlock>execute.rs</CodeBlock>
+                    </b>
+                  </li>
+                </ListStyle>
+                <BasicP>
+                  Remove <CodeBlock>freight</CodeBlock> from{" "}
+                  <CodeBlock>extension</CodeBlock> if its amount is zero.
+                </BasicP>
+                <BasicP>
+                  Otherwise, decrease amount of <CodeBlock>freight</CodeBlock>.
+                </BasicP>
 
-              <HintButton onClick={async () => setHide(!hide)}>
-                <Hint hide={hide} />
-                {hide ? null : (
-                  <>
-                    <BasicP>Don’t forget to check overflow.</BasicP>
-                  </>
-                )}
-              </HintButton>
-            </ProblemSection>
-          </EditorDesc>
-          {/* Code Editor Part */}
-          <EditorCode>
-            <EditorCodeHeader>
-              <button
-                disabled={tab === "contract"}
-                onClick={async e => {
-                  e.preventDefault();
-                  setTab("contract");
-                  setValue(...value);
-                }}
-              >
-                <MultiTab>contract.rs</MultiTab>
-              </button>
-              <button
-                disabled={tab === "error"}
-                onClick={async e => {
-                  e.preventDefault();
-                  setTab("error");
-                  setValue(...value);
-                }}
-              >
-                <MultiTab>error.rs</MultiTab>
-              </button>
-              <button
-                disabled={tab === "execute"}
-                onClick={async e => {
-                  e.preventDefault();
-                  setTab("execute");
-                  setValue(...value);
-                }}
-              >
-                <MultiTab>execute.rs</MultiTab>
-              </button>
-              <button
-                disabled={tab === "lib"}
-                onClick={async e => {
-                  e.preventDefault();
-                  setTab("lib");
-                  setValue(...value);
-                }}
-              >
-                <MultiTab>lib.rs</MultiTab>
-              </button>
-              <button
-                disabled={tab === "msg"}
-                onClick={async e => {
-                  e.preventDefault();
-                  setTab("msg");
-                  setValue(...value);
-                }}
-              >
-                <MultiTab>msg.rs</MultiTab>
-              </button>
-              <button
-                disabled={tab === "query"}
-                onClick={async e => {
-                  e.preventDefault();
-                  setTab("query");
-                  setValue(...value);
-                }}
-              >
-                <MultiTab>query.rs</MultiTab>
-              </button>
-              <button
-                disabled={tab === "state"}
-                onClick={async e => {
-                  e.preventDefault();
-                  setTab("state");
-                  setValue(...value);
-                }}
-              >
-                <MultiTab>state.rs</MultiTab>
-              </button>
-            </EditorCodeHeader>
-            <>
-              <EditorResult
-                defaultLanguage="rust"
-                // defaultValue={code1}
-                path={tab}
-                onChange={async e => await setCode(e)}
-                onMount={editor => (editorRef.current = editor)}
-                files={files}
-                // onBuild={onBuild}
-              />
-            </>
-          </EditorCode>
-        </div>
-        {/* {difSuccess ? (
-          <JumpNextCh>Jump to Next Chapter</JumpNextCh>
-        ) : (
-          <div class="flex items-center justify-center md:mt-8 mt-3 ">
-            <button
-              onClick={handleAns}
-              class="md:w-auto rounded-full mx-auto text-center md:shadow-md shadow-sm transform transition md:mx-0 md:px-10 ease-in-out hover:scale-105  bg-blue-700 hover:bg-blue-500 hover:text-white border-3 border-indigo-900 md:py-3 py-2 px-12  font-heading text-lg text-white"
-            >
-              Check your Answer
-            </button>
+                <HintButton onClick={async () => setHide(!hide)}>
+                  <Hint hide={hide} />
+                  {hide ? null : (
+                    <>
+                      <BasicP>Don’t forget to check overflow.</BasicP>
+                    </>
+                  )}
+                </HintButton>
+              </ProblemSection>
+            </EditorDesc>
+            {/* Code Editor Part */}
+            <PracticeCode>
+              <div class="mb-1 px-4">
+                <EditorAnsHeader>
+                  <div
+                    style={{ cursor: "pointer" }}
+                    class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1 bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
+                    disabled={tab === "contract.rs"}
+                    onClick={async e => {
+                      e.preventDefault();
+                      setTab("contract.rs");
+                    }}
+                  >
+                    <button class="focus:text-gray-900 transform">
+                      contract.rs
+                    </button>
+                  </div>
+                  <div
+                    style={{ cursor: "pointer" }}
+                    class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
+                    disabled={tab === "execute.rs"}
+                    onClick={async e => {
+                      e.preventDefault();
+                      setTab("execute.rs");
+                    }}
+                  >
+                    <button class="focus:text-gray-900 transform">
+                      execute.rs
+                    </button>
+                  </div>
+                  <div
+                    style={{ cursor: "pointer" }}
+                    class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
+                    disabled={tab === "msg.rs"}
+                    onClick={async e => {
+                      e.preventDefault();
+                      setTab("msg.rs");
+                    }}
+                  >
+                    <button class="focus:text-gray-900 transform">
+                      msg.rs
+                    </button>
+                  </div>
+                  <div
+                    style={{ cursor: "pointer" }}
+                    class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
+                    disabled={tab === "state.rs"}
+                    onClick={async e => {
+                      e.preventDefault();
+                      setTab("state.rs");
+                    }}
+                  >
+                    <button class="focus:text-gray-900 transform">
+                      state.rs
+                    </button>
+                  </div>
+                </EditorAnsHeader>
+
+                <div class="mx-auto mb-1">
+                  {runLoading ? (
+                    <Loading />
+                  ) : (
+                    <>
+                      <EditorPr
+                        defaultLanguage="rust"
+                        exCode={codeEx[tab]}
+                        defaultValue={code}
+                        path={tab}
+                        onChange={async e => await setCode(e)}
+                        onMount={editor => (editorRef.current = editor)}
+                        files={files}
+                      />
+                      <ResultTab></ResultTab>
+                    </>
+                  )}
+                </div>
+              </div>
+            </PracticeCode>
           </div>
-        )} */}
+        </div>
+
+        <div class="flex items-center justify-center md:mt-8 mt-3 ">
+          <button
+            type="button"
+            onClick={() => {
+              nextLesson();
+            }}
+            class=" md:w-auto rounded-full mx-auto text-center md:shadow-md shadow-sm transform transition md:mx-0 md:px-10 ease-in-out hover:scale-105 bg-gradient-to-r from-green-400 to-blue-500 border-3 border-indigo-900 md:py-3 py-2 px-12  font-heading text-lg text-gray-50"
+          >
+            Jump to Next Lesson
+          </button>
+        </div>
+        <div class="flex items-center justify-center md:mt-8 mt-3 ">
+          <button
+            type="button"
+            onClick={handleClick}
+            class="md:w-auto rounded-full mx-auto text-center md:shadow-md shadow-sm transform transition md:mx-0 md:px-10 ease-in-out hover:scale-105  bg-blue-700 hover:bg-blue-500 hover:text-white border-3 border-indigo-900 md:py-3 py-2 px-12  font-heading text-lg text-white"
+          >
+            Check your Answer
+          </button>
+        </div>
       </div>
     </>
   );

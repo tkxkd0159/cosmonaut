@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 
-export const usePostRead = () => {
+export const usePostRead = (lessonID, chID) => {
   const [response, setResponse] = useState({});
-  const { lessonID, chID } = useParams();
+
+  if (lessonID === "0") {
+    chID = "1";
+  }
 
   const option = {
     method: "POST",
@@ -20,7 +22,6 @@ export const usePostRead = () => {
   const fetchData = async () => {
     try {
       let res = await fetch(`http://127.0.0.1:8080/v1/cosm/read`, option);
-      console.log(res);
       const data = await res.json();
       setResponse(data);
     } catch (error) {

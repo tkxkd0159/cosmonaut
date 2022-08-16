@@ -5,7 +5,6 @@ import { useRecoilValue } from "recoil";
 import { chapterInfos } from "../../states/Information/chapterInfoAtoms";
 import { lessonEngInfo } from "../../states/Information/lessonInfoAtoms";
 import { usePostInitial } from "../../libs/api/postInitial";
-import { usePostRead } from "../../libs/api/postRead";
 
 const Navigate = tw.div`flex flex-wrap mt-5 mx-auto justify-center gap-3 rounded-3xl`;
 const Button = tw.button`bg-white  hover:bg-yellow-100 focus:bg-yellow-500 focus:outline-none hover:z-10 focus:z-10 focus:ring-4 focus:ring-inset focus:ring-orange-400 active:bg-yellow-500 xl:h-44 md:h-36 h-32 flex items-center justify-center w-2/5 md:w-1/5 xl:w-1/6 rounded-xl border-2 border-indigo-900 ease-in-out duration-300 `;
@@ -14,34 +13,27 @@ const ChTitle = tw.h3`h-1/2 w-full px-1 xl:pt-4 md:pt-3 pt-2 xl:text-sm text-cen
 
 function StartModal() {
   const { lessonID, chID } = useParams();
-
+  const [build, setBuild] = useState(false);
+  const [initLoading, initRes, initFetch] = usePostInitial(
+    lessonID,
+    chID,
+    build
+  );
   const engInfo = useRecoilValue(lessonEngInfo);
   const chInfo = useRecoilValue(chapterInfos);
 
-  const [build, setBuild] = useState(false);
-  const [initLoading, initRes, initFetch] = usePostInitial(build);
-  const [readRes, readFetch] = usePostRead();
   useEffect(() => {
     if (lessonID === "1" && chID === "6") {
       setBuild(true);
     } else if (lessonID === "2" && chID === "8") {
       setBuild(true);
+    } else {
+      setBuild(false);
     }
   }, []);
 
   const closeModal = async () => {
     await initFetch();
-
-    if (lessonID === "1" && chID === "4") {
-      console.log("Use diff API");
-    } else if (lessonID === "1" && chID === "5") {
-      console.log("Use diff API");
-    } else if (lessonID === "1" && chID === "6") {
-      console.log("Use run API");
-    } else {
-      console.log("read fetch at start modal");
-      await readFetch();
-    }
     const modal = document.querySelectorAll("#modal");
     modal[0].classList.add("hidden");
   };
