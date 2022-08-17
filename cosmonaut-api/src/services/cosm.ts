@@ -169,6 +169,16 @@ async function checkProjOrder(req: Request, lesson: number, chapter: number) {
         const savedChapter = currentUserProgress["chapter"];
         if (savedChapter === 0) {
             return;
+        } else if (savedChapter === -1) {
+            throw new APIError(
+                httpStatus.BAD_REQUEST,
+                "You should initialize lesson before start"
+            );
+        } else if (chapter !== savedChapter) {
+            throw new APIError(
+                httpStatus.BAD_REQUEST,
+                `You must set correct chapter => got: ${chapter}, expected: ${savedChapter}`
+            );
         }
 
         if (chapter === 1) {
@@ -187,19 +197,6 @@ async function checkProjOrder(req: Request, lesson: number, chapter: number) {
             }
         }
 
-        if (savedChapter === -1) {
-            throw new APIError(
-                httpStatus.BAD_REQUEST,
-                `You must finish previous lesson`
-            );
-        } else {
-            if (chapter !== savedChapter) {
-                throw new APIError(
-                    httpStatus.BAD_REQUEST,
-                    `You must set correct chapter => got: ${chapter}, expected: ${savedChapter}`
-                );
-            }
-        }
     } catch (error) {
         if (error instanceof APIError) {
             throw error;
