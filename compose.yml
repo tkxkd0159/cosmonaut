@@ -32,27 +32,27 @@ services:
     image: redis
     restart: always
     ports:
-      - 6380:6379
+      - 6380:${REDISPORT:-6379}
     networks:
       - myproxy
   pgdb:
     image: postgres
     restart: always
     ports:
-      - 5433:5432
+      - 5433:${PGPORT:-5432}
     networks:
       - myproxy
     environment:
-      - POSTGRES_USER=ljs
-      - POSTGRES_PASSWORD=secret
-      - POSTGRES_DB=cosmonaut
+      - POSTGRES_USER=${PGUSER:-ljs}
+      - POSTGRES_PASSWORD=${PGPASSWORD:-secret}
+      - POSTGRES_DB=${PGDATABASE:-cosmonaut}
     volumes:
       - pgdb:/var/lib/postgresql/data
       - ./cosmonaut-api/compose.sql:/docker-entrypoint-initdb.d/init.sql
   web:
     image: nginx
     ports:
-      - "8080:80"
+      - 8080:80
     environment:
       - NGINX_HOST=localhost
       - NGINX_PORT=80
