@@ -7,6 +7,7 @@ import { PassportProfile } from "@d3lab/types";
 const oauth = process.env["OAUTH_REDIRECT"];
 const START_LESSON = 0;
 const START_CHAPTER = 1;
+const PG = pg.PgSingle.getInstance()
 
 passport.use(
     new GoogleStrategy(
@@ -24,7 +25,7 @@ passport.use(
             let pgdb;
             const provider = 'google';
             try {
-                pgdb = await pg.getClient();
+                pgdb = await PG.getClient();
                 let res = await pgdb.query(
                     "SELECT * FROM federated_credentials WHERE provider = $1 AND subject = $2",
                     [provider, profile.id]
@@ -67,7 +68,7 @@ passport.use(
         ) {
             let pgdb;
             try {
-                pgdb = await pg.getClient();
+                pgdb = await PG.getClient();
                 let res = await pgdb.query(
                     "SELECT * FROM federated_credentials WHERE provider = $1 AND subject = $2",
                     [profile.provider, profile.id]

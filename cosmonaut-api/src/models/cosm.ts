@@ -1,6 +1,10 @@
 import { Request } from "express";
+import httpStatus from "http-status";
 import { pg } from "@d3lab/db";
 import { makeLessonPicturePath } from "@d3lab/utils";
+import {APIError} from "@d3lab/types"
+
+const PG = pg.PgSingle.getInstance()
 
 async function getAssetLoc(req: Request, lesson?: number): Promise<(string|Error|undefined)[]> {
     let pgClient;
@@ -16,7 +20,7 @@ async function getAssetLoc(req: Request, lesson?: number): Promise<(string|Error
             l = lesson
         }
 
-        pgClient = await pg.getClient();
+        pgClient = await PG.getClient();
         const res = await pgClient.query(
             "SELECT loc, status FROM assets WHERE provider = $1 AND subject = $2 AND lesson = $3",
             [issuer, id, l]
@@ -52,7 +56,7 @@ async function setAssetLoc(req: Request, status: string) {
             asset_loc += `/${status}.jpg`;
         }
 
-        pgClient = await pg.getClient();
+        pgClient = await PG.getClient();;
         await pgClient.query("CALL update_asset($1, $2, $3, $4, $5)", [
             issuer,
             id,
@@ -75,7 +79,7 @@ async function getProgress(
     const id = req.session.passport?.user.id;
     let pgClient;
     try {
-        pgClient = await pg.getClient();
+        pgClient = await PG.getClient();
 
         if (lesson !== undefined) {
             const res = await pgClient.query(
@@ -112,7 +116,7 @@ async function setProgress(req: Request, lesson: number, chapter: number) {
     const id = req.session.passport?.user.id;
     let pgClient;
     try {
-        pgClient = await pg.getClient();
+        pgClient = await PG.getClient();
         await pgClient.query("CALL update_lesson($1, $2, $3, $4)", [
             issuer,
             id,
@@ -131,11 +135,18 @@ async function getChapterThreshold(
 ): Promise<number | undefined> {
     let pgClient;
     try {
-        pgClient = await pg.getClient();
+        pgClient = await PG.getClient();
         const res = await pgClient.query(
             "SELECT threshold FROM lesson_range WHERE lesson = $1",
             [lesson]
         );
+        if (res.rows[0] === undefined) {
+            throw new APIError(
+                httpStatus.BAD_REQUEST,
+                "This lesson does not exist."
+            );
+        }
+
         return res.rows[0]["threshold"];
     } catch (error) {
         throw error;

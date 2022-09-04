@@ -1,0 +1,3 @@
+DROP DATABASE IF EXISTS cosmonaut-test;
+CREATE DATABASE cosmonaut-test WITH OWNER ljs;
+GRANT ALL PRIVILEGES ON DATABASE cosmonaut-test TO ljs;

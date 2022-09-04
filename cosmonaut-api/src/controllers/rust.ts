@@ -2,7 +2,7 @@ import { existsSync } from "fs";
 import { rust, cosm, getUid } from "@d3lab/services";
 import { RustFiles } from "@d3lab/types";
 import conf from "@d3lab/config";
-import { saveCodeFiles, srcStrip, asyncUtil } from "@d3lab/utils";
+import { saveCodeFiles, asyncUtil } from "@d3lab/utils";
 
 const fmtCodes = asyncUtil(async (req, res, next) => {
     const beforeFmtFiles: RustFiles = req.body["files"];
