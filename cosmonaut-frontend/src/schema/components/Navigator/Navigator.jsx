@@ -15,7 +15,6 @@ function Navigator() {
   const prevUnit = Number(uID) - 1;
 
   const [readRes, readFetch] = usePostRead(lessonID, chID);
-  console.log("Good Read", readRes);
 
   const handleRight = async () => {
     if (lessonID === "0" && chID === "4" && uID === "2") {
@@ -28,8 +27,24 @@ function Navigator() {
       await readFetch();
     } else if (lessonID === "1" && chID === "5" && uID === "2") {
       await readFetch();
-    } else {
-      console.log("No Read");
+    } else if (lessonID === "2" && chID === "1") {
+      await readFetch();
+    } else if (lessonID === "2" && chID === "2") {
+      await readFetch();
+    } else if (lessonID === "2" && chID === "3") {
+      await readFetch();
+    } else if (lessonID === "2" && chID === "4") {
+      await readFetch();
+    } else if (lessonID === "2" && chID === "5") {
+      await readFetch();
+    } else if (lessonID === "3" && chID === "1" && uID === "1") {
+      await readFetch();
+    } else if (lessonID === "3" && chID === "1" && uID === "3") {
+      await readFetch();
+    } else if (lessonID === "3" && chID === "2" && uID === "1") {
+      await readFetch();
+    } else if (lessonID === "4" && chID === "1") {
+      await readFetch();
     }
 
     // lesson 0
@@ -160,7 +175,7 @@ function Navigator() {
     }
   };
 
-  window.addEventListener("scroll", e => {
+  window.addEventListener("scroll", (e) => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
       const navigator = document.querySelectorAll("#navigator");
       navigator[0].classList?.add("opacity-100");

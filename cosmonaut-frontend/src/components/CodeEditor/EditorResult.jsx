@@ -1,6 +1,8 @@
 import React from "react";
 import Editor from "@monaco-editor/react";
 import { useFmtApi } from "../../libs/api/postFmt";
+import Start from "./Start";
+import { useState } from "react";
 
 export default function EditorResult({
   path,
@@ -22,23 +24,30 @@ export default function EditorResult({
     <>
       {fmtSuccess ? (
         <Editor
-          height="60vh"
+          height="80vh"
           theme="vs-dark"
           path={path}
           onChange={onChange}
           onMount={onMount}
           defaultLanguage={defaultLanguage}
           value={fmtRes}
+          options={{ minimap: { enabled: false } }}
         />
       ) : (
         <Editor
-          height="60vh"
+          height="80vh"
           theme="vs-dark"
           path={path}
           onChange={onChange}
           onMount={onMount}
           defaultLanguage={defaultLanguage}
           value={defaultValue}
+          options={{
+            minimap: { enabled: false },
+            scrollbar: {
+              verticalHasArrows: true,
+            },
+          }}
         />
       )}
       <div class="flex justify-end px-2 mt-1">

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import PracticePart from "../../../../components/CodeEditor/PracticePart";
-import UnitName from "../../../../components/Common/UnitName";
 import BgV4 from "../../../../assets/images/bg-v4.svg";
 import EditorDesc from "../../../../components/CodeEditor/EditorDesc";
 import ProblemSection from "../../../../components/Contents/ProblemSection";
@@ -13,11 +12,12 @@ import Hint from "../../../../components/Contents/Hint";
 import PracticeCode from "../../../../components/CodeEditor/PracticeCode";
 import { useRunApi } from "../../../../libs/api/postRun";
 import { useNavigate, useParams } from "react-router-dom";
-import EditorAnsHeader from "../../../../components/CodeEditor/EditorAnsHeader";
 import ResultTab from "../../../../components/CodeEditor/ResultTab";
 import { codeEx } from "./L1C6Ex";
 import EditorPr from "../../../../components/CodeEditor/EditorPr";
 import { Loading } from "../../../../components/Common/Loading";
+import TabHeader from "../../../../components/Practice/TabHeader";
+import PracticeName from "../../../../components/Practice/PracticeName";
 
 export const L1C6Pr = () => {
   const { lessonID, chID, uID } = useParams();
@@ -25,17 +25,15 @@ export const L1C6Pr = () => {
   const editorRef = useRef(null);
   const [tab, setTab] = useState("contract.rs");
   const [code, setCode] = useState();
+  const [readOnly, setReadOnly] = useState(false);
 
   const [files, setFiles] = useState({});
   useEffect(() => {
     setFiles({ ...files, [tab]: btoa(code) });
   }, [code]);
 
-  const [executeRes, queryRes, runLoading, runError, runFetch] =
+  const [executeRes, queryRes, runLoading, runSuccess, runError, runFetch] =
     useRunApi(files);
-  console.log(executeRes);
-  console.log(queryRes);
-  console.log(runLoading);
 
   const navigate = useNavigate();
   const nextLesson = () => {
@@ -44,37 +42,24 @@ export const L1C6Pr = () => {
     }
   };
 
-  const handleClick = () => {
-    let myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    let raw = JSON.stringify({
-      lesson: Number(lessonID),
-      chapter: Number(chID),
-      files: files,
-    });
-    let requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
-
-    fetch("http://127.0.0.1:8080/v1/cosm/build", requestOptions)
-      .then(response => {
-        console.log(response.status);
-        return response.text();
-      })
-      .then(result => console.log(result))
-      .catch(error => console.log("error", error));
-  };
   return (
     <>
-      <UnitName color={"rgba(86, 84, 141, 1)"} />
+      <PracticeName color={"rgba(86, 84, 141, 1)"} />
       <div
         style={{ backgroundImage: `url(${BgV4})` }}
         class="pt-8 pb-20 md:px-6 px-4 lg:px-10 bg-black bg-cover bg-center md:pt-8"
       >
-        <PracticePart />
+        <PracticePart lesson={lessonID} />
+        {runSuccess && (
+          <ResultTab
+            executeState={executeRes?.result}
+            queryState={queryRes?.result}
+            executeIncorrect={executeRes?.differences}
+            queryIncorrect={queryRes?.differences}
+            executeError={executeRes?.errors}
+            queryError={queryRes?.errors}
+          />
+        )}
         <div class="flex container w-full mx-auto">
           {/* Problem Part */}
           <div class="flex flex-wrap h-auto bg-indigo-900 rounded-2xl">
@@ -266,61 +251,79 @@ export const L1C6Pr = () => {
             {/* Code Editor Part */}
             <PracticeCode>
               <div class="mb-1 px-4">
-                <EditorAnsHeader>
-                  <div
-                    style={{ cursor: "pointer" }}
-                    class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1 bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    disabled={tab === "contract.rs"}
-                    onClick={async e => {
-                      e.preventDefault();
-                      setTab("contract.rs");
-                    }}
-                  >
-                    <button class="focus:text-gray-900 transform">
-                      contract.rs
-                    </button>
-                  </div>
-                  <div
-                    style={{ cursor: "pointer" }}
-                    class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    disabled={tab === "execute.rs"}
-                    onClick={async e => {
-                      e.preventDefault();
-                      setTab("execute.rs");
-                    }}
-                  >
-                    <button class="focus:text-gray-900 transform">
-                      execute.rs
-                    </button>
-                  </div>
-                  <div
-                    style={{ cursor: "pointer" }}
-                    class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    disabled={tab === "msg.rs"}
-                    onClick={async e => {
-                      e.preventDefault();
-                      setTab("msg.rs");
-                    }}
-                  >
-                    <button class="focus:text-gray-900 transform">
-                      msg.rs
-                    </button>
-                  </div>
-                  <div
-                    style={{ cursor: "pointer" }}
-                    class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    disabled={tab === "state.rs"}
-                    onClick={async e => {
+                <TabHeader>
+                  <button
+                    class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1 bg-purple-500 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("state.rs");
+                      setReadOnly(false);
                     }}
                   >
-                    <button class="focus:text-gray-900 transform">
-                      state.rs
-                    </button>
-                  </div>
-                </EditorAnsHeader>
+                    state.rs
+                  </button>
+                  <button
+                    class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-purple-500 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      setTab("msg.rs");
+                      setReadOnly(false);
+                    }}
+                  >
+                    msg.rs
+                  </button>
+                  <button
+                    class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-purple-500 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      setTab("contract.rs");
+                      setReadOnly(false);
+                    }}
+                  >
+                    contract.rs
+                  </button>
 
+                  <button
+                    class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-purple-500 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      setTab("execute.rs");
+                      setReadOnly(false);
+                    }}
+                  >
+                    execute.rs
+                  </button>
+                  <button
+                    class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      setTab("error.rs");
+                      setReadOnly(true);
+                    }}
+                  >
+                    error.rs
+                  </button>
+                  <button
+                    class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      setTab("lib.rs");
+                      setReadOnly(true);
+                    }}
+                  >
+                    lib.rs
+                  </button>
+                  <button
+                    class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      setTab("query.rs");
+                      setReadOnly(true);
+                    }}
+                  >
+                    query.rs
+                  </button>
+                </TabHeader>
                 <div class="mx-auto mb-1">
                   {runLoading ? (
                     <Loading />
@@ -331,11 +334,11 @@ export const L1C6Pr = () => {
                         exCode={codeEx[tab]}
                         defaultValue={code}
                         path={tab}
-                        onChange={async e => await setCode(e)}
-                        onMount={editor => (editorRef.current = editor)}
+                        onChange={async (e) => await setCode(e)}
+                        onMount={(editor) => (editorRef.current = editor)}
                         files={files}
+                        readOnly={readOnly}
                       />
-                      <ResultTab></ResultTab>
                     </>
                   )}
                 </div>
@@ -344,26 +347,29 @@ export const L1C6Pr = () => {
           </div>
         </div>
 
-        <div class="flex items-center justify-center md:mt-8 mt-3 ">
-          <button
-            type="button"
-            onClick={() => {
-              nextLesson();
-            }}
-            class=" md:w-auto rounded-full mx-auto text-center md:shadow-md shadow-sm transform transition md:mx-0 md:px-10 ease-in-out hover:scale-105 bg-gradient-to-r from-green-400 to-blue-500 border-3 border-indigo-900 md:py-3 py-2 px-12  font-heading text-lg text-gray-50"
-          >
-            Jump to Next Lesson
-          </button>
-        </div>
-        <div class="flex items-center justify-center md:mt-8 mt-3 ">
-          <button
-            type="button"
-            onClick={handleClick}
-            class="md:w-auto rounded-full mx-auto text-center md:shadow-md shadow-sm transform transition md:mx-0 md:px-10 ease-in-out hover:scale-105  bg-blue-700 hover:bg-blue-500 hover:text-white border-3 border-indigo-900 md:py-3 py-2 px-12  font-heading text-lg text-white"
-          >
-            Check your Answer
-          </button>
-        </div>
+        {executeRes.result === "success" && queryRes.result === "success" ? (
+          <div class="flex items-center justify-center md:mt-8 mt-3 ">
+            <button
+              type="button"
+              onClick={() => {
+                nextLesson();
+              }}
+              class=" md:w-auto rounded-full mx-auto text-center md:shadow-md shadow-sm transform transition md:mx-0 md:px-10 ease-in-out hover:scale-105 bg-gradient-to-r from-green-400 to-blue-500 border-3 border-indigo-900 md:py-3 py-2 px-12  font-heading text-lg text-gray-50"
+            >
+              Jump to Next Lesson
+            </button>
+          </div>
+        ) : (
+          <div class="flex items-center justify-center md:mt-8 mt-3 ">
+            <button
+              type="button"
+              onClick={runFetch}
+              class="md:w-auto rounded-full text-center md:shadow-md shadow-sm transform transition md:mx-0 md:px-10 ease-in-out hover:scale-105 bg-gradient-to-r from-purple-500 to-purple-200 hover:bg-gradient-to-r hover:from-orange-400 hover:to-orange-200 border-3 border-indigo-900 md:py-3 py-2 px-12  font-heading text-lg text-white"
+            >
+              Deploy the code
+            </button>
+          </div>
+        )}
       </div>
     </>
   );

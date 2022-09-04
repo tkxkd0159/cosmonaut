@@ -1,8 +1,7 @@
 import { useState } from "react";
 
-export const useGetUserProgress = lessonID => {
+export const useGetUserProgress = (lessonID) => {
   const [response, setResponse] = useState({});
-
   const option = {
     method: "GET",
     credentials: "include",
@@ -15,11 +14,10 @@ export const useGetUserProgress = lessonID => {
         option
       );
       const data = await res.json();
-      setResponse(data);
+      setResponse(data.chapter);
     } catch (error) {
       console.log(error);
     }
   };
-
   return [response, fetchData];
 };
