@@ -39,6 +39,9 @@ async function lodeCodeFiles(projPath: string): Promise<RustFiles | undefined> {
         const filelist = await readdir(projPath)
         const result: RustFiles = {}
         for (let fname of filelist) {
+            if (fname.slice(-3) !== ".rs") {
+                continue
+            }
             let fpath = path.join(projPath, fname)
             let code = await readFile(fpath)
             result[fname] = code.toString('base64')
