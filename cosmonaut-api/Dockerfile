@@ -17,4 +17,4 @@ COPY --from=builder /workspace/dist/src ./dist/src
 COPY cargo-projects ./cargo-projects
 COPY pm2-env.json Makefile tsconfig.prod.json ./
 COPY assets ./assets
-CMD ["pm2-runtime", "start", "pm2-env.json", "--name", "cosmonaut-api", "--env", "development"]
+CMD ["pm2-runtime", "start", "pm2-env.json", "--name", "cosmonaut-api", "--env", "production"]
