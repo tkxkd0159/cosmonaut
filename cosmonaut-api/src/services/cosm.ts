@@ -130,36 +130,14 @@ async function Run(
 }
 
 async function checkLessonRange(lesson: number, chapter?: number) {
-    let pgClient;
-    try {
-        pgClient = await pg.getClient();
-        const res = await pgClient.query(
-            "SELECT threshold FROM lesson_range WHERE lesson = $1",
-            [lesson]
-        );
-        if (res.rows[0] === undefined) {
+    const chLimit = await getChapterThreshold(lesson);
+    if (chapter !== undefined && chLimit !== undefined) {
+        if (!(chLimit >= chapter && chapter > 0)) {
             throw new APIError(
                 httpStatus.BAD_REQUEST,
-                "This lesson does not exist."
+                "This chapter does not exist."
             );
         }
-
-        if (chapter !== undefined) {
-            if (!(res.rows[0]["threshold"] >= chapter && chapter > 0)) {
-                throw new APIError(
-                    httpStatus.BAD_REQUEST,
-                    "This chapter does not exist."
-                );
-            }
-        }
-    } catch (error) {
-        if (error instanceof APIError) {
-            throw error;
-        } else {
-            console.error(error);
-        }
-    } finally {
-        pgClient?.release();
     }
 }
 
@@ -196,7 +174,6 @@ async function checkProjOrder(req: Request, lesson: number, chapter: number) {
                 }
             }
         }
-
     } catch (error) {
         if (error instanceof APIError) {
             throw error;
