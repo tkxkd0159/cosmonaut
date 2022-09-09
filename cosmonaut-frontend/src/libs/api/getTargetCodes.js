@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 export const useCodeEx = () => {
   const { lessonID, chID } = useParams();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [response, setResponse] = useState({});
   const option = {
     method: "GET",
@@ -22,9 +22,7 @@ export const useCodeEx = () => {
         Object.entries(data).map(([key, value]) => [key, atob(value)])
       );
       setResponse(resResult);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     setIsLoading(false);
   };
 

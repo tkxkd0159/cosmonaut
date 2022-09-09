@@ -63,6 +63,8 @@ function Navbar() {
         )}
       </nav>
     </Container>
+    // isLoggedIn -> Profile
+    // logout -> Profile 사라지면, 다시 초기 상태
   );
 }
 
