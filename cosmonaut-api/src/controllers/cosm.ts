@@ -134,6 +134,26 @@ const cosmLoadCodes = asyncUtil(async (req, res, next) => {
     res.json(files);
 });
 
+const chkProjExist = asyncUtil(async (req, res, next) => {
+    const uid = getUid(req);
+    const lesson = Number(req.query.lesson);
+    const chapter = Number(req.query.chapter);
+    cosm.checkTarget(lesson, chapter);
+
+    const srcpath = cosm.getCosmFilePath(
+        req.app.locals.cargoPrefix,
+        uid,
+        lesson,
+        chapter,
+        true
+    );
+    if (!existsSync(srcpath)) {
+        res.json({ status: false });
+    } else {
+        res.json({ status: true });
+    }
+});
+
 const getLessonPicture = asyncUtil(async (req, res, next) => {
     const lesson = Number(req.query.lesson);
     await cosm.checkLessonRange(lesson);
@@ -164,6 +184,7 @@ export {
     cosmDiff,
     cosmBuild,
     cosmLoadCodes,
+    chkProjExist,
     getLessonPicture,
     userProgress,
 };
