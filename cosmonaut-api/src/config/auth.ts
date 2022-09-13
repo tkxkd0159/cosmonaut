@@ -1,20 +1,25 @@
 import passport from "passport";
 import GoogleStrategy from "passport-google-oidc";
-import {Strategy as GithubStrategy} from "passport-github";
+import { Strategy as GithubStrategy } from "passport-github";
 import { pg } from "@d3lab/db";
 import { PassportProfile } from "@d3lab/types";
+import { makeLessonPicturePath } from "@d3lab/utils";
 
 const oauth = process.env["OAUTH_REDIRECT"];
 const START_LESSON = 0;
 const START_CHAPTER = 1;
-const PG = pg.PgSingle.getInstance()
+const INIT_STATUS = "start";
+const PG = pg.PgSingle.getInstance();
 
 passport.use(
     new GoogleStrategy(
         {
             clientID: process.env["GOOGLE_CLIENT_ID"],
             clientSecret: process.env["GOOGLE_CLIENT_SECRET"],
-            callbackURL: oauth !== undefined ? `${oauth}/auth/oauth2/redirect/google` : "/auth/oauth2/redirect/google",
+            callbackURL:
+                oauth !== undefined
+                    ? `${oauth}/auth/oauth2/redirect/google`
+                    : "/auth/oauth2/redirect/google",
             scope: ["profile"],
         },
         async function verify(
@@ -23,7 +28,7 @@ passport.use(
             cb: any
         ) {
             let pgdb;
-            const provider = 'google';
+            const provider = "google";
             try {
                 pgdb = await PG.getClient();
                 let res = await pgdb.query(
@@ -37,12 +42,37 @@ passport.use(
                     );
                     await pgdb.query(
                         "INSERT INTO users (provider, subject, disp_name, lesson, chapter) VALUES($1, $2, $3, $4, $5)",
-                        [provider, profile.id, profile.displayName, START_LESSON, START_CHAPTER]
+                        [
+                            provider,
+                            profile.id,
+                            profile.displayName,
+                            START_LESSON,
+                            START_CHAPTER,
+                        ]
                     );
 
-                    return cb(null, { id: profile.id, issuer: provider, displayName: profile.displayName });
+                    let asset_loc = `${makeLessonPicturePath(
+                        START_LESSON
+                    )}/${INIT_STATUS}.png`;
+                    await pgdb.query("CALL update_asset($1, $2, $3, $4, $5)", [
+                        provider,
+                        profile.id,
+                        START_LESSON,
+                        INIT_STATUS,
+                        asset_loc,
+                    ]);
+
+                    return cb(null, {
+                        id: profile.id,
+                        issuer: provider,
+                        displayName: profile.displayName,
+                    });
                 } else {
-                    return cb(null, { id: profile.id, issuer: provider, displayName: profile.displayName });
+                    return cb(null, {
+                        id: profile.id,
+                        issuer: provider,
+                        displayName: profile.displayName,
+                    });
                 }
             } catch (error) {
                 cb(error);
@@ -58,7 +88,10 @@ passport.use(
         {
             clientID: process.env["GITHUB_CLIENT_ID"]!,
             clientSecret: process.env["GITHUB_CLIENT_SECRET"]!,
-            callbackURL: oauth !== undefined ? `${oauth}/auth/oauth2/redirect/github` : "/auth/oauth2/redirect/github",
+            callbackURL:
+                oauth !== undefined
+                    ? `${oauth}/auth/oauth2/redirect/github`
+                    : "/auth/oauth2/redirect/github",
         },
         async function verify(
             accessToken: string,
@@ -80,12 +113,37 @@ passport.use(
                     );
                     await pgdb.query(
                         "INSERT INTO users (provider, subject, disp_name, lesson, chapter) VALUES($1, $2, $3, $4, $5)",
-                        [profile.provider, profile.id, profile.displayName, START_LESSON, START_CHAPTER]
+                        [
+                            profile.provider,
+                            profile.id,
+                            profile.displayName,
+                            START_LESSON,
+                            START_CHAPTER,
+                        ]
                     );
 
-                    return cb(null, { id: profile.id, issuer: profile.provider, displayName: profile.displayName });
+                    let asset_loc = `${makeLessonPicturePath(
+                        START_LESSON
+                    )}/${INIT_STATUS}.png`;
+                    await pgdb.query("CALL update_asset($1, $2, $3, $4, $5)", [
+                        profile.provider,
+                        profile.id,
+                        START_LESSON,
+                        INIT_STATUS,
+                        asset_loc,
+                    ]);
+
+                    return cb(null, {
+                        id: profile.id,
+                        issuer: profile.provider,
+                        displayName: profile.displayName,
+                    });
                 } else {
-                    return cb(null, { id: profile.id, issuer: profile.provider, displayName: profile.displayName });
+                    return cb(null, {
+                        id: profile.id,
+                        issuer: profile.provider,
+                        displayName: profile.displayName,
+                    });
                 }
             } catch (error) {
                 cb(error);
@@ -96,10 +154,13 @@ passport.use(
     )
 );
 
-
 passport.serializeUser((user: Express.User, cb) => {
     process.nextTick(() => {
-        cb(null, { id: user.id, issuer: user.issuer, username: user.displayName });
+        cb(null, {
+            id: user.id,
+            issuer: user.issuer,
+            username: user.displayName,
+        });
     });
 });
 
