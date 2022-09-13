@@ -120,7 +120,7 @@ async function Run(
                 if (result !== "") {
                     resolve(result);
                 } else {
-                    reject(error.split("make")[0]);
+                    reject(new Error(`${error.split("make")[0]}`));
                 }
             } else {
                 resolve("success");

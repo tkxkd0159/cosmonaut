@@ -1,9 +1,14 @@
 import httpStatus from "http-status";
-import {Request, Response, NextFunction} from "express";
+import { Request, Response, NextFunction } from "express";
 import config from "../config";
 import { APIError } from "@d3lab/types";
 
-const errorConverter = (err: any, req: Request, res: Response, next: NextFunction) => {
+const errorConverter = (
+    err: any,
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     let error = err;
     if (!(error instanceof APIError)) {
         const statusCode = error.statusCode || httpStatus.BAD_REQUEST;
@@ -13,11 +18,15 @@ const errorConverter = (err: any, req: Request, res: Response, next: NextFunctio
     next(error);
 };
 
-const errorHandler = (err: APIError, req: Request, res: Response, next: NextFunction) => {
+const errorHandler = (
+    err: APIError,
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
     let { statusCode, message } = err;
     if (config.nodeEnv === "production" && !err.isOperational) {
         statusCode = httpStatus.INTERNAL_SERVER_ERROR;
-        message = httpStatus[`${statusCode}_NAME`] as string;
     }
 
     res.locals.errorMessage = err.message;
@@ -35,7 +44,4 @@ const errorHandler = (err: APIError, req: Request, res: Response, next: NextFunc
     res.status(statusCode).send(response);
 };
 
-export {
-    errorConverter,
-    errorHandler
-}
+export { errorConverter, errorHandler };
