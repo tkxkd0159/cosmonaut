@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,45 +6,57 @@ import Arrowleft from "../../../assets/images/arrow-left.svg";
 import Arrowright from "../../../assets/images/arrow-right.svg";
 import { usePostRead } from "../../../libs/api/postRead";
 import HandleSideMenu from "./Components/HandleSideMenu";
+import { handleModalAtom } from "../../../states/handleModal";
+import { useRecoilState } from "recoil";
+import { useGetUserProgress } from "../../../libs/api/getUserProgress";
 
 function Navigator() {
   const { lessonID, chID, uID } = useParams();
   const navigate = useNavigate();
-  const [scroll, setScroll] = useState(false);
+  const [scroll, setScroll] = useState(true);
   const nextUnit = Number(uID) + 1;
   const prevUnit = Number(uID) - 1;
-
+  const [handleModal, setHandleModal] = useRecoilState(handleModalAtom);
+  const [userLoading, userRes, userFetch] = useGetUserProgress(lessonID);
   const [readRes, readFetch] = usePostRead(lessonID, chID);
 
+  useEffect(() => {
+    userFetch();
+  }, []);
+
   const handleRight = async () => {
-    if (lessonID === "0" && chID === "4" && uID === "2") {
-      await readFetch();
-    } else if (lessonID === "1" && chID === "1") {
-      await readFetch();
-    } else if (lessonID === "1" && chID === "2") {
-      await readFetch();
-    } else if (lessonID === "1" && chID === "3") {
-      await readFetch();
-    } else if (lessonID === "1" && chID === "5" && uID === "2") {
-      await readFetch();
-    } else if (lessonID === "2" && chID === "1") {
-      await readFetch();
-    } else if (lessonID === "2" && chID === "2") {
-      await readFetch();
-    } else if (lessonID === "2" && chID === "3") {
-      await readFetch();
-    } else if (lessonID === "2" && chID === "4") {
-      await readFetch();
-    } else if (lessonID === "2" && chID === "5") {
-      await readFetch();
-    } else if (lessonID === "3" && chID === "1" && uID === "1") {
-      await readFetch();
-    } else if (lessonID === "3" && chID === "1" && uID === "3") {
-      await readFetch();
-    } else if (lessonID === "3" && chID === "2" && uID === "1") {
-      await readFetch();
-    } else if (lessonID === "4" && chID === "1") {
-      await readFetch();
+    setHandleModal(true);
+
+    if (chID >= String(userRes) && !(userRes === 0)) {
+      if (lessonID === "0" && chID === "4" && uID === "2") {
+        await readFetch();
+      } else if (lessonID === "1" && chID === "1" && uID === "3") {
+        await readFetch();
+      } else if (lessonID === "1" && chID === "2" && uID === "1") {
+        await readFetch();
+      } else if (lessonID === "1" && chID === "3" && uID === "1") {
+        await readFetch();
+      } else if (lessonID === "1" && chID === "5" && uID === "2") {
+        await readFetch();
+      } else if (lessonID === "2" && chID === "1" && uID === "3") {
+        await readFetch();
+      } else if (lessonID === "2" && chID === "2" && uID === "1") {
+        await readFetch();
+      } else if (lessonID === "2" && chID === "3" && uID === "2") {
+        await readFetch();
+      } else if (lessonID === "2" && chID === "4" && uID === "1") {
+        await readFetch();
+      } else if (lessonID === "2" && chID === "5" && uID === "2") {
+        await readFetch();
+      } else if (lessonID === "3" && chID === "1" && uID === "1") {
+        await readFetch();
+      } else if (lessonID === "3" && chID === "1" && uID === "3") {
+        await readFetch();
+      } else if (lessonID === "3" && chID === "2" && uID === "1") {
+        await readFetch();
+      } else if (lessonID === "4" && chID === "1" && uID === "2") {
+        await readFetch();
+      }
     }
 
     // lesson 0
@@ -176,7 +188,12 @@ function Navigator() {
   };
 
   window.addEventListener("scroll", (e) => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+    if (window.scrollY === 0) {
+      setScroll(true);
+    } else if (
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight
+    ) {
       setScroll(true);
     } else {
       setScroll(false);
@@ -186,7 +203,7 @@ function Navigator() {
   return (
     <div
       className={clsx(
-        "fixed transition ease-out duration-100 hover:opacity-100 focus:opacity-100 bottom-0 w-full z-auto border-3 border-indigo-900 bg-gray-50",
+        "fixed bottom-0 transition ease-out duration-100 hover:opacity-100 focus:opacity-100 w-full z-auto border-3 border-indigo-900 bg-gray-50",
         { "opacity-0": scroll === false }
       )}
       id="navigator"

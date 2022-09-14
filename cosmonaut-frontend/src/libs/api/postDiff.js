@@ -33,7 +33,9 @@ export const useDiffApi = (isLast) => {
 
       setResponse(resResult);
       setIsSuccess(true);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
     setIsLoading(false);
   };
 
