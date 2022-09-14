@@ -1,4 +1,4 @@
-import {join} from "path";
+import { join } from "path";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
@@ -10,7 +10,7 @@ import { createClient } from "redis";
 import connectredis from "connect-redis";
 import httpStatus from "http-status";
 import passport from "passport";
-import timeout from 'connect-timeout';
+import timeout from "connect-timeout";
 
 import { default as conf, log } from "./config";
 import baseRoute from "./routes";
@@ -20,8 +20,8 @@ import { errorConverter, errorHandler } from "./middlewares/error";
 import { APIError } from "@d3lab/types";
 
 const app = express();
-app.use(express.static(join(process.cwd(), "front-build")))
-app.use("/assets", express.static(join(process.cwd(), "assets")))
+app.use(express.static(join(process.cwd(), "front-build")));
+app.use("/assets", express.static(join(process.cwd(), "assets")));
 app.locals.cargoPrefix = "cargo-projects/cosm";
 
 app.use(apiLimiter);
@@ -37,7 +37,7 @@ const sessOpt: session.SessionOptions = {
     saveUninitialized: false,
     secret: conf.sessSecret as string,
     resave: false,
-    cookie: { secure: false, sameSite: "lax" }
+    cookie: { secure: false, sameSite: "lax" },
 };
 
 const corsOpts = {
@@ -59,7 +59,7 @@ if (conf.nodeEnv == "production") {
             },
         })
     );
-    app.use(morgan("common", { stream: log.accessLogStream}));
+    app.use(morgan("common", { stream: log.accessLogStream }));
 } else {
     app.use(cors(corsOpts));
     app.use(morgan("dev")); //log to console on development
@@ -69,13 +69,23 @@ app.use(session(sessOpt));
 app.use(passport.authenticate("session"));
 app.locals.redis = redisClient;
 
-app.use(helmet());
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                "img-src": ["'self'", "data:", "blob:"],
+            },
+        },
+    })
+);
 app.use(compression());
 
 app.use(timeout(conf.timeout.express));
 app.use("/", baseRoute);
-app.use('/v1', v1Route);
-app.get('*', (req, res) => {res.sendFile(join(conf.reactPath, "index.html"))});
+app.use("/v1", v1Route);
+app.get("*", (req, res) => {
+    res.sendFile(join(conf.reactPath, "index.html"));
+});
 
 app.use((req, res, next) => {
     next(new APIError(httpStatus.NOT_FOUND, "Not found"));
