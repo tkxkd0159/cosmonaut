@@ -1,4 +1,4 @@
-import { existsSync } from "fs";
+import { existsSync, rmSync } from "fs";
 import path from "path";
 import { cosm, getUid } from "@d3lab/services";
 import { APIError, CosmAns } from "@d3lab/types";
@@ -38,8 +38,24 @@ const cosminit = asyncUtil(async (req, res, next) => {
             "lib.rs"
         );
 
-        if (existsSync(genfilePath)) {
-            throw new APIError(400, "the project was already generated");
+        if (req.body.reset) {
+            rmSync(
+                cosm.getCosmFilePath(
+                    req.app.locals.cargoPrefix,
+                    uid,
+                    lesson,
+                    chapter,
+                    false
+                ),
+                {
+                    force: true,
+                    recursive: true,
+                }
+            );
+        } else {
+            if (existsSync(genfilePath)) {
+                throw new APIError(400, "the project was already generated");
+            }
         }
 
         await cosm.Run("cosm-init", uid, lesson, chapter);
