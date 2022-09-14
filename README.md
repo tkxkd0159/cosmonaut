@@ -1,5 +1,7 @@
 # Docker Compose Testbed
+
 ## 1) Set .env in cosmonaut-api folder
+
 ```sh
 HOST_ADDR=0.0.0.0
 PORT=3334
@@ -24,31 +26,46 @@ PGUSER=ljs
 PGPASSWORD=secret
 PGDATABASE=cosmonaut
 ```
+
 #### For maximum timeout of HTTP request (ms) :
+
 Set `REQ_TIMEOUT`
+
 #### For maximum timeout of CosmWasm project build (ms) :
+
 Set `RUST_TIMEOUT`
 
 #### For OAuth registration
+
 Set `GOOGLE_*` and `GITHUB_*`
+
 #### For OAuth redirect from provider (optional) :
+
 Set `OAUTH_REDIRECT` only when you use proxy server
+
 #### For redirect address based on user login status:
+
 Set `FRONT_MAIN_ADDR`, `FRONT_LOGIN_ADDR`
+
 #### For CORS:
+
 Set `FRONT_HOST_ADDR`
 
 #### For DB:
+
 Set `PG*` for PostgreSQL connection and `REDIS*` for Redis connection. You can customize those values as needed.
 
 ## 2) Run
+
+Set `BUILD_ENV` args in `compose.yml` according to your situation ( production / development )
+
 ```sh
 # Pull cosmo-rust image
 docker pull tkxkd0159/cosmo-rust:dind
 
 # Build react
 # if you want rebuild react code, execute a script without 'new'
-./react-build.sh [new] 
+./react-build.sh [new]
 
 # Build api-server
 docker compose build
@@ -56,7 +73,9 @@ docker compose build
 # Start app
 docker compose up
 ```
-## * Reset
+
+## \* Reset
+
 ```sh
 docker compose down
 docker volume rm cosmonaut_pgdb cosmonaut_cosmproj cosmonaut_cargo cosmonaut_cosmbase

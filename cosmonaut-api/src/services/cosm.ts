@@ -120,7 +120,11 @@ async function Run(
                 if (result !== "") {
                     resolve(result);
                 } else {
-                    reject(new Error(`${error.split("make")[0]}`));
+                    reject(
+                        new Error(
+                            "An unrecoverable error occurred during contract compilation"
+                        )
+                    );
                 }
             } else {
                 resolve("success");

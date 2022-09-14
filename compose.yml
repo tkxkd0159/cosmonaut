@@ -7,7 +7,7 @@ services:
             context: ./cosmonaut-api
             dockerfile: Dockerfile
             args:
-                - BUILD_ENV=development
+                - BUILD_ENV=production
         depends_on:
             - pgdb
             - redis-sess
