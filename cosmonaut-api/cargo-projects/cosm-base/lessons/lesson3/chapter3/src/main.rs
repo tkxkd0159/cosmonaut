@@ -53,17 +53,25 @@ pub fn main() {
         ADDR1,
         ADDR2,
     ).check_answer(
-        "4",
-        "2",
-        "/workspace/cargo-projects/cosm-base/answers/lesson4/chapter2/execute_result.json",
+        "3",
+        "8",
+        "/workspace/cargo-projects/cosm-base/answers/lesson3/chapter3/execute_result.json",
     ).print_serialized();
-    // .write_answer_to_file("../../../answers/lesson4/chapter2/execute_result.json");
+    // .write_answer_to_file(
+    //         "3",
+    //         "8",
+    //         "../../../answers/lesson3/chapter3/execute_result.json",
+    //     );
 
     query_all_main_contract_msgs(&app, &main_contract_addr, ADDR1)
         .check_answer(
-            "4",
-            "2",
-            "/workspace/cargo-projects/cosm-base/answers/lesson4/chapter2/query_result.json",
+            "3",
+            "8",
+            "/workspace/cargo-projects/cosm-base/answers/lesson3/chapter3/query_result.json",
         ).print_serialized();
-    // .write_answer_to_file("../../../answers/lesson4/chapter2/query_result.json");
+    // .write_answer_to_file(
+    //         "",
+    //         "8",
+    //         "../../../answers/lesson2/chapter3/query_result.json",
+    //     );
 }

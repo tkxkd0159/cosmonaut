@@ -4,8 +4,7 @@ import pidtree from "pidtree";
 import { Request } from "express";
 import httpStatus from "http-status";
 import conf from "@d3lab/config";
-import { APIError } from "@d3lab/types";
-import { pg } from "@d3lab/db";
+import { APIError, practiceMapper } from "@d3lab/types";
 import {
     getProgress,
     setProgress,
@@ -20,22 +19,9 @@ function getCosmFilePath(
     chapter: number,
     withSrc: boolean
 ): string {
-    const r: { [key: number]: any } = {
-        1: {
-            6: "cosmonaut-cw721",
-        },
-        2: {
-            8: "cosmonaut-cw20",
-        },
-        3: {
-            8: "cosmonaut-main",
-        },
-        4: {
-            2: "cosmonaut-main",
-        },
-    };
     const l = lesson;
     const c = chapter;
+    const r = practiceMapper;
 
     let cosmPath;
     if (withSrc) {

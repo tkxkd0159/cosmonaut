@@ -55,13 +55,27 @@ interface expressAsyncHandler {
 }
 
 interface CosmAns {
-    answer_type: string
-    lesson: number
-    result: string
-    errors: any[]
-    differences: any[]
+    answer_type: string;
+    lesson: number;
+    result: string;
+    errors: any[];
+    differences: any[];
 }
 
+const practiceMapper: { [key: number]: any } = {
+    1: {
+        6: "cosmonaut-cw721",
+    },
+    2: {
+        8: "cosmonaut-cw20",
+    },
+    3: {
+        3: "cosmonaut-main",
+    },
+    4: {
+        3: "cosmonaut-main",
+    },
+};
 
 export {
     Base64,
@@ -70,5 +84,6 @@ export {
     APIError,
     PassportProfile,
     expressAsyncHandler,
-    CosmAns
+    CosmAns,
+    practiceMapper,
 };
