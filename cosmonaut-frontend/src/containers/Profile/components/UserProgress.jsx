@@ -10,6 +10,8 @@ import {
 } from "../../../components/Common/ProgressBar";
 import { useGetUserProgress } from "../../../libs/api/getUserProgress";
 import error from "../../../assets/images/dummy-nft.jpg";
+import { useRecoilState } from "recoil";
+import { progressState } from "../../../states/progressState";
 
 const Container = tw.div`flex flex-wrap -mb-12`;
 const Profile = tw.div`w-full md:w-1/2 lg:w-1/3 mb-12`;
@@ -33,18 +35,36 @@ function UserProgress() {
   const [thr, setThr] = useState("0%");
   const [four, setFour] = useState("0%");
 
+  const [progress, setProgress] = useRecoilState(progressState);
+
   useEffect(() => {
     zeroProgress();
-    !(zeroPro === -1) && zeroFetch();
     firProgress();
-    !(firPro === -1) && firFetch();
     secProgress();
-    !(secPro === -1) && secFetch();
     thrProgress();
-    !(thrPro === -1) && thrFetch();
     fourProgress();
-    !(thrPro === -1) && fourFetch();
+
+    if (
+      !(progress[0] === "-1") &&
+      !(progress[0] === "1") &&
+      !(progress[0] === "")
+    )
+      zeroFetch();
+    if (!(progress[1] === "-1") && !(progress[1] === "")) firFetch();
+    if (!(progress[2] === "-1") && !(progress[2] === "")) secFetch();
+    if (!(progress[3] === "-1") && !(progress[3] === "")) thrFetch();
+    if (!(progress[4] === "-1") && !(progress[4] === "")) fourFetch();
   }, []);
+
+  useEffect(() => {
+    setProgress({
+      0: String(zeroPro),
+      1: String(firPro),
+      2: String(secPro),
+      3: String(thrPro),
+      4: String(fourPro),
+    });
+  }, [zeroPro, firPro, secPro, thrPro, fourPro]);
 
   useEffect(() => {
     switch (zeroPro) {

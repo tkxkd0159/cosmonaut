@@ -8,6 +8,7 @@ import { usePostInitial } from "../../libs/api/postInitial";
 import classNames from "classnames";
 import { useGetUserProgress } from "../../libs/api/getUserProgress";
 import { handleModalAtom } from "../../states/handleModal";
+import { progressState } from "../../states/progressState";
 
 const Navigate = tw.div`flex flex-wrap mt-5 mx-auto justify-center gap-3 rounded-3xl`;
 const Button = tw.button`bg-white h-40 flex items-center justify-center w-2/5 md:w-1/5 xl:w-1/8 rounded-xl border-2 border-indigo-900 ease-in-out duration-300`;
@@ -18,7 +19,8 @@ function StartModal() {
   const { lessonID, chID } = useParams();
   const navigate = useNavigate();
   const [build, setBuild] = useState(false);
-  const [key, setKey] = useState(chID);
+  const [key, setKey] = useState(String(chID));
+
   const [initLoading, initRes, initFetch] = usePostInitial(
     lessonID,
     String(key),
@@ -30,11 +32,32 @@ function StartModal() {
   const [userLoading, userRes, userFetch] = useGetUserProgress(lessonID);
   const [handleModal, setHandleModal] = useRecoilState(handleModalAtom);
 
+  const [zeroLoading, zeroPro, zeroProgress] = useGetUserProgress(0);
+  const [firLoading, firPro, firProgress] = useGetUserProgress(1);
+  const [secLoading, secPro, secProgress] = useGetUserProgress(2);
+  const [thrLoading, thrPro, thrProgress] = useGetUserProgress(3);
+  const [fourLoading, fourPro, fourProgress] = useGetUserProgress(4);
+  const [progress, setProgress] = useRecoilState(progressState);
+
   useEffect(() => {
-    userFetch();
+    zeroProgress();
+    firProgress();
+    secProgress();
+    thrProgress();
+    fourProgress();
   }, []);
 
-  let proChapter = String(userRes);
+  useEffect(() => {
+    setProgress({
+      0: String(zeroPro),
+      1: String(firPro),
+      2: String(secPro),
+      3: String(thrPro),
+      4: String(fourPro),
+    });
+  }, [zeroPro, firPro, secPro, thrPro, fourPro]);
+
+  let proChapter = String(progress[lessonID]);
 
   useEffect(() => {
     if (lessonID === "1" && chID === "6") {
@@ -51,13 +74,11 @@ function StartModal() {
   }, []);
 
   const closeModal = async () => {
-    if (chID >= String(userRes) && !(userRes === 0)) {
-      await initFetch();
-    }
+    if (String(key) === proChapter) initFetch();
 
-    if (!(chID === String(key))) {
+    if (!(String(chID) === String(key))) {
       setHandleModal(false);
-    } else if (chID === String(key)) {
+    } else if (String(chID) === String(key)) {
       setHandleModal(true);
     }
 
@@ -104,19 +125,19 @@ function StartModal() {
       return navigate(`/lesson/2/chapter/8/unit/1`);
     }
 
-    if (lessonID === "3" && proChapter === "1") {
+    if (lessonID === "3" && String(key) === "1") {
       return navigate(`/lesson/3/chapter/1/unit/0`);
-    } else if (lessonID === "3" && proChapter === "2") {
+    } else if (lessonID === "3" && String(key) === "2") {
       return navigate(`/lesson/3/chapter/2/unit/1`);
-    } else if (lessonID === "3" && proChapter === "3") {
+    } else if (lessonID === "3" && String(key) === "3") {
       return navigate(`/lesson/3/chapter/3/unit/1`);
     }
 
-    if (lessonID === "4" && proChapter === "1") {
+    if (lessonID === "4" && String(key) === "1") {
       return navigate(`/lesson/4/chapter/1/unit/0`);
-    } else if (lessonID === "4" && proChapter === "2") {
+    } else if (lessonID === "4" && String(key) === "2") {
       return navigate(`/lesson/4/chapter/2/unit/1`);
-    } else if (lessonID === "4" && proChapter === "3") {
+    } else if (lessonID === "4" && String(key) === "3") {
       return navigate(`/lesson/4/chapter/3/unit/1`);
     }
   };
@@ -259,14 +280,12 @@ function StartModal() {
               </Button>
             </Navigate>
             {chState}
-            {proChapter >= String(key) ||
-            key === "999" ||
-            proChapter === "0" ? (
+            {proChapter >= String(key) || proChapter === "0" ? (
               <button
                 onClick={closeModal}
                 class="animate-moveUtoD block mt-6 mb-72 mx-auto md:mb-4 text-center text-lg border-3  transition duration-200 rounded-full py-2 px-8 bg-gradient-to-r to-orange-400 from-yellow-500 font-heading text-indigo-900 hover:from-green-500 border-indigo-900 hover:border-white hover:to-blue-500 hover:text-white"
               >
-                Get Started
+                Start Chapter
               </button>
             ) : null}
           </div>

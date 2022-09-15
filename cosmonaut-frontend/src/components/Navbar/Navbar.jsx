@@ -15,11 +15,17 @@ const Logo = tw.a`text-lg font-bold ease-in-out duration-300 transform hover:sca
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
   const [scroll, setScroll] = useState(true);
+  const [isLogin, checkFetch] = useIsLogin();
 
-  const [checkFetch] = useIsLogin();
   useEffect(() => {
     checkFetch();
   }, []);
+
+  useEffect(() => {
+    if (isLogin) {
+      setIsLoggedIn(isLogin);
+    }
+  }, [isLogin]);
 
   window.addEventListener("scroll", (e) => {
     if (window.scrollY > 1) {
