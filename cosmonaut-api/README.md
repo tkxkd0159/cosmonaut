@@ -1,4 +1,5 @@
 # Setup
+
 1. Setup Redis
 2. Setup PostgreSQL & make account, database (Use db/schema)
 3. Set .env (Refer to envSchema of config)
@@ -9,10 +10,12 @@
 ```bash
 npm start # Run wihtout build for only dev purpose
 ```
+
 ## Local setting without Docker Compose
+
 ```sh
 # Initialization
-docker build -f rust.Dockerfile -t cosmo-rust:1.0 .
+docker build -f rust.Dockerfile --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) -t cosmo-rust:1.0 .
 
 docker run -d -p 5432:5432 --name <pg_container_name> -e POSTGRES_USER=<id> -e POSTGRES_PASSWORD=<pw> postgres
 docker run -d -p 6379:6379 --name <redis_container_name> redis

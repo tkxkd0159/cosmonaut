@@ -10,6 +10,6 @@ RUN addgroup --gid $GROUP_ID ljs
 RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID ljs
 USER ljs
 
-COPY registry /usr/local/cargo/registry
+# COPY registry /usr/local/cargo/registry
 
 CMD ["/bin/bash"]
