@@ -28,8 +28,8 @@ passport.use(
             cb: any
         ) {
             let pgdb;
-            const provider = "google";
             try {
+                const provider = "google";
                 pgdb = await PG.getClient();
                 let res = await pgdb.query(
                     "SELECT * FROM federated_credentials WHERE provider = $1 AND subject = $2",
@@ -37,18 +37,17 @@ passport.use(
                 );
                 if (res.rows && res.rows.length === 0) {
                     await pgdb.query(
-                        "INSERT INTO federated_credentials (provider, subject, created_at) VALUES($1, $2, $3)",
-                        [provider, profile.id, new Date().toISOString()]
-                    );
-                    await pgdb.query(
-                        "INSERT INTO users (provider, subject, disp_name, lesson, chapter) VALUES($1, $2, $3, $4, $5)",
+                        "INSERT INTO federated_credentials (provider, subject, disp_name, created_at) VALUES($1, $2, $3, $4)",
                         [
                             provider,
                             profile.id,
                             profile.displayName,
-                            START_LESSON,
-                            START_CHAPTER,
+                            new Date().toISOString(),
                         ]
+                    );
+                    await pgdb.query(
+                        "INSERT INTO users (provider, subject, lesson, chapter) VALUES($1, $2, $3, $4)",
+                        [provider, profile.id, START_LESSON, START_CHAPTER]
                     );
 
                     let asset_loc = `${makeLessonPicturePath(
@@ -108,15 +107,19 @@ passport.use(
                 );
                 if (res.rows && res.rows.length === 0) {
                     await pgdb.query(
-                        "INSERT INTO federated_credentials (provider, subject, created_at) VALUES($1, $2, $3)",
-                        [profile.provider, profile.id, new Date().toISOString()]
-                    );
-                    await pgdb.query(
-                        "INSERT INTO users (provider, subject, disp_name, lesson, chapter) VALUES($1, $2, $3, $4, $5)",
+                        "INSERT INTO federated_credentials (provider, subject, disp_name, created_at) VALUES($1, $2, $3, $4)",
                         [
                             profile.provider,
                             profile.id,
                             profile.displayName,
+                            new Date().toISOString(),
+                        ]
+                    );
+                    await pgdb.query(
+                        "INSERT INTO users (provider, subject, lesson, chapter) VALUES($1, $2, $3, $4)",
+                        [
+                            profile.provider,
+                            profile.id,
                             START_LESSON,
                             START_CHAPTER,
                         ]

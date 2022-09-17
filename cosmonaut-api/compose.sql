@@ -2,6 +2,7 @@ CREATE TABLE federated_credentials(
    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
    provider TEXT NOT NULL,
    subject TEXT NOT NULL,
+   disp_name TEXT,
    created_at TIMESTAMPTZ,
    UNIQUE (provider, subject)
 );
@@ -10,7 +11,6 @@ CREATE TABLE users(
    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
    provider TEXT NOT NULL,
    subject TEXT NOT NULL,
-   disp_name TEXT,
    lesson INTEGER NOT NULL,
    chapter INTEGER NOT NULL,
    CONSTRAINT unique_progress UNIQUE (provider, subject, lesson),
