@@ -24,7 +24,7 @@ export const useClipApi = files => {
           files: files,
         }),
       };
-      let res = await fetch("http://127.0.0.1:8080/v1/rust/clippy", option);
+      let res = await fetch(`${process.env.REACT_APP_API_ADDR}/v1/rust/clippy`, option);
       const data = await res.json();
       console.log(data);
       // console.log(data.result);

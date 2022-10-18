@@ -12,7 +12,7 @@ export const useGetUserProgress = (lessonID) => {
     setLoading(true);
     try {
       let res = await fetch(
-        `http://127.0.0.1:8080/v1/cosm/progress?lesson=${lessonID}`,
+        `${process.env.REACT_APP_API_ADDR}/v1/cosm/progress?lesson=${lessonID}`,
         option
       );
       const data = await res.json();

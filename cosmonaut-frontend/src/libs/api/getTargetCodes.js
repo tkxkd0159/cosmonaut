@@ -14,7 +14,7 @@ export const useCodeEx = () => {
     setIsLoading(true);
     try {
       let res = await fetch(
-        `http://127.0.0.1:8080/v1/cosm/code?lesson=${lessonID}&chapter=${chID}`,
+        `${process.env.REACT_APP_API_ADDR}/v1/cosm/code?lesson=${lessonID}&chapter=${chID}`,
         option
       );
       const data = await res.json();

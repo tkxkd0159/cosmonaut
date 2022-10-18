@@ -20,7 +20,7 @@ export const usePostInitial = (lessonID, chID, build) => {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      let res = await fetch(`http://127.0.0.1:8080/v1/cosm/init`, option);
+      let res = await fetch(`${process.env.REACT_APP_API_ADDR}/v1/cosm/init`, option);
       setResponse(res);
     } catch (error) {
       console.log(error);

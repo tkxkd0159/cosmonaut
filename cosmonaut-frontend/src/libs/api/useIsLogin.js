@@ -11,7 +11,7 @@ export const useIsLogin = () => {
 
   const fetchData = async () => {
     try {
-      let res = await fetch("http://127.0.0.1:8080/auth/check", opt);
+      let res = await fetch(`${process.env.REACT_APP_API_ADDR}/auth/check`, opt);
       const data = await res.json();
       const onLogin = data.isLogin;
       const name = data.info.username;

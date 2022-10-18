@@ -11,7 +11,7 @@ export const useGetLessonPic = (lessonID) => {
   const fetchData = async () => {
     try {
       let res = await fetch(
-        `http://127.0.0.1:8080/v1/cosm/picture?lesson=${lessonID}`,
+        `${process.env.REACT_APP_API_ADDR}/v1/cosm/picture?lesson=${lessonID}`,
         option
       );
       const data = await res.blob();

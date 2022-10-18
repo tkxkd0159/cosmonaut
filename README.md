@@ -55,7 +55,12 @@ Set `FRONT_HOST_ADDR`
 
 Set `PG*` for PostgreSQL connection and `REDIS*` for Redis connection. You can customize those values as needed.
 
-## 2) Run
+## 2) Set .env in cosmonaut-frontend folder (optional)
+```sh
+REACT_APP_API_ADDR=http://127.0.0.1:8080
+```
+
+## 3) Run
 
 Set `BUILD_ENV` args in `compose.yml` according to your situation ( production / development )
 

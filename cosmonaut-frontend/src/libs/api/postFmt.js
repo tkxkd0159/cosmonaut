@@ -20,7 +20,7 @@ export const useFmtApi = (files, tab) => {
     setIsLoading(true);
 
     try {
-      let res = await fetch("http://127.0.0.1:8080/v1/rust/fmt", option);
+      let res = await fetch(`${process.env.REACT_APP_API_ADDR}/v1/rust/fmt`, option);
       const data = await res.json();
 
       let resResult = await Object.fromEntries(

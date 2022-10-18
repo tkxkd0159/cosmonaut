@@ -27,7 +27,7 @@ function SignUp() {
 
             <button className="w-full">
               <a
-                href="http://127.0.0.1:8080/auth/login/federated/github"
+                href={`${process.env.REACT_APP_API_ADDR}/auth/login/federated/github`}
                 class="flex items-center justify-center md:mx-4 mb-6 py-3 px-6 leading-6 text-lg font-bold md:font-extrabold bg-green-500 hover:bg-yellow-500 hover:text-black border-3 border-indigo-900 shadow rounded-lg transition duration-200"
                 rel="noreferrer"
               >
@@ -42,7 +42,7 @@ function SignUp() {
             </button>
             <button className="w-full">
               <a
-                href="http://127.0.0.1:8080/auth/login/federated/google"
+                href={`${process.env.REACT_APP_API_ADDR}/auth/login/federated/google`}
                 class="flex items-center justify-center md:mx-4 mb-6 py-3 px-6 leading-6 text-lg font-bold md:font-extrabold bg-green-500 hover:bg-yellow-500 hover:text-black border-3 border-indigo-900 shadow rounded-lg transition duration-200"
                 rel="noreferrer"
               >

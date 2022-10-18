@@ -27,7 +27,7 @@ export const useRunApi = (files) => {
     setIsLoading(true);
     setIsSuccess(false);
     try {
-      let res = await fetch("http://127.0.0.1:8080/v1/cosm/build", option);
+      let res = await fetch(`${process.env.REACT_APP_API_ADDR}/v1/cosm/build`, option);
       let data = await res.json();
 
       if (res.status === 200) {
