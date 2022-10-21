@@ -11,15 +11,15 @@ USER_PATH_PREFIX = "cosm"
 USER_CONTRACT_PATH = "$(USER_PATH_PREFIX)/${USER_ID}/lesson${LESSON}/chapter${CHAPTER}"
 TARGET_PATH = "$(COSM_ROOT)/$(USER_CONTRACT_PATH)"
 
-# For local machine
+# Set for local environment if you need. Mostly only use when test
 DOCKER_IMG ?="cosmo-rust:1.0"
 SAVE_ROOT ?="$(CURDIR)/cargo-projects"
 
-# For Docker Compose
-COMPOSE_COSM_BASE ?= cosmonaut_cosmbase
-COMPOSE_COSM_USER ?= cosmonaut_cosmproj
-COMPOSE_CARGO_REG ?= cosmonaut_cargo
-COMPOSE_COSM_IMG ?= "tkxkd0159/cosmo-rust:dind"
+# Set docker volumes for container deployment. Default setting is Docker Compose
+COMPOSE_COSM_BASE ?= cosmonaut_cosmbase         # Where to store CosmWasm training sources
+COMPOSE_COSM_USER ?= cosmonaut_cosmproj         # Where to save user's project files
+COMPOSE_CARGO_REG ?= cosmonaut_cargo            # Where to save Rust packacge registry for caching
+COMPOSE_COSM_IMG ?= "tkxkd0159/cosmo-rust:dind" # For internal rust build
 
 .PHONY: test
 
