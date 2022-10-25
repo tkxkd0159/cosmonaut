@@ -1,29 +1,29 @@
 # Docker Compose Testbed
 
-## 1) Set .env in cosmonaut-api folder
+## 1) Add cosmonaut-api/.env with contents:
 
 ```sh
 HOST_ADDR=0.0.0.0
 PORT=3334
 LOCAL_RUST_SET=false
-SESS_SECRET=YOURSECRETKEYGOESHERE
+SESS_SECRET=<ENTER_SESS_SECRET>
 REQ_TIMEOUT=130000
 RUST_TIMEOUT=120000
 TS_NODE_PROJECT=./tsconfig.prod.json
 FRONT_HOST_ADDR="http://127.0.0.1:8080"
 FRONT_MAIN_ADDR=/
 FRONT_LOGIN_ADDR=/signUp
-OAUTH_REDIRECT="http://127.0.0.1:8080"
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-GITHUB_CLIENT_ID=
-GITHUB_CLIENT_SECRET=
+OAUTH_REDIRECT=[ONLY_SET_IF_PROXY]
+GOOGLE_CLIENT_ID=<ENTER_GOOGLE_CLIENT_ID>
+GOOGLE_CLIENT_SECRET=<ENTER_GOOGLE_CLIENT_SECRET>
+GITHUB_CLIENT_ID=<ENTER_GITHUB_CLIENT_ID>
+GITHUB_CLIENT_SECRET=<ENTER_GITHUB_CLIENT_SECRET>
 REDISHOST=redis-sess
 REDISPORT=6379
 PGHOST=pgdb
 PGPORT=5432
 PGUSER=ljs
-PGPASSWORD=secret
+PGPASSWORD=secret # hardcoded for now with disabled ports
 PGDATABASE=cosmonaut
 ```
 
@@ -55,10 +55,9 @@ Set `FRONT_HOST_ADDR`
 
 Set `PG*` for PostgreSQL connection and `REDIS*` for Redis connection. You can customize those values as needed.
 
-## 2) Set .env in cosmonaut-frontend folder (optional)
-
+## 2) Add cosmonaut-frontend/.env with contents:
 ```sh
-REACT_APP_API_ADDR=http://127.0.0.1:8080
+REACT_APP_API_ADDR=https://cosmonaut.cosmwasm.com
 ```
 
 ## 3) Run
@@ -73,11 +72,12 @@ docker pull tkxkd0159/cosmo-rust:latest
 # if you want rebuild react code, execute a script without 'new'
 ./react-build.sh [new]
 
-# Build api-server
-docker compose build
+# Build api-server and init Letsencrypt certificates
+## Edit this file with staging=0 to get production-ready certificates
+./init-letsencrypt.sh
 
 # Start app
-docker compose up
+docker compose up -d
 ```
 
 ## \* Reset
