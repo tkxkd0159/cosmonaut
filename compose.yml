@@ -33,15 +33,11 @@ services:
     redis-sess:
         image: redis
         restart: always
-        ports:
-            - 6380:${REDISPORT:-6379}
         networks:
             - myproxy
     pgdb:
         image: postgres
         restart: always
-        ports:
-            - 5433:${PGPORT:-5432}
         networks:
             - myproxy
         environment:
