@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import tw from "tailwind-styled-components";
 import Icon1 from "../../assets/images/icon1.svg";
 import Icon2 from "../../assets/images/icon2.svg";
 import Icon3 from "../../assets/images/icon3.svg";
 import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/Navbar/Navbar";
-import { indexInfo } from "../../core/config/indexInfo";
 import Video from "../../assets/indexbg.mp4";
 import { useGetUserProgress } from "../../core/api/getUserProgress";
 import { progressState } from "../../core/state/progressState";
+import { indexInfo } from "../../core/config/indexInfo";
 
 const Container = tw.div`relative lg:pb-20 bg-cover bg-center bg-opacity-10 lg:pt-32`;
 const Background = tw.div`bg-indigo-900 justify-center rounded-2xl border-indigo-900 border-4 flex h-index px-12 items-center bg-center bg-no-repeat`;
@@ -22,7 +22,6 @@ const Curriculum = tw.div`w-full mb-14 lg:mb-0 lg:col-span-1 col-span-2 lg:order
 function IndexInitialPage() {
   const { lessonID } = useParams();
   const startLesson = `/${lessonID}/chapter/1/unit/0`;
-  const engInfo = useRecoilValue(indexInfo);
   // eslint-disable-next-line no-unused-vars
   const [zeroLoading, zeroPro, zeroProgress] = useGetUserProgress(0);
   // eslint-disable-next-line no-unused-vars
@@ -112,7 +111,7 @@ function IndexInitialPage() {
               <div class="max-w-lg px-4 mx-auto">
                 <Title>Curriculum</Title>
                 <LessonList>
-                  {engInfo?.map((e) => {
+                  {indexInfo?.map((e) => {
                     let lessonUrl;
                     if (e?.id === 5) {
                       lessonUrl = `/appendix/1`;

@@ -10,14 +10,14 @@ import {
 } from "../../../components/Common/ProgressBar";
 import Goal from "../../../assets/images/goal.svg";
 import Result from "../../../assets/images/result.svg";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { lessonGoal, lessonResult } from "../../../core/config/lessonInfoAtoms";
+import { useRecoilValue } from "recoil";
 import { useParams } from "react-router-dom";
 import { useGetLessonPic } from "../../../core/api/getLessonPic";
 import { useGetUserProgress } from "../../../core/api/getUserProgress";
-import { indexInfo } from "../../../core/config/indexInfo";
 import error from "../../../assets/images/dummy-nft.jpg";
+import { indexInfo } from "../../../core/config/indexInfo";
 import { progressState } from "../../../core/state/progressState";
+import { lessonGoal, lessonResult } from "../../../core/config/lessonInfo";
 
 const Container = tw.div`w-full lg:col-span-1 col-span-2 lg:mx-0 mx-auto lg:order-1 order-2`;
 const Title = tw.h1`text-xs md:text-lg font-semibold text-center text-yellow-500 mb-1`;
@@ -28,15 +28,10 @@ const Wrapper = tw.div`bg-yellow-100 md:grid md:grid-cols-3 xl:gap-4 gap-2 md:mt
 
 function Overview() {
   const { lessonID } = useParams();
-  const engInfo = useRecoilValue(indexInfo);
-  const goal = useRecoilValue(lessonGoal);
-  const result = useRecoilValue(lessonResult);
-
   const [picRes, picFetch] = useGetLessonPic(lessonID);
   // eslint-disable-next-line no-unused-vars
   const [userLoading, userRes, userFetch] = useGetUserProgress(lessonID);
-  // eslint-disable-next-line no-unused-vars
-  const [progress, setProgress] = useRecoilState(progressState);
+  const progress = useRecoilValue(progressState);
 
   useEffect(() => {
     userFetch();
@@ -57,10 +52,10 @@ function Overview() {
 
             <SubTitle>
               <h2 class="text-center text-lg font-heading text-indigo-900">
-                {engInfo[lessonID]?.num}.
+                {indexInfo[lessonID]?.num}.
               </h2>
               <h3 class="text-2xl text-center font-heading text-indigo-900">
-                {engInfo[lessonID]?.title}
+                {indexInfo[lessonID]?.title}
               </h3>
             </SubTitle>
 
@@ -87,7 +82,7 @@ function Overview() {
               </div>
               <div class="flex ml-4 h-full col-span-2 border-t-2 border-b-2 border-dashed border-white items-center justify-center">
                 <h2 class="md:text-lg text-sm font-mono text-gray-50">
-                  {engInfo[lessonID]?.desc}
+                  {indexInfo[lessonID]?.desc}
                 </h2>
               </div>
             </Desc>
@@ -95,7 +90,7 @@ function Overview() {
             <SubDesc>
               <AngleRight />
               <span class="md:text-lg text-left font-normal text-xs">
-                {engInfo[lessonID]?.subDesc}
+                {indexInfo[lessonID]?.subDesc}
               </span>
             </SubDesc>
 
@@ -110,7 +105,7 @@ function Overview() {
               </div>
 
               <ul class="col-span-2 list-disc xl:text-base md:text-sm text-xs font-normal text-indigo-900 md:ml-3 ml-5 md:mt-0 mt-3">
-                {goal[lessonID]?.map((e) => (
+                {lessonGoal[lessonID]?.map((e) => (
                   <li key={e?.id}>{e?.goal}</li>
                 ))}
               </ul>
@@ -126,7 +121,7 @@ function Overview() {
                 </h4>
               </div>
               <ul class="col-span-2 list-disc xl:text-base md:text-sm text-xs font-normal text-indigo-900 md:ml-3 ml-5 md:mt-0 mt-3">
-                {result[lessonID]?.map((e) => (
+                {lessonResult[lessonID]?.map((e) => (
                   <li key={e?.id}>{e?.result}</li>
                 ))}
               </ul>

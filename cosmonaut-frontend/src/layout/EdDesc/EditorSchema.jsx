@@ -1,9 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import tw from "tailwind-styled-components";
-import { chapterInfos } from "../../core/config/chapterInfoAtoms";
-import { unitInfos } from "../../core/config/unitInfoAtoms";
 import ShortBg from "../../assets/images/short_bg.png";
 import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/Navbar/Navbar";
@@ -15,16 +13,15 @@ import EditorContents from "./EditorContents";
 import StartModal from "../../components/StartModal/StartModal";
 import FinishModal from "../../components/FinishModal/FinishModal";
 import { handleModalAtom } from "../../core/state/handleModal";
+import { chapterInfo } from "../../core/config/chapterInfo";
+import { unitInfo } from "../../core/config/unitInfo";
 
 const Background = tw.div`pt-24 pb-8 px-6 lg:px-10 bg-black bg-cover bg-center`;
 
 function EditorSchema() {
   const { lessonID, chID, uID } = useParams();
-  const chInfo = useRecoilValue(chapterInfos);
-  const unitInfo = useRecoilValue(unitInfos);
   const unitData = unitInfo[lessonID];
-  // eslint-disable-next-line no-unused-vars
-  const [handleModal, setHandleModal] = useRecoilState(handleModalAtom);
+  const handleModal = useRecoilValue(handleModalAtom);
 
   return (
     <>
@@ -101,7 +98,10 @@ function EditorSchema() {
         }}
       >
         <BackToOverview />
-        <ChapterTitle chInfo={chInfo[lessonID]} unitInfo={unitData[chID - 1]} />
+        <ChapterTitle
+          chInfo={chapterInfo[lessonID]}
+          unitInfo={unitData[chID - 1]}
+        />
         {lessonID === "1" && chID === "2" && uID === "1" ? <ChDesc /> : null}
         {lessonID === "1" && chID === "3" && uID === "1" ? <ChDesc /> : null}
       </Background>

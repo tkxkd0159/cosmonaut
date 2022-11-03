@@ -6,11 +6,11 @@ import Footer from "../../components/Footer/Footer";
 import Overview from "./components/Overview";
 import { useGetUserProgress } from "../../core/api/getUserProgress";
 import { Link, useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { indexInfo } from "../../core/config/indexInfo";
+import { useRecoilState } from "recoil";
 import { useEffect } from "react";
 import Video from "../../assets/indexbg.mp4";
 import { handleModalAtom } from "../../core/state/handleModal";
+import { indexInfo } from "../../core/config/indexInfo";
 
 const Curriculum = tw.div`w-full mb-14 lg:mb-0 lg:col-span-1 col-span-2 lg:order-2 order-1`;
 const Title = tw.h2`text-2xl md:text-4xl text-center lg:text-left mt-2 text-orange-400 lg:mb-8 mb-6 font-heading`;
@@ -23,7 +23,6 @@ function IndexPage() {
   // eslint-disable-next-line no-unused-vars
   const [userLoading, userRes, userFetch] = useGetUserProgress(lessonID);
   const startLesson = `/lesson/${lessonID}/chapter/1/unit/0`;
-  const engInfo = useRecoilValue(indexInfo);
   // eslint-disable-next-line no-unused-vars
   const [handleModal, setHandleModal] = useRecoilState(handleModalAtom);
 
@@ -49,7 +48,7 @@ function IndexPage() {
             <Curriculum>
               <div class="max-w-lg px-4 mx-auto">
                 <Title>Curriculum</Title>
-                {engInfo?.map((e) => {
+                {indexInfo.map((e) => {
                   let lessonUrl;
                   if (e?.id === 5) {
                     lessonUrl = `/appendix/1`;
