@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetUserProgress } from "../../../../../libs/api/getUserProgress";
-import { useDiffApi } from "../../../../../libs/api/postDiff";
+import { useDiffApi } from "../../../../../core/api/postDiff";
+import { useGetUserProgress } from "../../../../../core/api/getUserProgress";
 import { codeAns } from "./L4C2U1Ans";
 import { codeEx } from "./L4C2U1Ex";
 import L4C2U1S1Code from "./Problem/L4C2U1S1Code";

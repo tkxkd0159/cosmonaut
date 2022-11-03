@@ -1,6 +1,6 @@
 import React from "react";
 import Editor, { loader } from "@monaco-editor/react";
-import { useFmtApi } from "../../libs/api/postFmt";
+import { useFmtApi } from "../../core/api/postFmt";
 
 loader.config({
   paths: {

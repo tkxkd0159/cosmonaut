@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import tw from "tailwind-styled-components";
+import classNames from "classnames";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { chapterInfos } from "../../states/Information/chapterInfoAtoms";
-import { lessonEngInfo } from "../../states/Information/lessonInfoAtoms";
-import { usePostInitial } from "../../libs/api/postInitial";
-import classNames from "classnames";
-import { useGetUserProgress } from "../../libs/api/getUserProgress";
-import { handleModalAtom } from "../../states/handleModal";
-import { progressState } from "../../states/progressState";
+import { chapterInfos } from "../../core/config/chapterInfoAtoms";
+import { lessonEngInfo } from "../../core/config/lessonInfoAtoms";
+import { usePostInitial } from "../../core/api/postInitial";
+import { useGetUserProgress } from "../../core/api/getUserProgress";
+import { handleModalAtom } from "../../core/state/handleModal";
+import { progressState } from "../../core/state/progressState";
 
 const Navigate = tw.div`flex flex-wrap mt-5 mx-auto justify-center gap-3 rounded-3xl`;
 const Button = tw.button`bg-white h-40 flex items-center justify-center w-2/5 md:w-1/5 xl:w-1/8 rounded-xl border-2 border-indigo-900 ease-in-out duration-300`;

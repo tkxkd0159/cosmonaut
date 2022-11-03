@@ -11,16 +11,13 @@ import {
 import Goal from "../../../assets/images/goal.svg";
 import Result from "../../../assets/images/result.svg";
 import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  lessonGoal,
-  lessonResult,
-} from "../../../states/Information/lessonInfoAtoms";
+import { lessonGoal, lessonResult } from "../../../core/config/lessonInfoAtoms";
 import { useParams } from "react-router-dom";
-import { useGetLessonPic } from "../../../libs/api/getLessonPic";
-import { useGetUserProgress } from "../../../libs/api/getUserProgress";
-import { indexInfo } from "../../../states/Information/indexInfo";
+import { useGetLessonPic } from "../../../core/api/getLessonPic";
+import { useGetUserProgress } from "../../../core/api/getUserProgress";
+import { indexInfo } from "../../../core/config/indexInfo";
 import error from "../../../assets/images/dummy-nft.jpg";
-import { progressState } from "../../../states/progressState";
+import { progressState } from "../../../core/state/progressState";
 
 const Container = tw.div`w-full lg:col-span-1 col-span-2 lg:mx-0 mx-auto lg:order-1 order-2`;
 const Title = tw.h1`text-xs md:text-lg font-semibold text-center text-yellow-500 mb-1`;

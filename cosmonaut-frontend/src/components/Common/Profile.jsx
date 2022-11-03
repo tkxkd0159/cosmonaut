@@ -2,9 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import Account3 from "../../assets/images/signed-in-account3.svg";
-import { useIsLogout } from "../../libs/api/useIsLogout";
-
-import { LoginState } from "../../states/login";
+import { useIsLogout } from "../../core/api/useIsLogout";
+import { LoginState } from "../../core/state/login";
 import Version from "./Version";
 
 const Profile = ({ name }) => {

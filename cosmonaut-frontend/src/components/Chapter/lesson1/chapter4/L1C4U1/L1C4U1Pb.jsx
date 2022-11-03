@@ -10,8 +10,8 @@ import L1C4U1S6Code from "./Problem/L1C4U1S6Code";
 import L1C4U1S7Code from "./Problem/L1C4U1S7Code";
 import L1C4U1S8Code from "./Problem/L1C4U1S8Code";
 import { codeAns } from "./L1C4U1Ans";
-import { useDiffApi } from "../../../../../libs/api/postDiff";
-import { useGetUserProgress } from "../../../../../libs/api/getUserProgress";
+import { useDiffApi } from "../../../../../core/api/postDiff";
+import { useGetUserProgress } from "../../../../../core/api/getUserProgress";
 
 export const L1C4U1Pb = () => {
   const { lessonID, chID, uID, pID } = useParams();

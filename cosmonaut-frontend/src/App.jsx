@@ -3,6 +3,7 @@ import { useRecoilState } from "recoil";
 import Profile from "./components/Common/Profile";
 import ScrollToTop from "./components/Common/ScrollToTop";
 import SignUp from "./components/SignUp/SignUp";
+import { LoginState } from "./core/state/login";
 import NotFound from "./error/NotFound";
 import AdvancePage from "./layout/Advanced/AdvancePage";
 import { AppendixPage } from "./layout/Appendix/AppendixPage";
@@ -12,7 +13,6 @@ import IndexPage from "./layout/Index/IndexPage";
 import MainPage from "./layout/Main/MainPage";
 import ProblemPage from "./layout/Problem/ProblemPage";
 import UnitPage from "./layout/Unit/UnitPage";
-import { LoginState } from "./states/login";
 
 function App() {
   // eslint-disable-next-line no-unused-vars

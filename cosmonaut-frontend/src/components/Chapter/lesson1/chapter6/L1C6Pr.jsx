@@ -10,15 +10,15 @@ import BasicP from "../../../../components/Contents/BasicP";
 import HintButton from "../../../../components/Contents/HintButton";
 import Hint from "../../../../components/Contents/Hint";
 import PracticeCode from "../../../../components/CodeEditor/PracticeCode";
-import { useRunApi } from "../../../../libs/api/postRun";
 import { useNavigate, useParams } from "react-router-dom";
 import ResultTab from "../../../../components/CodeEditor/ResultTab";
 import EditorPr from "../../../../components/CodeEditor/EditorPr";
 import { Loading } from "../../../../components/Common/Loading";
 import TabHeader from "../../../../components/Practice/TabHeader";
 import PracticeName from "../../../../components/Practice/PracticeName";
-import { useCodeEx } from "../../../../libs/api/getTargetCodes";
 import CodeStart from "../../../../components/CodeEditor/CodeStart";
+import { useRunApi } from "../../../../core/api/postRun";
+import { useCodeEx } from "../../../../core/api/getTargetCodes";
 
 export const L1C6Pr = () => {
   const { lessonID, chID, uID } = useParams();

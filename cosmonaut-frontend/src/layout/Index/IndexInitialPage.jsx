@@ -7,10 +7,10 @@ import Icon2 from "../../assets/images/icon2.svg";
 import Icon3 from "../../assets/images/icon3.svg";
 import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/Navbar/Navbar";
-import { indexInfo } from "../../states/Information/indexInfo";
+import { indexInfo } from "../../core/config/indexInfo";
 import Video from "../../assets/indexbg.mp4";
-import { useGetUserProgress } from "../../libs/api/getUserProgress";
-import { progressState } from "../../states/progressState";
+import { useGetUserProgress } from "../../core/api/getUserProgress";
+import { progressState } from "../../core/state/progressState";
 
 const Container = tw.div`relative lg:pb-20 bg-cover bg-center bg-opacity-10 lg:pt-32`;
 const Background = tw.div`bg-indigo-900 justify-center rounded-2xl border-indigo-900 border-4 flex h-index px-12 items-center bg-center bg-no-repeat`;

@@ -1,8 +1,8 @@
 import React from "react";
+import tw from "tailwind-styled-components";
 import { useParams } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import tw from "tailwind-styled-components";
-import { unitInfos } from "../../states/Information/unitInfoAtoms";
+import { unitInfos } from "../../core/config/unitInfoAtoms";
 
 const Header = tw.div`bg-orange-500 py-2 lg:py-6 md:py-3`;
 

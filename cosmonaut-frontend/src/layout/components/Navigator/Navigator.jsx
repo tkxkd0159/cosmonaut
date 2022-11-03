@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import clsx from "clsx";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 import { useNavigate, useParams } from "react-router-dom";
 import Arrowleft from "../../../assets/images/arrow-left.svg";
 import Arrowright from "../../../assets/images/arrow-right.svg";
-import { usePostRead } from "../../../libs/api/postRead";
+import { handleModalAtom } from "../../../core/state/handleModal";
+import { useGetUserProgress } from "../../../core/api/getUserProgress";
+import { usePostRead } from "../../../core/api/postRead";
 import HandleSideMenu from "./Components/HandleSideMenu";
-import { handleModalAtom } from "../../../states/handleModal";
-import { useRecoilState } from "recoil";
-import { useGetUserProgress } from "../../../libs/api/getUserProgress";
 
 function Navigator() {
   const { lessonID, chID, uID } = useParams();

@@ -11,14 +11,14 @@ import HintButton from "../../../../components/Contents/HintButton";
 import Hint from "../../../../components/Contents/Hint";
 import { useNavigate, useParams } from "react-router-dom";
 import { Loading } from "../../../../components/Common/Loading";
-import { useRunApi } from "../../../../libs/api/postRun";
 import PracticeCode from "../../../../components/CodeEditor/PracticeCode";
 import EditorPr from "../../../../components/CodeEditor/EditorPr";
 import TabHeader from "../../../../components/Practice/TabHeader";
 import PracticeName from "../../../../components/Practice/PracticeName";
 import ResultTab from "../../../../components/CodeEditor/ResultTab";
-import { useCodeEx } from "../../../../libs/api/getTargetCodes";
 import CodeStart from "../../../../components/CodeEditor/CodeStart";
+import { useRunApi } from "../../../../core/api/postRun";
+import { useCodeEx } from "../../../../core/api/getTargetCodes";
 
 export const L2C8Pr = () => {
   const { lessonID, chID, uID } = useParams();

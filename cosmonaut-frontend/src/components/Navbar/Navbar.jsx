@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import tw from "tailwind-styled-components";
 import LogoV4 from "../../assets/images/logo-v4.svg";
-import { LoginState } from "../../states/login";
+import { LoginState } from "../../core/state/login";
 import Profile from "../Common/Profile";
 import SignIn from "../Common/SignIn";
-import { useIsLogin } from "../../libs/api/useIsLogin";
+import { useIsLogin } from "../../core/api/useIsLogin";
 
 const Container = tw.div`fixed top-0 w-full z-50`;
 const Logo = tw.a`text-lg font-bold ease-in-out duration-300 transform hover:scale-110`;

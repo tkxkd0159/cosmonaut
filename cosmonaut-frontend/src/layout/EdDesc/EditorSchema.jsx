@@ -2,8 +2,8 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import tw from "tailwind-styled-components";
-import { chapterInfos } from "../../states/Information/chapterInfoAtoms";
-import { unitInfos } from "../../states/Information/unitInfoAtoms";
+import { chapterInfos } from "../../core/config/chapterInfoAtoms";
+import { unitInfos } from "../../core/config/unitInfoAtoms";
 import ShortBg from "../../assets/images/short_bg.png";
 import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/Navbar/Navbar";
@@ -14,7 +14,7 @@ import ChapterTitle from "../components/ChapterTitle";
 import EditorContents from "./EditorContents";
 import StartModal from "../../components/StartModal/StartModal";
 import FinishModal from "../../components/FinishModal/FinishModal";
-import { handleModalAtom } from "../../states/handleModal";
+import { handleModalAtom } from "../../core/state/handleModal";
 
 const Background = tw.div`pt-24 pb-8 px-6 lg:px-10 bg-black bg-cover bg-center`;
 

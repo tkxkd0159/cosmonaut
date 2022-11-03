@@ -6,14 +6,14 @@ import BackToOverview from "../components/BackToOverview";
 import ChapterTitle from "../components/ChapterTitle";
 import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/Navbar/Navbar";
-import { chapterInfos } from "../../states/Information/chapterInfoAtoms";
-import { unitInfos } from "../../states/Information/unitInfoAtoms";
+import { chapterInfos } from "../../core/config/chapterInfoAtoms";
+import { unitInfos } from "../../core/config/unitInfoAtoms";
 import LsDesc from "./LSDesc";
 import StartModal from "../../components/StartModal/StartModal";
 import L1C4PlusDesc from "../../components/Chapter/lesson1/chapter4/L1C4PlusDesc";
 import Navigator from "../components/Navigator/Navigator";
 import BgV4 from "../../assets/images/bg-v4.svg";
-import { handleModalAtom } from "../../states/handleModal";
+import { handleModalAtom } from "../../core/state/handleModal";
 
 const Background = tw.div`pt-24 pb-8 px-6 lg:px-10 bg-black bg-cover bg-center`;
 
