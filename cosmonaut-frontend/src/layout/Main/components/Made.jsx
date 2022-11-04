@@ -49,12 +49,17 @@ function Made() {
                   pioneers.
                 </span>
               </div>
-              <div class="flex items-center">
+              <div class="flex mb-4 items-center">
                 <span class="md:text-base text-xs font-medium">
                   And we are working on several projects to strengthen
                   decentralization. For more information, please refer to our
                   website below. If you have any questions, please send an
                   e-mail to the following address.
+                </span>
+              </div>
+              <div class="flex items-center">
+                <span class="md:text-base text-md font-bold">
+                  d3lab.dao@gmail.com
                 </span>
               </div>
             </div>
