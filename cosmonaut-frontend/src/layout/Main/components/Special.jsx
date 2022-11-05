@@ -6,7 +6,7 @@ const Container = tw.div`py-26 bg-orange-200 pb-32`;
 function Special() {
   useEffect(() => {
     const firstCallback = function (entries) {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("lg:animate-goUpFirst");
         } else {
@@ -21,7 +21,7 @@ function Special() {
     });
 
     const secondCallback = function (entries) {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("lg:animate-goUpSecond");
         } else {
@@ -36,7 +36,7 @@ function Special() {
     });
 
     const thirdCallback = function (entries) {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("lg:animate-goUpThird");
         } else {
@@ -51,7 +51,7 @@ function Special() {
     });
 
     const fourthCallback = function (entries) {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("lg:animate-goUpFourth");
         } else {
@@ -73,10 +73,10 @@ function Special() {
             What is so special?
           </h1>
           <p class="leading-7 text-sm md:text-lg text-green-500 font-semibold">
-            Learn Cosmwasm's secure multi-chain contract. Cosmonaut is made to
-            be easy to follow, even for unfamiliar ones with Cosmos, Cosmwasm,
-            and Rust. Don't worry and follow us! Let's deep dive into the
-            world of Cosmos with our pretty and kind explanations.
+            Learn CosmWasm's secure multi-chain contract. Cosmonaut is made to
+            be easy to follow, even for unfamiliar ones with Cosmos, CosmWasm,
+            and Rust. Don't worry and follow us! Let's deep dive into the world
+            of Cosmos with our pretty and kind explanations.
           </p>
         </div>
         <div class="flex flex-wrap -mx-4 -mb-8">

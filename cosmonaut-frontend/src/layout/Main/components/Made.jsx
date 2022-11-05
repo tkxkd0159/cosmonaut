@@ -39,7 +39,7 @@ function Made() {
               </div>
               <div class="flex mb-4 items-center">
                 <span class="md:text-base text-xs font-medium">
-                  We believe that Cosmos and Cosmwasm will play an important
+                  We believe that Cosmos and CosmWasm will play an important
                   role in the near multi-chain future. And Rust, the core
                   language on both the core and contract, will be essential
                   knowledge to astronauts. However, there are not enough

@@ -4,7 +4,7 @@ import Chapterscreen from "../../../assets/images/chapter-screen.png";
 function Learn() {
   useEffect(() => {
     const leftCallback = function (entries) {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("animate-fadeInLtoR");
         } else {
@@ -13,7 +13,7 @@ function Learn() {
       });
     };
     const rightCallback = function (entries) {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("animate-fadeInRtoL");
         } else {
@@ -50,11 +50,11 @@ function Learn() {
               <div class="w-full px-4 mb-12">
                 <div class="md:-pr-32">
                   <p class="leading-7 font-medium md:text-lg text-sm lg:mr-10">
-                    Learn Cosmwasm's secure multi-chain contract. Cosmonaut is
+                    Learn CosmWasm's secure multi-chain contract. Cosmonaut is
                     made to be easy to follow, even for unfamiliar ones with
-                    Cosmos, Cosmwasm, and Rust. Don't worry and follow us!
-                    Let's deep dive into the world of Cosmos with our pretty and
-                    kind explanations.
+                    Cosmos, CosmWasm, and Rust. Don't worry and follow us! Let's
+                    deep dive into the world of Cosmos with our pretty and kind
+                    explanations.
                   </p>
                 </div>
               </div>

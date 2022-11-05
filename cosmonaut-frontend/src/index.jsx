@@ -17,7 +17,7 @@ root.render(
         <HelmetProvider>
           <App />
           <Helmet>
-            <title>COSMONAUT</title>
+            <title>COSMonaut</title>
           </Helmet>
         </HelmetProvider>
       </RecoilRoot>
