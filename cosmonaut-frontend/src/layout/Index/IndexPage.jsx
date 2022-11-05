@@ -25,6 +25,12 @@ function IndexPage() {
   );
   // eslint-disable-next-line no-unused-vars
   const [handleModal, setHandleModal] = useRecoilState(handleModalAtom);
+  let startLesson;
+  if (userRes !== -1 || lessonID === "0" || lessonID === "5") {
+    startLesson = `/${lessonID}/chapter/1/unit/0`;
+  } else {
+    startLesson = `/lesson/${lessonID}`;
+  }
 
   useEffect(() => {
     userFetch();
