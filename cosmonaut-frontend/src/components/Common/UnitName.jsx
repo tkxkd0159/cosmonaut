@@ -14,7 +14,7 @@ function UnitName(props) {
       <div class="container px-4 mx-auto">
         <div class="text-center">
           <h1 class="font-extrabold font-heading text-yellow-100 md:text-2xl text-lg">
-            {chID}-{unitInfo[chID - 1][uID - 1]?.id}.{" "}
+            {chID}-{unitData[chID - 1][uID - 1]?.id}.{" "}
             {unitData[chID - 1][uID - 1]?.title}
           </h1>
         </div>
