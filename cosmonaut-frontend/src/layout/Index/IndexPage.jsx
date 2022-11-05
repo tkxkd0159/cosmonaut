@@ -27,7 +27,7 @@ function IndexPage() {
   const [handleModal, setHandleModal] = useRecoilState(handleModalAtom);
   let startLesson;
   if (userRes !== -1 || lessonID === "0" || lessonID === "5") {
-    startLesson = `/${lessonID}/chapter/1/unit/0`;
+    startLesson = `/lesson/${lessonID}/chapter/1/unit/0`;
   } else {
     startLesson = `/lesson/${lessonID}`;
   }
