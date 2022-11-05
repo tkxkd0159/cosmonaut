@@ -3,7 +3,6 @@ import clsx from "clsx";
 import { useNavigate, useParams } from "react-router-dom";
 import Arrowleft from "../../../assets/images/arrow-left.svg";
 import Arrowright from "../../../assets/images/arrow-right.svg";
-import HandleSideMenu from "./Components/HandleSideMenu";
 
 function AppenNavigator() {
   const { aID } = useParams();
@@ -47,7 +46,6 @@ function AppenNavigator() {
       <div class="container flex mx-auto lg:pb-4 lg:pt-3 py-2 items-center">
         <div class="lg:w-1/2 w-2/3 items-center md:px-2 px-4 mb-0">
           <div class="w-full flex flex-wrap items-center">
-            <HandleSideMenu />
             <h2 class="text-xl md:text-2xl lg:text-3xl self-end md:mr-4 mr-2 text-indigo-900 font-heading">
               Appendix
             </h2>
