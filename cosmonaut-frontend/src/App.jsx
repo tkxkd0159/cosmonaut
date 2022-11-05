@@ -1,7 +1,9 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import Profile from "./components/Common/Profile";
+
 import ScrollToTop from "./components/Common/ScrollToTop";
+import Profile from "./components/Profile/Profile";
+
 import SignUp from "./components/SignUp/SignUp";
 import { LoginState } from "./core/state/login";
 import NotFound from "./error/NotFound";

@@ -21,10 +21,9 @@ function SignUp() {
                 <img class="h-20" src={LogoV4} alt="" />
               </a>
               <p class="text-xl font-heading leading-7 text-yellow-500 mb-16">
-                Start Coswasm with Cosmonaut!
+                Start CosmWasm with Cosmonaut!
               </p>
             </div>
-
             <button className="w-full">
               <a
                 href={`${process.env.REACT_APP_API_ADDR}/auth/login/federated/github`}
@@ -36,7 +35,6 @@ function SignUp() {
                   src={GithubLogo}
                   alt=""
                 />
-
                 <span>Sign in with Github</span>
               </a>
             </button>

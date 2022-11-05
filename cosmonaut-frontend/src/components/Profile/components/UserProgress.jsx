@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import tw from "tailwind-styled-components";
-import { useGetLessonPic } from "../../../libs/api/getLessonPic";
 import {
   ProgressBar0,
   ProgressBar1,
@@ -8,10 +7,11 @@ import {
   ProgressBar3,
   ProgressBar4,
 } from "../../Common/ProgressBar";
-import { useGetUserProgress } from "../../../libs/api/getUserProgress";
 import error from "../../../assets/images/dummy-nft.jpg";
 import { useRecoilState } from "recoil";
-import { progressState } from "../../../states/progressState";
+import { useGetLessonPic } from "../../../core/api/getLessonPic";
+import { useGetUserProgress } from "../../../core/api/getUserProgress";
+import { progressState } from "../../../core/state/progressState";
 
 const Container = tw.div`flex flex-wrap -mb-12`;
 const Profile = tw.div`w-full md:w-1/2 lg:w-1/3 mb-12`;
@@ -39,7 +39,6 @@ function UserProgress() {
   const [sec, setSec] = useState("0%");
   const [thr, setThr] = useState("0%");
   const [four, setFour] = useState("0%");
-
   const [progress, setProgress] = useRecoilState(progressState);
 
   useEffect(() => {
@@ -81,7 +80,7 @@ function UserProgress() {
         setZero("0%");
         break;
       default:
-        setZero("Progress");
+        setZero("0%");
     }
     switch (firPro) {
       case 0:

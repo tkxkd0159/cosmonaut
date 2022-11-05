@@ -12,7 +12,7 @@ function Footer() {
         <div class="container mx-auto">
           <div class="flex flex-wrap justify-between items-center">
             <div class="w-full flex flex-wrap justify-between items-center mb-4">
-              <Logo href="/cosmonaut-frontend">
+              <Logo href="/">
                 <img class="md:h-9 h-8 py-1" src={LogoV4} alt="" width="auto" />
               </Logo>
               <p class="lg:text-lg text-xs font-mono text-right">

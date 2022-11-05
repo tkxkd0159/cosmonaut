@@ -4,7 +4,6 @@ import { useRecoilState } from "recoil";
 import Account3 from "../../assets/images/signed-in-account3.svg";
 import { useIsLogout } from "../../core/api/useIsLogout";
 import { LoginState } from "../../core/state/login";
-import Version from "./Version";
 
 const Profile = ({ name }) => {
   // eslint-disable-next-line no-unused-vars
@@ -21,7 +20,6 @@ const Profile = ({ name }) => {
     <>
       {/* Small Version */}
       <div class="xl:hidden flex items-center">
-        <Version />
         <div class="relative inline-block text-left ">
           <div>
             <button
@@ -73,7 +71,6 @@ const Profile = ({ name }) => {
 
       {/* Big Version */}
       <div class="hidden xl:flex items-center">
-        <Version />
         <div class="relative inline-block text-left">
           <div>
             <button
@@ -124,7 +121,6 @@ const Profile = ({ name }) => {
           </div>
         </div>
       </div>
-      {/* )} */}
     </>
   );
 };
