@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link, useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
 import tw from "tailwind-styled-components";
 import Icon1 from "../../assets/images/icon1.svg";
 import Icon2 from "../../assets/images/icon2.svg";
@@ -8,8 +7,6 @@ import Icon3 from "../../assets/images/icon3.svg";
 import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/Navbar/Navbar";
 import Video from "../../assets/indexbg.mp4";
-import { useGetUserProgress } from "../../core/api/getUserProgress";
-import { progressState } from "../../core/state/progressState";
 import { indexInfo } from "../../core/config/indexInfo";
 
 const Container = tw.div`relative lg:pb-20 bg-cover bg-center bg-opacity-10 lg:pt-32`;
@@ -27,38 +24,6 @@ function IndexInitialPage() {
   } else {
     startLesson = `/${lessonID}/chapter/1/unit/0`;
   }
-
-  // eslint-disable-next-line no-unused-vars
-  const [zeroLoading, zeroPro, zeroProgress] = useGetUserProgress(0);
-  // eslint-disable-next-line no-unused-vars
-  const [firLoading, firPro, firProgress] = useGetUserProgress(1);
-  // eslint-disable-next-line no-unused-vars
-  const [secLoading, secPro, secProgress] = useGetUserProgress(2);
-  // eslint-disable-next-line no-unused-vars
-  const [thrLoading, thrPro, thrProgress] = useGetUserProgress(3);
-  // eslint-disable-next-line no-unused-vars
-  const [fourLoading, fourPro, fourProgress] = useGetUserProgress(4);
-  // eslint-disable-next-line no-unused-vars
-  const [progress, setProgress] = useRecoilState(progressState);
-
-  useEffect(() => {
-    zeroProgress();
-    firProgress();
-    secProgress();
-    thrProgress();
-    fourProgress();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    setProgress({
-      0: String(zeroPro),
-      1: String(firPro),
-      2: String(secPro),
-      3: String(thrPro),
-      4: String(fourPro),
-    });
-  }, [zeroPro, firPro, secPro, thrPro, fourPro, setProgress]);
 
   return (
     <>
