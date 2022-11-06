@@ -5,7 +5,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import Overview from "./components/Overview";
 import { useGetUserProgress } from "../../core/api/getUserProgress";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { useEffect } from "react";
 import Video from "../../assets/indexbg.mp4";
@@ -19,24 +19,96 @@ const ButtonWrap = tw.div`flex flex-wrap mt-10 lg:justify-end justify-center gro
 
 function IndexPage() {
   const { lessonID } = useParams();
+  const navigate = useNavigate();
   // eslint-disable-next-line no-unused-vars
   const [userLoading, userRes, userFetch] = useGetUserProgress(
     Number(lessonID)
   );
   // eslint-disable-next-line no-unused-vars
   const [handleModal, setHandleModal] = useRecoilState(handleModalAtom);
-  let startLesson;
-  if (userRes !== -1 || lessonID === "0" || lessonID === "5") {
-    startLesson = `/lesson/${lessonID}/chapter/1/unit/0`;
-  } else {
-    startLesson = `/lesson/${lessonID}`;
-  }
 
   useEffect(() => {
     userFetch();
     setHandleModal(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lessonID]);
+
+  const progressRouter = () => {
+    switch (lessonID) {
+      case "0":
+        switch (userRes) {
+          case 0:
+            return navigate(`/lesson/0`);
+          default:
+            return navigate(`/lesson/0/chapter/1/unit/0`);
+        }
+      case "1":
+        switch (userRes) {
+          case -1:
+            return navigate(`/lesson/1`);
+          case 0:
+            return navigate(`/lesson/1/chapter/1/unit/0`);
+          case 1:
+          case 4:
+          case 5:
+            return navigate(`/lesson/1/chapter/${userRes}/unit/0`);
+          case 2:
+          case 3:
+          case 6:
+            return navigate(`/lesson/1/chapter/${userRes}/unit/1`);
+          default:
+            return navigate(`/lesson/1`);
+        }
+      case "2":
+        switch (userRes) {
+          case -1:
+            return navigate(`/lesson/2`);
+          case 0:
+            return navigate(`/lesson/2/chapter/1/unit/0`);
+          case 1:
+          case 6:
+            return navigate(`/lesson/2/chapter/${userRes}/unit/0`);
+          case 2:
+          case 3:
+          case 4:
+          case 5:
+          case 7:
+          case 8:
+            return navigate(`/lesson/2/chapter/${userRes}/unit/1`);
+          default:
+        }
+        break;
+      case "3":
+        switch (userRes) {
+          case -1:
+            return navigate(`/lesson/3`);
+          case 0:
+            return navigate(`/lesson/3/chapter/1/unit/0`);
+          case 1:
+            return navigate(`/lesson/3/chapter/${userRes}/unit/0`);
+          case 2:
+          case 3:
+            return navigate(`/lesson/3/chapter/${userRes}/unit/1`);
+          default:
+        }
+        break;
+      case "4":
+        switch (userRes) {
+          case -1:
+            return navigate(`/lesson/4`);
+          case 0:
+            return navigate(`/lesson/4/chapter/1/unit/0`);
+          case 1:
+            return navigate(`/lesson/4/chapter/${userRes}/unit/0`);
+          case 2:
+          case 3:
+            return navigate(`/lesson/4/chapter/${userRes}/unit/1`);
+          default:
+        }
+        break;
+      default:
+    }
+  };
 
   return (
     <>
@@ -83,11 +155,12 @@ function IndexPage() {
                 {userRes !== -1 || lessonID === "0" || lessonID === "5" ? (
                   <>
                     <ButtonWrap>
-                      <Link to={startLesson}>
-                        <button class="mt-[16px] hover:from-green-500 hover:to-blue-500 hover:text-white inline-block md:w-auto mb-2 md:mb-0 text-center leading-6 text-lg text-gray-900 font-heading bg-gradient-to-r from-yellow-500 to-orange-400 border-3 border-indigo-900 shadow rounded-full md:mx-0 mx-8 md:px-10 md:py-4 py-2 px-12">
-                          START LESSON
-                        </button>
-                      </Link>
+                      <button
+                        onClick={progressRouter}
+                        class="mt-[16px] hover:from-green-500 hover:to-blue-500 hover:text-white inline-block md:w-auto mb-2 md:mb-0 text-center leading-6 text-lg text-gray-900 font-heading bg-gradient-to-r from-yellow-500 to-orange-400 border-3 border-indigo-900 shadow rounded-full md:mx-0 mx-8 md:px-10 md:py-4 py-2 px-12"
+                      >
+                        START LESSON
+                      </button>
                     </ButtonWrap>
                   </>
                 ) : (
@@ -96,11 +169,12 @@ function IndexPage() {
                       <span className="w-full lg:text-right text-center text-white text-xs group-hover:opacity-100 opacity-0 font-bold md:mx-4 mx-8">
                         You have to finish previous lessons
                       </span>
-                      <Link to={startLesson}>
-                        <button class="inline-block md:w-auto mb-2 md:mb-0 text-center leading-6 text-lg text-gray-900 font-heading bg-gradient-to-r from-yellow-500 to-orange-400 border-3 border-indigo-900 shadow rounded-full md:mx-0 mx-8 md:px-10 md:py-4 py-2 px-12 opacity-40 cursor-not-allowed">
-                          START LESSON
-                        </button>
-                      </Link>
+                      <button
+                        onClick={progressRouter}
+                        class="inline-block md:w-auto mb-2 md:mb-0 text-center leading-6 text-lg text-gray-900 font-heading bg-gradient-to-r from-yellow-500 to-orange-400 border-3 border-indigo-900 shadow rounded-full md:mx-0 mx-8 md:px-10 md:py-4 py-2 px-12 opacity-40 cursor-not-allowed"
+                      >
+                        START LESSON
+                      </button>
                     </ButtonWrap>
                   </>
                 )}
@@ -114,5 +188,4 @@ function IndexPage() {
     </>
   );
 }
-
 export default IndexPage;

@@ -131,12 +131,13 @@ function UserProgress() {
   };
 
   const zeroProgressRouter = () => {
-    if (zeroPro === -1) {
-      return navigate(`/lesson/0`);
-    } else if (zeroPro === 0) {
-      return navigate(`/profile`);
-    } else {
-      return navigate(`/lesson/0/chapter/${zeroPro}/unit/0`);
+    switch (zeroPro) {
+      case -1:
+        return navigate(`/lesson/0`);
+      case 0:
+        return navigate(`/profile`);
+      default:
+        return navigate(`/lesson/0/chapter/${zeroPro}/unit/0`);
     }
   };
   const firProgressRouter = () => {
