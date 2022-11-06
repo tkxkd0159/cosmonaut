@@ -1,16 +1,13 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import tw from "tailwind-styled-components";
-import Icon1 from "../../assets/images/icon1.svg";
-import Icon2 from "../../assets/images/icon2.svg";
-import Icon3 from "../../assets/images/icon3.svg";
+
 import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/Navbar/Navbar";
 import Video from "../../assets/indexbg.mp4";
 import { indexInfo } from "../../core/config/indexInfo";
+import { ReadyJourney } from "./components/ReadyJourney";
 
-const Container = tw.div`relative lg:pb-20 bg-cover bg-center bg-opacity-10 lg:pt-32`;
-const Background = tw.div`bg-indigo-900 justify-center rounded-2xl border-indigo-900 border-4 flex h-index px-12 items-center bg-center bg-no-repeat`;
 const Title = tw.h2`text-2xl md:text-4xl text-center lg:text-left mt-2 text-orange-400 lg:mb-8 mb-6 font-heading`;
 const LessonList = tw.div`md:space-y-5 space-y-3 md:mx-0 mx-6`;
 const ButtonWrap = tw.div`flex flex-wrap mt-10 lg:justify-end justify-center group`;
@@ -28,7 +25,7 @@ function IndexInitialPage() {
   return (
     <>
       <Navbar />
-      <Container>
+      <div className="z-0 h-auto relative lg:pb-20 bg-cover bg-center bg-opacity-10 lg:pt-32">
         <div className="z-[-1] h-auto absolute top-[2.2rem] w-full">
           <video className="w-full" autoPlay muted loop playsInline>
             <source src={Video} type="video/mp4" />
@@ -36,48 +33,7 @@ function IndexInitialPage() {
         </div>
         <div class="container lg:px-8 mx-auto relative mb-24">
           <div class="grid grid-cols-2 w-full mx-auto lg:gap-12 lg:-mx-4">
-            <div class="animate-fadeInLtoR lg:border-b-0 lg:border-t-0 bg-green-500 rounded-3xl mx-6 lg:mx-0 md:px-2 px-1 md:py-2 py-1">
-              <div class="block object-cover mx-auto">
-                <Background
-                  style={{
-                    backgroundImage: `url(${require("../../assets/images/spacetrip.gif")})`,
-                  }}
-                >
-                  <div class="mx-auto grid grid-cols-1 border-t-2 border-b-2 border-dashed border-white place-content-center h-full py-40">
-                    <h3 class="w-full block text-2xl text-center font-heading text-yellow-500">
-                      Ready for your Journey?
-                    </h3>
-                    <div class="w-full grid grid-cols-3 md:my-6 py-4 place-items-center px-12">
-                      <div class="col-span-1">
-                        <img
-                          class="block h-20 object-cover rounded-md"
-                          alt=""
-                          src={Icon1}
-                        />
-                      </div>
-                      <div class="col-span-1">
-                        <img
-                          class="block h-20 object-cover rounded-md"
-                          alt=""
-                          src={Icon2}
-                        />
-                      </div>
-                      <div class="col-span-1">
-                        <img
-                          class="block h-20 object-cover rounded-md"
-                          alt=""
-                          src={Icon3}
-                        />
-                      </div>
-                    </div>
-                    <h3 class="w-full block text-base text-center text-white font-medium leading-normal px-12">
-                      Click any lessons on the right.You’ll see the overview
-                      plan for each trip.
-                    </h3>
-                  </div>
-                </Background>
-              </div>
-            </div>
+            <ReadyJourney />
             <Curriculum>
               <div class="max-w-lg px-4 mx-auto">
                 <Title>Curriculum</Title>
@@ -117,7 +73,7 @@ function IndexInitialPage() {
             </Curriculum>
           </div>
         </div>
-      </Container>
+      </div>
       <Footer />
     </>
   );

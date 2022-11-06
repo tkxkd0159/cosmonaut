@@ -94,7 +94,7 @@ function IndexPage() {
                   <>
                     <ButtonWrap>
                       <span className="w-full lg:text-right text-center text-white text-xs group-hover:opacity-100 opacity-0 font-bold md:mx-4 mx-8">
-                        You have to choose a lesson to start
+                        You have to finish previous lessons
                       </span>
                       <Link to={startLesson}>
                         <button class="inline-block md:w-auto mb-2 md:mb-0 text-center leading-6 text-lg text-gray-900 font-heading bg-gradient-to-r from-yellow-500 to-orange-400 border-3 border-indigo-900 shadow rounded-full md:mx-0 mx-8 md:px-10 md:py-4 py-2 px-12 opacity-40 cursor-not-allowed">
