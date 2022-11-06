@@ -139,6 +139,7 @@ export const L3C3Pr = () => {
 =======
                           <CodeBlock>Struct cosmWasm_std::Response</CodeBlock>{" "}
 >>>>>>> c1373f0 (refactor: fix cosmwasm -> CosmWasm)
+                          <CodeBlock>Struct CosmWasm_std::Response</CodeBlock>{" "}
                           has a method
                           <CodeBlock>add_submessages</CodeBlock> as follow:
                         </li>
