@@ -12,6 +12,7 @@ import { useRecoilState } from "recoil";
 import { useGetLessonPic } from "../../../core/api/getLessonPic";
 import { useGetUserProgress } from "../../../core/api/getUserProgress";
 import { progressState } from "../../../core/state/progressState";
+import { useNavigate } from "react-router-dom";
 
 const Container = tw.div`flex flex-wrap -mb-12`;
 const Profile = tw.div`w-full md:w-1/2 lg:w-1/3 mb-12`;
@@ -22,6 +23,7 @@ function UserProgress() {
   const [secRes, secFetch] = useGetLessonPic(2);
   const [thrRes, thrFetch] = useGetLessonPic(3);
   const [fourRes, fourFetch] = useGetLessonPic(4);
+  const navigate = useNavigate();
 
   // eslint-disable-next-line no-unused-vars
   const [zeroLoading, zeroPro, zeroProgress] = useGetUserProgress(0);
@@ -128,6 +130,84 @@ function UserProgress() {
     e.target.src = error;
   };
 
+  const zeroProgressRouter = () => {
+    if (zeroPro === -1) {
+      return navigate(`/lesson/0`);
+    } else if (zeroPro === 0) {
+      return navigate(`/profile`);
+    } else {
+      return navigate(`/lesson/0/chapter/${zeroPro}/unit/0`);
+    }
+  };
+  const firProgressRouter = () => {
+    switch (firPro) {
+      case -1:
+        return navigate(`/lesson/1`);
+      case 0:
+        return navigate(`/profile`);
+      case 1:
+      case 4:
+      case 5:
+        return navigate(`/lesson/1/chapter/${firPro}/unit/0`);
+      case 2:
+      case 3:
+      case 6:
+        return navigate(`/lesson/1/chapter/${firPro}/unit/1`);
+      default:
+        return navigate(`/profile`);
+    }
+  };
+  const secProgressRouter = () => {
+    switch (secPro) {
+      case -1:
+        return navigate(`/lesson/2`);
+      case 0:
+        return navigate(`/profile`);
+      case 1:
+      case 6:
+        return navigate(`/lesson/2/chapter/${secPro}/unit/0`);
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 7:
+      case 8:
+        return navigate(`/lesson/2/chapter/${secPro}/unit/1`);
+      default:
+        return navigate(`/profile`);
+    }
+  };
+  const thrProgressRouter = () => {
+    switch (thrPro) {
+      case -1:
+        return navigate(`/lesson/3`);
+      case 0:
+        return navigate(`/profile`);
+      case 1:
+        return navigate(`/lesson/3/chapter/${thrPro}/unit/0`);
+      case 2:
+      case 3:
+        return navigate(`/lesson/3/chapter/${thrPro}/unit/1`);
+      default:
+        return navigate(`/profile`);
+    }
+  };
+  const fourProgressRouter = () => {
+    switch (fourPro) {
+      case -1:
+        return navigate(`/lesson/4`);
+      case 0:
+        return navigate(`/profile`);
+      case 1:
+        return navigate(`/lesson/4/chapter/${fourPro}/unit/0`);
+      case 2:
+      case 3:
+        return navigate(`/lesson/4/chapter/${fourPro}/unit/1`);
+      default:
+        return navigate(`/profile`);
+    }
+  };
+
   return (
     <Container>
       <Profile>
@@ -144,9 +224,9 @@ function UserProgress() {
               Get Ready for Terraforming
             </h3>
             <ProgressBar0 progress={zeroPro} />
-            <p class="block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading">
-              {zero}
-            </p>
+            <div class="block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading">
+              <button onClick={zeroProgressRouter}>{zero}</button>
+            </div>
           </div>
         </div>
       </Profile>
@@ -160,15 +240,15 @@ function UserProgress() {
               alt=""
             />
             <h4 class="text-2xl text-indigo-900 font-heading mb-1">
-              Lesson. 1
+              Lesson 1.
             </h4>
             <h3 class="text-lg text-indigo-900 font-heading mb-4">
               Welcome to Spaceship Factory
             </h3>
             <ProgressBar1 progress={firPro} />
-            <p class="block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading">
-              {fir}
-            </p>
+            <div class="block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading">
+              <button onClick={firProgressRouter}>{fir}</button>
+            </div>
           </div>
         </div>
       </Profile>
@@ -182,15 +262,15 @@ function UserProgress() {
               alt=""
             />
             <h4 class="text-2xl text-indigo-900 font-heading mb-1">
-              Lesson. 2
+              Lesson 2.
             </h4>
             <h3 class="text-lg text-indigo-900 font-heading mb-4">
               Fuel Up and Load the Freight
             </h3>
             <ProgressBar2 progress={secPro} />
-            <p class="block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading">
-              {sec}
-            </p>
+            <div class="block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading">
+              <button onClick={secProgressRouter}>{sec}</button>
+            </div>
           </div>
         </div>
       </Profile>
@@ -204,15 +284,15 @@ function UserProgress() {
               alt=""
             />
             <h4 class="text-2xl text-indigo-900 font-heading mb-1">
-              Lesson. 3
+              Lesson 3.
             </h4>
             <h3 class="text-lg text-indigo-900 font-heading mb-4">
               Prepare to Launch
             </h3>
             <ProgressBar3 progress={thrPro} />
-            <p class="block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading">
-              {thr}
-            </p>
+            <div class="block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading">
+              <button onClick={thrProgressRouter}>{thr}</button>
+            </div>
           </div>
         </div>
       </Profile>
@@ -226,15 +306,15 @@ function UserProgress() {
               alt=""
             />
             <h4 class="text-2xl text-indigo-900 font-heading mb-1">
-              Lesson. 4
+              Lesson 4.
             </h4>
             <h3 class="text-lg text-indigo-900 font-heading mb-4">
               ESFERA Takeoff
             </h3>
             <ProgressBar4 progress={fourPro} />
-            <p class="block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading">
-              {four}
-            </p>
+            <div class="block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading">
+              <button onClick={fourProgressRouter}>{four}</button>
+            </div>
           </div>
         </div>
       </Profile>
