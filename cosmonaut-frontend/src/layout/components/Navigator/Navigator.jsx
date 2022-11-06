@@ -32,8 +32,6 @@ function Navigator() {
   const handleRight = async () => {
     setHandleModal(true);
 
-    console.log(`readFetch: ${readFetch()}`);
-
     if (chID >= String(userRes) && !(userRes === 0)) {
       if (lessonID === "0" && chID === "4" && uID === "2") {
         await readFetch();
