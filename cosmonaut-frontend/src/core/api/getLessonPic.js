@@ -7,7 +7,6 @@ export const useGetLessonPic = (lessonID) => {
     method: "GET",
     credentials: "include",
   };
-  console.log(`lessonID: ${lessonID}, type: ${typeof lessonID}`);
 
   const fetchData = async () => {
     try {
@@ -18,7 +17,6 @@ export const useGetLessonPic = (lessonID) => {
       const data = await res.blob();
       let imgObjectURL = URL.createObjectURL(data);
       setResponse(imgObjectURL);
-      console.log(`getImage: ${response}`);
     } catch (error) {
       console.log(error);
     }

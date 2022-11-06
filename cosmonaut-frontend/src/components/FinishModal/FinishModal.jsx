@@ -42,16 +42,9 @@ function FinishModal() {
   useEffect(() => {
     userFetch();
     // if (userRes !== -1) return picFetch();
-    if (!userRes === -1) picFetch();
+    picFetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  console.log(
-    `userRes: ${userRes}, boolean: ${!(userRes === -1)},  test: ${
-      userRes !== -1
-    }`
-  );
-  console.log(`lessonPic: ${lessonPic}`);
+  }, [lessonID]);
 
   const onErrorImg = (e) => {
     e.target.src = error;
