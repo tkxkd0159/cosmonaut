@@ -8,7 +8,7 @@ export const EpSummary = () => {
       <Header>In a brief summary, we learned the following:</Header>
       <ListStyle>
         <li>
-          How to create and code Cosmwasm contract; the actor model design
+          How to create and code CosmWasm contract; the actor model design
           pattern.
         </li>
         <li>How to use and code messages and submessages.</li>

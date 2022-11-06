@@ -6,21 +6,21 @@ function L0C1U0() {
   return (
     <React.Fragment>
       <BasicP>
-        <CodeBlock>Cosmwasm</CodeBlock> is a smart contract written in Web
+        <CodeBlock>CosmWasm</CodeBlock> is a smart contract written in Web
         Assembly for the cosmos ecosystem and is also a virtual machine (VM)
         that executes Web Assembly bytecode on the blockchain.
       </BasicP>
       <BasicP>
         While Web Assembly allows programs written in several existing and new
-        languages, <CodeBlock>Cosmwasm</CodeBlock> smart contract is
-        almost written in <CodeBlock>Rust</CodeBlock> to enhance security.
-        Thanks to an intelligent and industrious compiler,
-        <CodeBlock>Rust</CodeBlock> can prevent explicit and implicit issues both at
-        a compile time.
+        languages, <CodeBlock>CosmWasm</CodeBlock> smart contract is almost
+        written in <CodeBlock>Rust</CodeBlock> to enhance security. Thanks to an
+        intelligent and industrious compiler,
+        <CodeBlock>Rust</CodeBlock> can prevent explicit and implicit issues
+        both at a compile time.
       </BasicP>
       <BasicP>
         In this chapter, let's build an environment where you can conveniently
-        code <CodeBlock>Cosmos</CodeBlock> and <CodeBlock>Cosmwasm</CodeBlock>{" "}
+        code <CodeBlock>Cosmos</CodeBlock> and <CodeBlock>CosmWasm</CodeBlock>{" "}
         programs.
       </BasicP>
     </React.Fragment>

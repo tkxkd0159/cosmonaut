@@ -5,7 +5,7 @@ function L2Desc() {
   return (
     <>
       <ChapterDesc>
-        The CW20 is a standard for fungible tokens based on Cosmwasm. The name
+        The CW20 is a standard for fungible tokens based on CosmWasm. The name
         and design referenced Ethereum's ERC20 standard, as such as the CW721
         did. However, there are various changes to improve safety.
         <br />

@@ -8,7 +8,7 @@ export function L4C3Desc() {
     <>
       <BasicP>
         <Keyword>In this lecture,</Keyword> we’ve studied{" "}
-        <CodeBlock>Cosmwasm</CodeBlock> and <CodeBlock>Rust</CodeBlock> through
+        <CodeBlock>CosmWasm</CodeBlock> and <CodeBlock>Rust</CodeBlock> through
         practical smart contracts such as CW721 and CW20. We also programmed
         those contracts by ourselves and they were tested by several test cases
         for each step.

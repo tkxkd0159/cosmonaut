@@ -30,14 +30,13 @@ $ wasmd version
         </a>
       </BasicA>
       <BasicP>
-        wasmd, the core of Cosmwasm platform, is the Cosmos Zone implementation
+        wasmd, the core of CosmWasm platform, is the Cosmos Zone implementation
         which supports smart contract.
       </BasicP>
       <BasicP>
-        It is an addition of x/wasm based on cosmos/gaia.
-        That is, the wasmd binaries behave like gaiad, with the x/wasm module’s
-        functionality. If someone is going to develop a smart contract, he
-        should use a wasmd.
+        It is an addition of x/wasm based on cosmos/gaia. That is, the wasmd
+        binaries behave like gaiad, with the x/wasm module’s functionality. If
+        someone is going to develop a smart contract, he should use a wasmd.
       </BasicP>
       <BasicP>
         To install wasmd, Go must be installed and PATH must be set well.

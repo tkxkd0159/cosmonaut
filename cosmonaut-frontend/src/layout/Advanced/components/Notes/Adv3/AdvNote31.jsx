@@ -6,7 +6,7 @@ const AdvNote31 = () => {
   return (
     <>
       <BasicP>
-        Confio's Rand is a drand project implemented as a Cosmwasm smart
+        Confio's Rand is a drand project implemented as a CosmWasm smart
         contract.
         <br />
         <br />
