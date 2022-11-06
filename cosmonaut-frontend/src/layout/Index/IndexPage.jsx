@@ -37,8 +37,6 @@ function IndexPage() {
     switch (lessonID) {
       case "0":
         switch (userRes) {
-          case 0:
-            return navigate(`/lesson/0`);
           default:
             return navigate(`/lesson/0/chapter/1/unit/0`);
         }
