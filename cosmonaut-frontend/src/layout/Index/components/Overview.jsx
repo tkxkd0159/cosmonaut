@@ -28,9 +28,11 @@ const Wrapper = tw.div`bg-yellow-100 md:grid md:grid-cols-3 xl:gap-4 gap-2 md:mt
 
 function Overview() {
   const { lessonID } = useParams();
-  const [picRes, picFetch] = useGetLessonPic(lessonID);
+  const [picRes, picFetch] = useGetLessonPic(Number(lessonID));
   // eslint-disable-next-line no-unused-vars
-  const [userLoading, userRes, userFetch] = useGetUserProgress(lessonID);
+  const [userLoading, userRes, userFetch] = useGetUserProgress(
+    Number(lessonID)
+  );
   const progress = useRecoilValue(progressState);
 
   useEffect(() => {

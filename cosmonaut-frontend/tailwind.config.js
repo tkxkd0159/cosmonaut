@@ -346,7 +346,7 @@ module.exports = {
       mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
     },
     fontSize: {
-      xxs: ["0.3rem", { lineHeight: "0.70rem" }],
+      xxs: ["0.3rem", { lineHeight: "0.75rem" }],
       xs: ["0.75rem", { lineHeight: "1rem" }],
       sm: ["0.875rem", { lineHeight: "1.25rem" }],
       base: ["1rem", { lineHeight: "1.875rem" }],

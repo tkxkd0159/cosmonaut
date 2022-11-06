@@ -20,7 +20,9 @@ const ButtonWrap = tw.div`flex flex-wrap mt-10 lg:justify-end justify-center gro
 function IndexPage() {
   const { lessonID } = useParams();
   // eslint-disable-next-line no-unused-vars
-  const [userLoading, userRes, userFetch] = useGetUserProgress(lessonID);
+  const [userLoading, userRes, userFetch] = useGetUserProgress(
+    Number(lessonID)
+  );
   // eslint-disable-next-line no-unused-vars
   const [handleModal, setHandleModal] = useRecoilState(handleModalAtom);
   let startLesson;

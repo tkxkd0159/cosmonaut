@@ -160,7 +160,11 @@ export const ProgressBar2 = (progress) => {
         </div>
         <div class="flex w-full justify-between my-2">
           <span class="flex justify-start xl:text-sm text-xxs font-mono text-gray-700">
-            <img class="w-[0.6rem] h-[0.6rem]" src={flask} alt="flask" />
+            <img
+              class="w-[0.6rem] h-[0.6rem] xl:w-4 xl:h-4"
+              src={flask}
+              alt="flask"
+            />
           </span>
           <span class="xl:text-sm text-xxs font-medium text-gray-700">
             Chp.1
@@ -187,7 +191,11 @@ export const ProgressBar2 = (progress) => {
             Chp.8
           </span>
           <span class="flex xl:text-sm text-xxs justify-end font-mono text-gray-700">
-            <img class="w-[0.6rem] h-[0.6rem]" src={check} alt="check" />
+            <img
+              class="w-[0.6rem] h-[0.6rem] xl:w-4 xl:h-4"
+              src={check}
+              alt="check"
+            />
           </span>
         </div>
       </Container>

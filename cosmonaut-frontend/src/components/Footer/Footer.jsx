@@ -2,7 +2,7 @@ import React from "react";
 import tw from "tailwind-styled-components";
 import LogoV4 from "../../assets/images/logo-v4.svg";
 
-const Container = tw.div`border-t px-8 lg:px-20 lg:pt-20 pb-8 pt-10 bg-cover bg-center bg-black`;
+const Container = tw.div`border-t px-8 lg:px-20 lg:pt-12 pb-24 pt-6 bg-cover bg-center bg-black`;
 const Logo = tw.a`text-lg font-bold`;
 
 function Footer() {

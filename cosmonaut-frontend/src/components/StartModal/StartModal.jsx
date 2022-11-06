@@ -81,6 +81,7 @@ function StartModal() {
 
   const closeModal = async () => {
     if (String(key) === proChapter) initFetch();
+    console.log(`initFetch(): ${initFetch()}`);
 
     if (!(String(chID) === String(key))) {
       setHandleModal(false);
