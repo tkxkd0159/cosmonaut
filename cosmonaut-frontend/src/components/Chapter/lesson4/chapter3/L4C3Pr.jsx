@@ -41,14 +41,14 @@ export const L4C3Pr = () => {
   useEffect(() => {
     setFiles({
       ...files,
-      [tab]: btoa(exRes[tab]),
+      [tab]: window.btoa(exRes[tab]),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exRes]);
   const [files, setFiles] = useState(initFile);
 
   useEffect(() => {
-    setFiles({ ...files, [tab]: btoa(code) });
+    setFiles({ ...files, [tab]: window.btoa(code) });
     sessionStorage.setItem(tab + `${lessonID}`, code);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);

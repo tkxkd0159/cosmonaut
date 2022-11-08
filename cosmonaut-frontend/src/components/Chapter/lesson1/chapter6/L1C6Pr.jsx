@@ -41,11 +41,11 @@ export const L1C6Pr = () => {
   useEffect(() => {
     setFiles({
       ...files,
-      [tab]: btoa(exRes[tab]),
+      [tab]: window.btoa(exRes[tab]),
     });
   }, [tab]);
   useEffect(() => {
-    setFiles({ ...files, [tab]: btoa(code) });
+    setFiles({ ...files, [tab]: window.btoa(code) });
     sessionStorage.setItem(key, code);
   }, [code]);
   console.log("tab_check", tab);

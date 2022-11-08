@@ -19,7 +19,7 @@ export const useCodeEx = () => {
       );
       const data = await res.json();
       let resResult = Object.fromEntries(
-        Object.entries(data).map(([key, value]) => [key, atob(value)])
+        Object.entries(data).map(([key, value]) => [key, window.atob(value)])
       );
       setResponse(resResult);
     } catch (error) {}

@@ -24,11 +24,14 @@ export const useDiffApi = (isLast) => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      let res = await fetch(`${process.env.REACT_APP_API_ADDR}/v1/cosm/diff`, option);
+      let res = await fetch(
+        `${process.env.REACT_APP_API_ADDR}/v1/cosm/diff`,
+        option
+      );
       const data = await res.json();
 
       let resResult = Object.fromEntries(
-        Object.entries(data).map(([key, value]) => [key, atob(value)])
+        Object.entries(data).map(([key, value]) => [key, window.atob(value)])
       );
 
       setResponse(resResult);

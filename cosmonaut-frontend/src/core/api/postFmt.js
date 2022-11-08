@@ -26,7 +26,10 @@ export const useFmtApi = (files, tab) => {
       );
       const data = await res.json();
       let resResult = await Object.fromEntries(
-        Object.entries(data.result).map(([key, value]) => [key, atob(value)])
+        Object.entries(data.result).map(([key, value]) => [
+          key,
+          window.atob(value),
+        ])
       );
 
       setResponse(resResult);

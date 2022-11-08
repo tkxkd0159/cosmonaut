@@ -32,7 +32,7 @@ const L3C1U2S1Code = ({ read, ex, ans, difSuccess }) => {
   const [code, setCode] = useState(initCode);
 
   useEffect(() => {
-    setFiles({ ...files, [tab]: btoa(code) });
+    setFiles({ ...files, [tab]: window.btoa(code) });
     sessionStorage.setItem(index, code);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);
