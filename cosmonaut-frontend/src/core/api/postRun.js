@@ -21,6 +21,7 @@ export const useRunApi = (files) => {
       files: files,
     }),
   };
+  console.log("api_body_files", files);
 
   const fetchData = async () => {
     setIsError(false);
@@ -31,7 +32,10 @@ export const useRunApi = (files) => {
         `${process.env.REACT_APP_API_ADDR}/v1/cosm/build`,
         option
       );
+      console.log("api_option", option);
+      console.log("api_response", res);
       let data = await res.json();
+      console.log("api_data", data);
 
       if (res.status === 200) {
         setIsSuccess(true);
