@@ -10,14 +10,14 @@ loader.config({
 
 export default function EditorResult({
   read,
+  defaultLanguage,
+  difSuccess,
+  exCode,
   path,
   index,
-  difSuccess,
-  defaultLanguage,
-  exCode,
-  files,
   onChange,
   onMount,
+  files,
 }) {
   // eslint-disable-next-line no-unused-vars
   const [fmtRes, fmtLoading, fmtSuccess, fmtError, fmtFetch] = useFmtApi(
@@ -30,6 +30,13 @@ export default function EditorResult({
       sessionStorage.setItem(index, fmtRes[index]);
     }
   };
+  console.log("difSuccess", difSuccess);
+  console.log("onMount", onMount);
+  console.log("exCode", exCode);
+  console.log("path", path);
+  console.log("onChange", onChange);
+  console.log("files", files);
+  console.log("----------------------------------------");
 
   const userCode = () => {
     if (
@@ -43,6 +50,8 @@ export default function EditorResult({
       return sessionStorage[index];
     }
   };
+  console.log("sessionStorage[index]", sessionStorage[index]);
+  console.log("userCode()", userCode());
 
   function handleEditorWillMount(monaco) {
     monaco.editor.getModels().forEach((model) => model.dispose());

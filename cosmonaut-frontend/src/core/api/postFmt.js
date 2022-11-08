@@ -20,15 +20,17 @@ export const useFmtApi = (files, tab) => {
     setIsLoading(true);
 
     try {
-      let res = await fetch(`${process.env.REACT_APP_API_ADDR}/v1/rust/fmt`, option);
+      let res = await fetch(
+        `${process.env.REACT_APP_API_ADDR}/v1/rust/fmt`,
+        option
+      );
       const data = await res.json();
-
       let resResult = await Object.fromEntries(
         Object.entries(data.result).map(([key, value]) => [key, atob(value)])
       );
 
-      await setResponse(resResult);
-      await setIsSuccess(true);
+      setResponse(resResult);
+      setIsSuccess(true);
     } catch (error) {
       alert(error);
       setIsError(true);
