@@ -23,39 +23,37 @@ import { useCodeEx } from "../../../../core/api/getTargetCodes";
 export const L1C6Pr = () => {
   const { lessonID, chID, uID } = useParams();
   const [hide, setHide] = useState(true);
+  const navigate = useNavigate();
   const editorRef = useRef(null);
   const [tab, setTab] = useState("state.rs");
   const [readOnly, setReadOnly] = useState(false);
   const [exRes, exLoading, exFetch] = useCodeEx();
 
-  let initCode;
-  if (sessionStorage.getItem(tab + `${lessonID}`)) {
-    initCode = sessionStorage.getItem(tab + `${lessonID}`);
-  } else {
+  let key = tab + lessonID;
+  let initCode = "";
+  if (sessionStorage.getItem(key)) {
+    initCode = sessionStorage.getItem(key);
+  } else if (exRes) {
     initCode = exRes[tab];
   }
   const [code, setCode] = useState(initCode);
-
-  let initFile;
+  const [files, setFiles] = useState();
   useEffect(() => {
     setFiles({
       ...files,
       [tab]: btoa(exRes[tab]),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [exRes]);
-  const [files, setFiles] = useState(initFile);
-
+  }, [tab]);
   useEffect(() => {
     setFiles({ ...files, [tab]: btoa(code) });
-    sessionStorage.setItem(tab + `${lessonID}`, code);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    sessionStorage.setItem(key, code);
   }, [code]);
+  console.log("tab_check", tab);
+  console.log("files_check", files);
 
   const [executeRes, queryRes, runLoading, runSuccess, runError, runFetch] =
     useRunApi(files);
 
-  const navigate = useNavigate();
   const nextLesson = () => {
     if (lessonID === "1" && chID === "6" && uID === "1") {
       return navigate(`/lesson/1/chapter/6/unit/2`);
@@ -357,7 +355,7 @@ export const L1C6Pr = () => {
                       <EditorPr
                         defaultLanguage="rust"
                         exCode={exRes[tab]}
-                        path={tab + `${lessonID}`}
+                        path={key}
                         onChange={async (e) => {
                           await setCode(e);
                         }}

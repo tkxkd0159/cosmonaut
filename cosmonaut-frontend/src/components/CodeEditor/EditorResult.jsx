@@ -4,7 +4,7 @@ import { useFmtApi } from "../../core/api/postFmt";
 
 loader.config({
   paths: {
-    vs: "/monaco-editor/min/vs",
+    vs: "/monaco-editor/min/vs/loader.js",
   },
 });
 
