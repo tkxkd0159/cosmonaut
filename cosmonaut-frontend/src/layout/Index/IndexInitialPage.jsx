@@ -1,12 +1,11 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import tw from "tailwind-styled-components";
-
-import Footer from "../../components/Footer/Footer";
 import Navbar from "../../components/Navbar/Navbar";
 import Video from "../../assets/indexbg.mp4";
 import { indexInfo } from "../../core/config/indexInfo";
 import { ReadyJourney } from "./components/ReadyJourney";
+// import spacehole from "../../assets/images/spacehole-2x.jpg";
 
 const Title = tw.h2`text-2xl md:text-4xl text-center lg:text-left mt-2 text-orange-400 lg:mb-8 mb-6 font-heading`;
 const LessonList = tw.div`md:space-y-5 space-y-3 md:mx-0 mx-6`;
@@ -26,8 +25,23 @@ function IndexInitialPage() {
     <>
       <Navbar />
       <div className="z-0 h-auto relative lg:pb-20 bg-cover bg-center bg-opacity-10 lg:pt-32">
-        <div className="z-[-1] h-auto absolute top-[2.2rem] w-full">
-          <video className="w-full" autoPlay muted loop playsInline>
+        <div className="z-[-3] absolute top-[2.2rem] w-full h-[1100px]">
+          <video
+            className="z-[-2] absolute top-0"
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
+            <source src={Video} type="video/mp4" />
+          </video>
+          <video
+            className="z-[-2] absolute bottom-0"
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
             <source src={Video} type="video/mp4" />
           </video>
         </div>
@@ -74,7 +88,6 @@ function IndexInitialPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

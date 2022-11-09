@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import tw from "tailwind-styled-components";
 import LogoV4 from "../../assets/images/logo-v4.svg";
-import { LoginState } from "../../core/state/login";
+import { LoginState } from "../../core/state/loginState";
 import Profile from "../Common/Profile";
 import { useIsLogin } from "../../core/api/useIsLogin";
 

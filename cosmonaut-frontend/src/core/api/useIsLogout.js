@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { LoginState } from "../state/login";
+import { LoginState } from "../state/loginState";
 
 export const useIsLogout = () => {
   // eslint-disable-next-line no-unused-vars

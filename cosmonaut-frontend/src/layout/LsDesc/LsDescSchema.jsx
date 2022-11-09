@@ -11,7 +11,7 @@ import StartModal from "../../components/StartModal/StartModal";
 import L1C4PlusDesc from "../../components/Chapter/lesson1/chapter4/L1C4PlusDesc";
 import Navigator from "../components/Navigator/Navigator";
 import BgV4 from "../../assets/images/bg-v4.svg";
-import { handleModalAtom } from "../../core/state/handleModal";
+import { handleModalAtom } from "../../core/state/handleModalState";
 import { unitInfo } from "../../core/config/unitInfo";
 import { chapterInfo } from "../../core/config/chapterInfo";
 

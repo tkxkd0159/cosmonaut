@@ -2,14 +2,13 @@ import React from "react";
 import clsx from "clsx";
 import tw from "tailwind-styled-components";
 import Navbar from "../../components/Navbar/Navbar";
-import Footer from "../../components/Footer/Footer";
 import Overview from "./components/Overview";
 import { useGetUserProgress } from "../../core/api/getUserProgress";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { useEffect } from "react";
 import Video from "../../assets/indexbg.mp4";
-import { handleModalAtom } from "../../core/state/handleModal";
+import { handleModalAtom } from "../../core/state/handleModalState";
 import { indexInfo } from "../../core/config/indexInfo";
 
 const Curriculum = tw.div`w-full mb-14 lg:mb-0 lg:col-span-1 col-span-2 lg:order-2 order-1`;
@@ -112,12 +111,26 @@ function IndexPage() {
     <>
       <Navbar />
       <div className="z-0 h-auto relative lg:pb-20 bg-cover bg-center bg-opacity-10 lg:pt-32">
-        <div className="z-[-1] h-auto absolute top-[2.2rem] w-full">
-          <video className="w-full" autoPlay muted loop playsInline>
+        <div className="z-[-3] absolute top-[2.2rem] w-full h-[1100px]">
+          <video
+            className="z-[-2] absolute top-0"
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
+            <source src={Video} type="video/mp4" />
+          </video>
+          <video
+            className="z-[-2] absolute bottom-0"
+            autoPlay
+            muted
+            loop
+            playsInline
+          >
             <source src={Video} type="video/mp4" />
           </video>
         </div>
-
         <div class="container lg:px-8 mx-auto relative mb-24">
           <div class="grid grid-cols-2 w-full mx-auto lg:gap-12 lg:-mx-4">
             <Overview />
@@ -181,8 +194,6 @@ function IndexPage() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </>
   );
 }

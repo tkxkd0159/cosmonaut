@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { useNavigate, useParams } from "react-router-dom";
 import Arrowleft from "../../../assets/images/arrow-left.svg";
 import Arrowright from "../../../assets/images/arrow-right.svg";
-import { handleModalAtom } from "../../../core/state/handleModal";
+import { handleModalAtom } from "../../../core/state/handleModalState";
 import { usePostRead } from "../../../core/api/postRead";
 import { useGetUserProgress } from "../../../core/api/getUserProgress";
 

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import Account3 from "../../assets/images/signed-in-account3.svg";
 import { useIsLogout } from "../../core/api/useIsLogout";
-import { LoginState } from "../../core/state/login";
+import { LoginState } from "../../core/state/loginState";
 
 const Profile = ({ name }) => {
   // eslint-disable-next-line no-unused-vars

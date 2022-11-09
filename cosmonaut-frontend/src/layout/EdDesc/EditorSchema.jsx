@@ -12,7 +12,7 @@ import ChapterTitle from "../components/ChapterTitle";
 import EditorContents from "./EditorContents";
 import StartModal from "../../components/StartModal/StartModal";
 import FinishModal from "../../components/FinishModal/FinishModal";
-import { handleModalAtom } from "../../core/state/handleModal";
+import { handleModalAtom } from "../../core/state/handleModalState";
 import { chapterInfo } from "../../core/config/chapterInfo";
 import { unitInfo } from "../../core/config/unitInfo";
 

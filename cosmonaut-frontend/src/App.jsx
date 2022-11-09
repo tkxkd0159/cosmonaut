@@ -5,7 +5,7 @@ import ScrollToTop from "./components/Common/ScrollToTop";
 import Profile from "./components/Profile/Profile";
 
 import SignUp from "./components/SignUp/SignUp";
-import { LoginState } from "./core/state/login";
+import { LoginState } from "./core/state/loginState";
 import NotFound from "./error/NotFound";
 import AdvancePage from "./layout/Advanced/AdvancePage";
 import { AppendixPage } from "./layout/Appendix/AppendixPage";

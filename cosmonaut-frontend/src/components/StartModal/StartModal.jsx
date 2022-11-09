@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { usePostInitial } from "../../core/api/postInitial";
 import { useGetUserProgress } from "../../core/api/getUserProgress";
-import { handleModalAtom } from "../../core/state/handleModal";
+import { handleModalAtom } from "../../core/state/handleModalState";
 import { progressState } from "../../core/state/progressState";
 import { chapterInfo } from "../../core/config/chapterInfo";
 import { lessonInfos } from "../../core/config/lessonInfo";

@@ -10,7 +10,7 @@ import {
   ProgressBar4,
 } from "../Common/ProgressBar";
 import error from "../../assets/images/dummy-nft.jpg";
-import { handleModalAtom } from "../../core/state/handleModal";
+import { handleModalAtom } from "../../core/state/handleModalState";
 import { lessonInfos } from "../../core/config/lessonInfo";
 import { useGetUserProgress } from "../../core/api/getUserProgress";
 import { useGetLessonPic } from "../../core/api/getLessonPic";
