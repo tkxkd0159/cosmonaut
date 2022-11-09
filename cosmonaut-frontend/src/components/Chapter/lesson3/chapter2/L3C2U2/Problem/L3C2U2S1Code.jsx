@@ -14,7 +14,7 @@ import HintButton from "../../../../../../components/Contents/HintButton";
 import ListStyle from "../../../../../../components/Contents/ListStyle";
 import ProblemSection from "../../../../../../components/Contents/ProblemSection";
 import Question from "../../../../../../components/Contents/Question";
-
+import { Base64 } from "js-base64";
 const L3C2U2S1Code = ({ read, ex, ans, difSuccess }) => {
   const [hide, setHide] = useState(true);
   const [tab, setTab] = useState("problem");
@@ -31,7 +31,7 @@ const L3C2U2S1Code = ({ read, ex, ans, difSuccess }) => {
   const [code, setCode] = useState(initCode);
 
   useEffect(() => {
-    setFiles({ ...files, [tab]: window.btoa(code) });
+    setFiles({ ...files, [tab]: Base64.encode(code) });
     sessionStorage.setItem(index, code);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);

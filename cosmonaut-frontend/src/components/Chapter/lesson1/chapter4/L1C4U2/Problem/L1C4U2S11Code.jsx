@@ -30,7 +30,7 @@ const L1C4U2S11Code = ({ read, ex, ans, difSuccess }) => {
   const [code, setCode] = useState(initCode);
 
   useEffect(() => {
-    setFiles({ ...files, [tab]: window.btoa(code) });
+    setFiles({ ...files, [tab]: Base64.encode(code) });
     sessionStorage.setItem(index, code);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);

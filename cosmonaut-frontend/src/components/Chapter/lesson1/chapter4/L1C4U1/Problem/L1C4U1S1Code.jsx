@@ -1,3 +1,4 @@
+import { Base64 } from "js-base64";
 import React, { useEffect, useRef, useState } from "react";
 import { AnsTabAble } from "../../../../../../components/CodeEditor/AnsTabAble";
 import EditorAnsHeader from "../../../../../../components/CodeEditor/EditorAnsHeader";
@@ -31,7 +32,7 @@ const L1C4U1S1Code = ({ read, ex, ans, difSuccess }) => {
   }
   const [code, setCode] = useState(initCode);
   useEffect(() => {
-    setFiles({ ...files, [tab]: window.btoa(code) });
+    setFiles({ ...files, [tab]: Base64.encode(code) });
     sessionStorage.setItem(index, code);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);

@@ -20,6 +20,7 @@ import CodeStart from "../../../../components/CodeEditor/CodeStart";
 import { useBuild } from "../../../../core/hook/useBuild";
 import { BuildButton, NextButton } from "../../../Common/buttons";
 import { useTargetCode } from "../../../../core/hook/useTartgetCode";
+import { Base64 } from "js-base64";
 
 export const L1C6Pr = () => {
   const { lessonID, chID, uID } = useParams();
@@ -44,11 +45,11 @@ export const L1C6Pr = () => {
   useEffect(() => {
     setFiles({
       ...files,
-      [tab]: window.btoa(encodeURIComponent(example[tab])),
+      [tab]: Base64.encode(example[tab]),
     });
   }, [tab]);
   useEffect(() => {
-    setFiles({ ...files, [tab]: window.btoa(code) });
+    setFiles({ ...files, [tab]: Base64.encode(code) });
     sessionStorage.setItem(key, code);
   }, [code]);
 

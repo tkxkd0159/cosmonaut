@@ -19,6 +19,7 @@ import ResultTab from "../../../../components/CodeEditor/ResultTab";
 import CodeStart from "../../../../components/CodeEditor/CodeStart";
 import { useRunApi } from "../../../../core/api/postRun";
 import { useCodeEx } from "../../../../core/api/getTargetCodes";
+import { Base64 } from "js-base64";
 
 export const L2C8Pr = () => {
   const { lessonID, chID, uID } = useParams();
@@ -40,14 +41,14 @@ export const L2C8Pr = () => {
   useEffect(() => {
     setFiles({
       ...files,
-      [tab]: window.btoa(exRes[tab]),
+      [tab]: Base64.encode(exRes[tab]),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exRes]);
   const [files, setFiles] = useState(initFile);
 
   useEffect(() => {
-    setFiles({ ...files, [tab]: window.btoa(code) });
+    setFiles({ ...files, [tab]: Base64.encode(code) });
     sessionStorage.setItem(tab + `${lessonID}`, code);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code]);
