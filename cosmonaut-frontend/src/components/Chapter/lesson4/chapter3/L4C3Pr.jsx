@@ -18,52 +18,57 @@ import ResultTab from "../../../../components/CodeEditor/ResultTab";
 import TabHeader from "../../../../components/Practice/TabHeader";
 import PracticeName from "../../../../components/Practice/PracticeName";
 import CodeStart from "../../../../components/CodeEditor/CodeStart";
-import { useRunApi } from "../../../../core/api/postRun";
-import { useCodeEx } from "../../../../core/api/getTargetCodes";
 import { Base64 } from "js-base64";
+import { useBuild } from "../../../../core/hook/useBuild";
+import { useTargetCode } from "../../../../core/hook/useTartgetCode";
+import { BuildButton, NextButton } from "../../../Common/buttons";
 
 export const L4C3Pr = () => {
-  const { lessonID, chID, uID } = useParams();
+  const { lessonID, chID } = useParams();
   const [hide, setHide] = useState(true);
-  const [tab, setTab] = useState("execute.rs");
+  const navigate = useNavigate();
   const editorRef = useRef(null);
+  const [tab, setTab] = useState("state.rs");
   const [readOnly, setReadOnly] = useState(false);
-  const [exRes, exLoading, exFetch] = useCodeEx();
-
-  let initCode;
-  if (sessionStorage.getItem(tab + `${lessonID}`)) {
-    initCode = sessionStorage.getItem(tab + `${lessonID}`);
-  } else {
-    initCode = exRes[tab];
+  const [getTargetCode, example, exLoading] = useTargetCode();
+  const key = tab + lessonID;
+  let initCode = "";
+  if (sessionStorage.getItem(key)) {
+    initCode = sessionStorage.getItem(key);
+  } else if (example) {
+    initCode = example[tab];
   }
   const [code, setCode] = useState(initCode);
-
-  let initFile;
-  useEffect(() => {
-    setFiles({
-      ...files,
-      [tab]: Base64.encode(exRes[tab]),
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [exRes]);
-  const [files, setFiles] = useState(initFile);
+  const [files, setFiles] = useState({});
 
   useEffect(() => {
     setFiles({ ...files, [tab]: Base64.encode(code) });
-    sessionStorage.setItem(tab + `${lessonID}`, code);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    sessionStorage.setItem(key, code);
   }, [code]);
 
-  const [executeRes, queryRes, runLoading, runSuccess, runError, runFetch] =
-    useRunApi(files);
+  const { postBuild, runSuccess, runError, runLoading, executeRes, queryRes } =
+    useBuild();
 
-  const navigate = useNavigate();
-  const nextLesson = () => {
-    if (lessonID === "4" && chID === "3" && uID === "1") {
-      return navigate(`/lesson/4/chapter/3/unit/2`);
-    }
+  const handleNextLesson = () => {
+    navigate(`/lesson/4/chapter/3/unit/2`);
+  };
+  const handleBuildButton = async () => {
+    await postBuild(lessonID, chID, files);
+  };
+  const handleTargetCode = async () => {
+    await getTargetCode(lessonID, chID);
   };
 
+  let Button;
+  if (executeRes.result === "success" && queryRes.result === "success") {
+    Button = (
+      <NextButton onClick={handleNextLesson} content={"Jump to Next Lesson"} />
+    );
+  } else {
+    Button = (
+      <BuildButton onClick={handleBuildButton} content={"Deploy the code"} />
+    );
+  }
   return (
     <>
       <PracticeName color={"rgba(86, 84, 141, 1)"} />
@@ -106,7 +111,7 @@ export const L4C3Pr = () => {
                   Save the response to <CodeBlock>nft_info</CodeBlock>:{" "}
                   <CodeBlock>{nftmeta}</CodeBlock>.
                 </BasicP>
-                <HintButton onClick={async () => setHide(!hide)}>
+                <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
                     <>
@@ -126,7 +131,6 @@ export const L4C3Pr = () => {
                   )}
                 </HintButton>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Question 2.</Problem>
                 <ListStyle>
@@ -146,7 +150,6 @@ export const L4C3Pr = () => {
                   <CodeBlock>total_freight_weight</CodeBlock>.
                 </BasicP>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Question 3.</Problem>
                 <ListStyle>
@@ -162,7 +165,6 @@ export const L4C3Pr = () => {
                   .
                 </BasicP>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Question 4.</Problem>
                 <ListStyle>
@@ -179,7 +181,6 @@ export const L4C3Pr = () => {
                   Do loop from zero to <CodeBlock>epoch</CodeBlock>.
                 </BasicP>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Question 5.</Problem>
                 <ListStyle>
@@ -193,7 +194,7 @@ export const L4C3Pr = () => {
                   Create the message to burn fuel as much as{" "}
                   <CodeBlock>FUEL_PER_GAME * epoch</CodeBlock>.
                 </BasicP>
-                <HintButton onClick={async () => setHide(!hide)}>
+                <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
                     <>
@@ -210,14 +211,13 @@ export const L4C3Pr = () => {
                 </HintButton>
               </ProblemSection>
             </EditorDesc>
-
             {/* Code Editor Part */}
             <PracticeCode>
               <div class="mb-1 px-4">
                 <TabHeader>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-purple-500 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("execute.rs");
                       setReadOnly(false);
@@ -227,7 +227,7 @@ export const L4C3Pr = () => {
                   </button>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("contract.rs");
                       setReadOnly(true);
@@ -237,7 +237,7 @@ export const L4C3Pr = () => {
                   </button>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("error.rs");
                       setReadOnly(true);
@@ -245,10 +245,9 @@ export const L4C3Pr = () => {
                   >
                     error.rs
                   </button>
-
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("lib.rs");
                       setReadOnly(true);
@@ -258,7 +257,7 @@ export const L4C3Pr = () => {
                   </button>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("msg.rs");
                       setReadOnly(true);
@@ -268,7 +267,7 @@ export const L4C3Pr = () => {
                   </button>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("query.rs");
                       setReadOnly(true);
@@ -288,18 +287,16 @@ export const L4C3Pr = () => {
                   </button>
                 </TabHeader>
                 <div class="mx-auto mb-1">
-                  {exLoading && <CodeStart onClick={exFetch} />}
+                  {exLoading && <CodeStart onClick={handleTargetCode} />}
                   {runLoading ? (
                     <Loading />
                   ) : (
                     <>
                       <EditorPr
                         defaultLanguage="rust"
-                        exCode={exRes[tab]}
-                        path={tab + `${lessonID}`}
-                        onChange={async (e) => {
-                          await setCode(e);
-                        }}
+                        exCode={example[tab]}
+                        path={key}
+                        onChange={(e) => setCode(e)}
                         onMount={(editor) => (editorRef.current = editor)}
                         files={files}
                         readOnly={readOnly}
@@ -311,31 +308,7 @@ export const L4C3Pr = () => {
             </PracticeCode>
           </div>
         </div>
-
-        {executeRes.result === "success" && queryRes.result === "success" ? (
-          <div class="flex items-center justify-center md:mt-8 mt-3 ">
-            <button
-              type="button"
-              onClick={() => {
-                nextLesson();
-              }}
-              class=" md:w-auto rounded-full mx-auto text-center md:shadow-md shadow-sm transform transition md:mx-0 md:px-10 ease-in-out hover:scale-105 bg-gradient-to-r from-green-400 to-blue-500 border-3 border-indigo-900 md:py-3 py-2 px-12  font-heading text-lg text-gray-50"
-            >
-              Jump to Next Lesson
-            </button>
-          </div>
-        ) : (
-          <div class="flex items-center justify-center md:mt-8 mt-3 ">
-            <button
-              type="button"
-              onClick={runFetch}
-              disabled={runLoading}
-              class="md:w-auto rounded-full text-center md:shadow-md shadow-sm transform transition md:mx-0 md:px-10 ease-in-out hover:scale-105 bg-gradient-to-r from-purple-500 to-purple-200 hover:bg-gradient-to-r hover:from-orange-400 hover:to-orange-200 border-3 border-indigo-900 md:py-3 py-2 px-12  font-heading text-lg text-white"
-            >
-              Deploy the code
-            </button>
-          </div>
-        )}
+        {Button}
       </div>
     </>
   );

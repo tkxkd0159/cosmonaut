@@ -18,51 +18,58 @@ import ResultTab from "../../../../components/CodeEditor/ResultTab";
 import TabHeader from "../../../../components/Practice/TabHeader";
 import PracticeName from "../../../../components/Practice/PracticeName";
 import CodeStart from "../../../../components/CodeEditor/CodeStart";
-import { useRunApi } from "../../../../core/api/postRun";
-import { useCodeEx } from "../../../../core/api/getTargetCodes";
 import { Base64 } from "js-base64";
+import { useBuild } from "../../../../core/hook/useBuild";
+import { useTargetCode } from "../../../../core/hook/useTartgetCode";
+import { BuildButton, NextButton } from "../../../Common/buttons";
 
 export const L3C3Pr = () => {
-  const { lessonID, chID, uID } = useParams();
+  const { lessonID, chID } = useParams();
   const [hide, setHide] = useState(true);
-  const [tab, setTab] = useState("contract.rs");
+  const navigate = useNavigate();
   const editorRef = useRef(null);
+  const [tab, setTab] = useState("state.rs");
   const [readOnly, setReadOnly] = useState(false);
-  const [exRes, exLoading, exFetch] = useCodeEx();
+  const [getTargetCode, example, exLoading] = useTargetCode();
 
-  let initCode;
-  if (sessionStorage.getItem(tab + `${lessonID}`)) {
-    initCode = sessionStorage.getItem(tab + `${lessonID}`);
-  } else {
-    initCode = exRes[tab];
+  const key = tab + lessonID;
+  let initCode = "";
+  if (sessionStorage.getItem(key)) {
+    initCode = sessionStorage.getItem(key);
+  } else if (example) {
+    initCode = example[tab];
   }
   const [code, setCode] = useState(initCode);
-
-  let initFile;
-  useEffect(() => {
-    setFiles({
-      ...files,
-      [tab]: Base64.encode(exRes[tab]),
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [exRes]);
-  const [files, setFiles] = useState(initFile);
+  const [files, setFiles] = useState({});
 
   useEffect(() => {
     setFiles({ ...files, [tab]: Base64.encode(code) });
-    sessionStorage.setItem(tab + `${lessonID}`, code);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    sessionStorage.setItem(key, code);
   }, [code]);
 
-  const [executeRes, queryRes, runLoading, runSuccess, runError, runFetch] =
-    useRunApi(files);
+  const { postBuild, runSuccess, runError, runLoading, executeRes, queryRes } =
+    useBuild();
 
-  const navigate = useNavigate();
-  const nextLesson = () => {
-    if (lessonID === "3" && chID === "3" && uID === "1") {
-      return navigate(`/lesson/3/chapter/3/unit/2`);
-    }
+  const handleNextLesson = () => {
+    navigate(`/lesson/3/chapter/3/unit/2`);
   };
+  const handleBuildButton = async () => {
+    await postBuild(lessonID, chID, files);
+  };
+  const handleTargetCode = async () => {
+    await getTargetCode(lessonID, chID);
+  };
+
+  let Button;
+  if (executeRes.result === "success" && queryRes.result === "success") {
+    Button = (
+      <NextButton onClick={handleNextLesson} content={"Jump to Next Lesson"} />
+    );
+  } else {
+    Button = (
+      <BuildButton onClick={handleBuildButton} content={"Deploy the code"} />
+    );
+  }
 
   return (
     <>
@@ -102,7 +109,7 @@ export const L3C3Pr = () => {
                   Add submessages created above through{" "}
                   <CodeBlock>add_submessages</CodeBlock>.
                 </BasicP>
-                <HintButton onClick={async () => setHide(!hide)}>
+                <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
                     <>
@@ -128,7 +135,6 @@ export const L3C3Pr = () => {
                   )}
                 </HintButton>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Practice 2.</Problem>
                 <ListStyle>
@@ -143,7 +149,7 @@ export const L3C3Pr = () => {
                   <CodeBlock>spaceship_cw721_contract</CodeBlock> in{" "}
                   <CodeBlock>CONFIG</CodeBlock>.
                 </BasicP>
-                <HintButton onClick={async () => setHide(!hide)}>
+                <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
                     <>
@@ -169,7 +175,6 @@ export const L3C3Pr = () => {
                   )}
                 </HintButton>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Practice 3.</Problem>
                 <ListStyle>
@@ -187,7 +192,7 @@ export const L3C3Pr = () => {
                   Save the response to variable named{" "}
                   <CodeBlock>token_balance</CodeBlock>.
                 </BasicP>
-                <HintButton onClick={async () => setHide(!hide)}>
+                <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
                     <>
@@ -208,7 +213,6 @@ export const L3C3Pr = () => {
                   )}
                 </HintButton>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Practice 4.</Problem>
                 <ListStyle>
@@ -229,7 +233,6 @@ export const L3C3Pr = () => {
                   error.
                 </BasicP>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Practice 5.</Problem>
                 <ListStyle>
@@ -255,7 +258,7 @@ export const L3C3Pr = () => {
                   return
                   <CodeBlock>ContractError::TokenNotFound error</CodeBlock>.
                 </BasicP>
-                <HintButton onClick={async () => setHide(!hide)}>
+                <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
                     <>
@@ -277,7 +280,6 @@ export const L3C3Pr = () => {
                   )}
                 </HintButton>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Practice 6.</Problem>
                 <ListStyle>
@@ -291,7 +293,7 @@ export const L3C3Pr = () => {
                   Add messages created above through{" "}
                   <CodeBlock>add_messages</CodeBlock>.
                 </BasicP>
-                <HintButton onClick={async () => setHide(!hide)}>
+                <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
                     <>
@@ -311,7 +313,6 @@ export const L3C3Pr = () => {
                   )}
                 </HintButton>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Practice 7.</Problem>
                 <ListStyle>
@@ -325,7 +326,7 @@ export const L3C3Pr = () => {
                   Create the message to mint freight tokens to{" "}
                   <CodeBlock>info.sender</CodeBlock>.
                 </BasicP>
-                <HintButton onClick={async () => setHide(!hide)}>
+                <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
                     <>
@@ -355,7 +356,6 @@ export const L3C3Pr = () => {
                   )}
                 </HintButton>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Practice 8.</Problem>
                 <ListStyle>
@@ -373,7 +373,7 @@ export const L3C3Pr = () => {
                   Then save it to variable named{" "}
                   <CodeBlock>atom_income</CodeBlock>.
                 </BasicP>
-                <HintButton onClick={async () => setHide(!hide)}>
+                <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
                     <>
@@ -399,7 +399,6 @@ export const L3C3Pr = () => {
                   )}
                 </HintButton>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Practice 9.</Problem>
                 <ListStyle>
@@ -415,7 +414,7 @@ export const L3C3Pr = () => {
                   <CodeBlock>target_contract_addr</CodeBlock> is{" "}
                   <CodeBlock>None</CodeBlock>.
                 </BasicP>
-                <HintButton onClick={async () => setHide(!hide)}>
+                <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
                     <>
@@ -437,7 +436,7 @@ export const L3C3Pr = () => {
                 <TabHeader>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-purple-500 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("contract.rs");
                       setReadOnly(false);
@@ -448,7 +447,7 @@ export const L3C3Pr = () => {
 
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-purple-500 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("execute.rs");
                       setReadOnly(false);
@@ -458,7 +457,7 @@ export const L3C3Pr = () => {
                   </button>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-purple-500 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("query.rs");
                       setReadOnly(false);
@@ -468,7 +467,7 @@ export const L3C3Pr = () => {
                   </button>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("error.rs");
                       setReadOnly(true);
@@ -478,7 +477,7 @@ export const L3C3Pr = () => {
                   </button>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("lib.rs");
                       setReadOnly(true);
@@ -488,7 +487,7 @@ export const L3C3Pr = () => {
                   </button>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("msg.rs");
                       setReadOnly(true);
@@ -496,7 +495,6 @@ export const L3C3Pr = () => {
                   >
                     msg.rs
                   </button>
-
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1 bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
                     onClick={(e) => {
@@ -509,18 +507,16 @@ export const L3C3Pr = () => {
                   </button>
                 </TabHeader>
                 <div class="mx-auto mb-1">
-                  {exLoading && <CodeStart onClick={exFetch} />}
+                  {exLoading && <CodeStart onClick={handleTargetCode} />}
                   {runLoading ? (
                     <Loading />
                   ) : (
                     <>
                       <EditorPr
                         defaultLanguage="rust"
-                        exCode={exRes[tab]}
-                        path={tab + `${lessonID}`}
-                        onChange={async (e) => {
-                          await setCode(e);
-                        }}
+                        exCode={example[tab]}
+                        path={key}
+                        onChange={(e) => setCode(e)}
                         onMount={(editor) => (editorRef.current = editor)}
                         files={files}
                         readOnly={readOnly}
@@ -532,31 +528,7 @@ export const L3C3Pr = () => {
             </PracticeCode>
           </div>
         </div>
-
-        {executeRes.result === "success" && queryRes.result === "success" ? (
-          <div class="flex items-center justify-center md:mt-8 mt-3 ">
-            <button
-              type="button"
-              onClick={() => {
-                nextLesson();
-              }}
-              class=" md:w-auto rounded-full mx-auto text-center md:shadow-md shadow-sm transform transition md:mx-0 md:px-10 ease-in-out hover:scale-105 bg-gradient-to-r from-green-400 to-blue-500 border-3 border-indigo-900 md:py-3 py-2 px-12  font-heading text-lg text-gray-50"
-            >
-              Jump to Next Lesson
-            </button>
-          </div>
-        ) : (
-          <div class="flex items-center justify-center md:mt-8 mt-3 ">
-            <button
-              type="button"
-              onClick={runFetch}
-              disabled={runLoading}
-              class="md:w-auto rounded-full text-center md:shadow-md shadow-sm transform transition md:mx-0 md:px-10 ease-in-out hover:scale-105 bg-gradient-to-r from-purple-500 to-purple-200 hover:bg-gradient-to-r hover:from-orange-400 hover:to-orange-200 border-3 border-indigo-900 md:py-3 py-2 px-12  font-heading text-lg text-white"
-            >
-              Deploy the code
-            </button>
-          </div>
-        )}
+        {Button}
       </div>
     </>
   );

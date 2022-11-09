@@ -30,7 +30,6 @@ export const useBuild = () => {
         option
       );
       let data = await res.json();
-
       setExecuteRes(data.result[0]);
       setQueryRes(data.result[1]);
     } catch (err) {

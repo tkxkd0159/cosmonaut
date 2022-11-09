@@ -23,17 +23,15 @@ import { useTargetCode } from "../../../../core/hook/useTartgetCode";
 import { Base64 } from "js-base64";
 
 export const L1C6Pr = () => {
-  const { lessonID, chID, uID } = useParams();
+  const { lessonID, chID } = useParams();
   const [hide, setHide] = useState(true);
   const navigate = useNavigate();
   const editorRef = useRef(null);
   const [tab, setTab] = useState("state.rs");
   const [readOnly, setReadOnly] = useState(false);
   const [getTargetCode, example, exLoading] = useTargetCode();
-  console.log("1. loading: ", exLoading);
-  console.log("2. example: ", example);
 
-  let key = tab + lessonID;
+  const key = tab + lessonID;
   let initCode = "";
   if (sessionStorage.getItem(key)) {
     initCode = sessionStorage.getItem(key);
@@ -41,34 +39,22 @@ export const L1C6Pr = () => {
     initCode = example[tab];
   }
   const [code, setCode] = useState(initCode);
-  const [files, setFiles] = useState();
-  useEffect(() => {
-    setFiles({
-      ...files,
-      [tab]: Base64.encode(example[tab]),
-    });
-  }, [tab]);
+  const [files, setFiles] = useState({});
+
   useEffect(() => {
     setFiles({ ...files, [tab]: Base64.encode(code) });
     sessionStorage.setItem(key, code);
   }, [code]);
 
-  console.log("3. initCode: ", initCode);
-  console.log("4. code: ", code);
-  console.log("5. files: ", files);
-
   const { postBuild, runSuccess, runError, runLoading, executeRes, queryRes } =
     useBuild();
 
   const handleNextLesson = () => {
-    if (lessonID === "1" && chID === "6" && uID === "1") {
-      return navigate(`/lesson/1/chapter/6/unit/2`);
-    }
+    navigate(`/lesson/1/chapter/6/unit/2`);
   };
   const handleBuildButton = async () => {
     await postBuild(lessonID, chID, files);
   };
-
   const handleTargetCode = async () => {
     await getTargetCode(lessonID, chID);
   };
@@ -123,7 +109,6 @@ export const L1C6Pr = () => {
                   <CodeBlock>Metadata</CodeBlock> below.
                 </BasicP>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Problem 2.</Problem>
                 <ListStyle>
@@ -138,7 +123,6 @@ export const L1C6Pr = () => {
                   <CodeBlock>Freight</CodeBlock>.
                 </BasicP>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Problem 3.</Problem>
                 <ListStyle>
@@ -159,7 +143,6 @@ export const L1C6Pr = () => {
                   <CodeBlock>Extension</CodeBlock> type.
                 </BasicP>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Problem 4.</Problem>
                 <ListStyle>
@@ -177,7 +160,6 @@ export const L1C6Pr = () => {
                   <CodeBlock>token_id</CodeBlock>.
                 </BasicP>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Problem 5.</Problem>
                 <ListStyle>
@@ -191,7 +173,6 @@ export const L1C6Pr = () => {
                   Instantiate cw721_contract through method{" "}
                   <CodeBlock>instantiate</CodeBlock>.
                 </BasicP>
-
                 <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
@@ -227,7 +208,6 @@ export const L1C6Pr = () => {
                   )}
                 </HintButton>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Problem 7.</Problem>
                 <ListStyle>
@@ -245,7 +225,6 @@ export const L1C6Pr = () => {
                   <CodeBlock>extension</CodeBlock> and collect elements whose{" "}
                   <CodeBlock>denom</CodeBlock> is the same as argument's one.
                 </BasicP>
-
                 <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
@@ -296,7 +275,7 @@ export const L1C6Pr = () => {
                   </button>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-purple-500 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("msg.rs");
                       setReadOnly(false);
@@ -306,7 +285,7 @@ export const L1C6Pr = () => {
                   </button>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-purple-500 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("contract.rs");
                       setReadOnly(false);
@@ -316,7 +295,7 @@ export const L1C6Pr = () => {
                   </button>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-purple-500 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("execute.rs");
                       setReadOnly(false);
@@ -326,7 +305,7 @@ export const L1C6Pr = () => {
                   </button>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("error.rs");
                       setReadOnly(true);
@@ -336,7 +315,7 @@ export const L1C6Pr = () => {
                   </button>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("lib.rs");
                       setReadOnly(true);
@@ -346,7 +325,7 @@ export const L1C6Pr = () => {
                   </button>
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-orange-400 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
-                    onClick={async (e) => {
+                    onClick={(e) => {
                       e.preventDefault();
                       setTab("query.rs");
                       setReadOnly(true);
@@ -364,9 +343,7 @@ export const L1C6Pr = () => {
                       defaultLanguage="rust"
                       exCode={example[tab]}
                       path={key}
-                      onChange={(e) => {
-                        setCode(e);
-                      }}
+                      onChange={(e) => setCode(e)}
                       onMount={(editor) => (editorRef.current = editor)}
                       files={files}
                       readOnly={readOnly}
