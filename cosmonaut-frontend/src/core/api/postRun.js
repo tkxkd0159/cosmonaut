@@ -37,14 +37,14 @@ export const useRunApi = (files) => {
       let data = await res.json();
       console.log("api_data", data);
 
-      if (res.status === 200) {
-        setIsSuccess(true);
-      } else if (res.status === 400) {
-        alert("Try Again!");
-      } else if (res.status === 500) {
-        setIsError(true);
-        setExecuteRes([data.message]);
-      }
+      // if (res.status === 200) {
+      //   setIsSuccess(true);
+      // } else if (res.status === 400) {
+      //   alert("Try Again!");
+      // } else if (res.status === 500) {
+      //   setIsError(true);
+      //   setExecuteRes([data.message]);
+      // }
 
       setExecuteRes(data.result[0]);
       setQueryRes(data.result[1]);

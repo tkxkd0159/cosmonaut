@@ -17,8 +17,9 @@ import { Loading } from "../../../../components/Common/Loading";
 import TabHeader from "../../../../components/Practice/TabHeader";
 import PracticeName from "../../../../components/Practice/PracticeName";
 import CodeStart from "../../../../components/CodeEditor/CodeStart";
-import { useRunApi } from "../../../../core/api/postRun";
-import { useCodeEx } from "../../../../core/api/getTargetCodes";
+import { useBuild } from "../../../../core/hook/useBuild";
+import { BuildButton, NextButton } from "../../../Common/buttons";
+import { useTargetCode } from "../../../../core/hook/useTartgetCode";
 
 export const L1C6Pr = () => {
   const { lessonID, chID, uID } = useParams();
@@ -27,38 +28,60 @@ export const L1C6Pr = () => {
   const editorRef = useRef(null);
   const [tab, setTab] = useState("state.rs");
   const [readOnly, setReadOnly] = useState(false);
-  const [exRes, exLoading, exFetch] = useCodeEx();
+  const [getTargetCode, example, exLoading] = useTargetCode();
+  console.log("1. loading: ", exLoading);
+  console.log("2. example: ", example);
 
   let key = tab + lessonID;
   let initCode = "";
   if (sessionStorage.getItem(key)) {
     initCode = sessionStorage.getItem(key);
-  } else if (exRes) {
-    initCode = exRes[tab];
+  } else if (example) {
+    initCode = example[tab];
   }
   const [code, setCode] = useState(initCode);
   const [files, setFiles] = useState();
   useEffect(() => {
     setFiles({
       ...files,
-      [tab]: window.btoa(exRes[tab]),
+      [tab]: window.btoa(encodeURIComponent(example[tab])),
     });
   }, [tab]);
   useEffect(() => {
     setFiles({ ...files, [tab]: window.btoa(code) });
     sessionStorage.setItem(key, code);
   }, [code]);
-  console.log("tab_check", tab);
-  console.log("files_check", files);
 
-  const [executeRes, queryRes, runLoading, runSuccess, runError, runFetch] =
-    useRunApi(files);
+  console.log("3. initCode: ", initCode);
+  console.log("4. code: ", code);
+  console.log("5. files: ", files);
 
-  const nextLesson = () => {
+  const { postBuild, runSuccess, runError, runLoading, executeRes, queryRes } =
+    useBuild();
+
+  const handleNextLesson = () => {
     if (lessonID === "1" && chID === "6" && uID === "1") {
       return navigate(`/lesson/1/chapter/6/unit/2`);
     }
   };
+  const handleBuildButton = async () => {
+    await postBuild(lessonID, chID, files);
+  };
+
+  const handleTargetCode = async () => {
+    await getTargetCode(lessonID, chID);
+  };
+
+  let Button;
+  if (executeRes.result === "success" && queryRes.result === "success") {
+    Button = (
+      <NextButton onClick={handleNextLesson} content={"Jump to Next Lesson"} />
+    );
+  } else {
+    Button = (
+      <BuildButton onClick={handleBuildButton} content={"Deploy the code"} />
+    );
+  }
 
   return (
     <>
@@ -168,22 +191,18 @@ export const L1C6Pr = () => {
                   <CodeBlock>instantiate</CodeBlock>.
                 </BasicP>
 
-                <HintButton onClick={async () => setHide(!hide)}>
+                <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
-                    <>
-                      <BasicP>
-                        <CodeBlock>DepsMut</CodeBlock>,{" "}
-                        <CodeBlock>Env</CodeBlock>,{" "}
-                        <CodeBlock>MessageInfo</CodeBlock>, and{" "}
-                        <CodeBlock>InstantiateMsg</CodeBlock> should be passed
-                        to cw721_contract’s <CodeBlock>instantiate</CodeBlock>.
-                      </BasicP>
-                    </>
+                    <BasicP>
+                      <CodeBlock>DepsMut</CodeBlock>, <CodeBlock>Env</CodeBlock>
+                      , <CodeBlock>MessageInfo</CodeBlock>, and{" "}
+                      <CodeBlock>InstantiateMsg</CodeBlock> should be passed to
+                      cw721_contract’s <CodeBlock>instantiate</CodeBlock>.
+                    </BasicP>
                   )}
                 </HintButton>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Problem 6.</Problem>
                 <ListStyle>
@@ -197,16 +216,13 @@ export const L1C6Pr = () => {
                   Execute <CodeBlock>msg</CodeBlock> through method{" "}
                   <CodeBlock>execute</CodeBlock>.
                 </BasicP>
-
-                <HintButton onClick={async () => setHide(!hide)}>
+                <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
-                    <>
-                      <BasicP>
-                        We already has method <CodeBlock>execute</CodeBlock> in{" "}
-                        <CodeBlock>self</CodeBlock>.
-                      </BasicP>
-                    </>
+                    <BasicP>
+                      We already has method <CodeBlock>execute</CodeBlock> in{" "}
+                      <CodeBlock>self</CodeBlock>.
+                    </BasicP>
                   )}
                 </HintButton>
               </ProblemSection>
@@ -229,19 +245,16 @@ export const L1C6Pr = () => {
                   <CodeBlock>denom</CodeBlock> is the same as argument's one.
                 </BasicP>
 
-                <HintButton onClick={async () => setHide(!hide)}>
+                <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
-                    <>
-                      <BasicP>
-                        <CodeBlock>position</CodeBlock> searches for an element
-                        in an iterator, returning its index.
-                      </BasicP>
-                    </>
+                    <BasicP>
+                      <CodeBlock>position</CodeBlock> searches for an element in
+                      an iterator, returning its index.
+                    </BasicP>
                   )}
                 </HintButton>
               </ProblemSection>
-
               <ProblemSection>
                 <Problem>Problem 8.</Problem>
                 <ListStyle>
@@ -258,13 +271,10 @@ export const L1C6Pr = () => {
                 <BasicP>
                   Otherwise, decrease amount of <CodeBlock>freight</CodeBlock>.
                 </BasicP>
-
-                <HintButton onClick={async () => setHide(!hide)}>
+                <HintButton onClick={() => setHide(!hide)}>
                   <Hint hide={hide} />
                   {hide ? null : (
-                    <>
-                      <BasicP>Don’t forget to check overflow.</BasicP>
-                    </>
+                    <BasicP>Don’t forget to check overflow.</BasicP>
                   )}
                 </HintButton>
               </ProblemSection>
@@ -303,7 +313,6 @@ export const L1C6Pr = () => {
                   >
                     contract.rs
                   </button>
-
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-purple-500 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
                     onClick={async (e) => {
@@ -345,55 +354,31 @@ export const L1C6Pr = () => {
                     query.rs
                   </button>
                 </TabHeader>
-
                 <div class="mx-auto mb-1">
-                  {exLoading && <CodeStart onClick={exFetch} />}
+                  {exLoading && <CodeStart onClick={handleTargetCode} />}
                   {runLoading ? (
                     <Loading />
                   ) : (
-                    <>
-                      <EditorPr
-                        defaultLanguage="rust"
-                        exCode={exRes[tab]}
-                        path={key}
-                        onChange={async (e) => {
-                          await setCode(e);
-                        }}
-                        onMount={(editor) => (editorRef.current = editor)}
-                        files={files}
-                        readOnly={readOnly}
-                      />
-                    </>
+                    <EditorPr
+                      defaultLanguage="rust"
+                      exCode={example[tab]}
+                      path={key}
+                      onChange={(e) => {
+                        setCode(e);
+                      }}
+                      onMount={(editor) => (editorRef.current = editor)}
+                      files={files}
+                      readOnly={readOnly}
+                    />
                   )}
                 </div>
               </div>
             </PracticeCode>
           </div>
         </div>
-        {executeRes.result === "success" && queryRes.result === "success" ? (
-          <div class="flex items-center justify-center md:mt-8 mt-3 ">
-            <button
-              type="button"
-              onClick={() => {
-                nextLesson();
-              }}
-              class=" md:w-auto rounded-full mx-auto text-center md:shadow-md shadow-sm transform transition md:mx-0 md:px-10 ease-in-out hover:scale-105 bg-gradient-to-r from-green-400 to-blue-500 border-3 border-indigo-900 md:py-3 py-2 px-12  font-heading text-lg text-gray-50"
-            >
-              Jump to Next Lesson
-            </button>
-          </div>
-        ) : (
-          <div class="flex items-center justify-center md:mt-8 mt-3 ">
-            <button
-              type="button"
-              onClick={runFetch}
-              disabled={runLoading}
-              class="md:w-auto rounded-full text-center md:shadow-md shadow-sm transform transition md:mx-0 md:px-10 ease-in-out hover:scale-105 bg-gradient-to-r from-purple-500 to-purple-200 hover:bg-gradient-to-r hover:from-orange-400 hover:to-orange-200 border-3 border-indigo-900 md:py-3 py-2 px-12  font-heading text-lg text-white"
-            >
-              Deploy the code
-            </button>
-          </div>
-        )}
+        <div class="flex items-center justify-center md:mt-8 mt-3 ">
+          {Button}
+        </div>
       </div>
     </>
   );
