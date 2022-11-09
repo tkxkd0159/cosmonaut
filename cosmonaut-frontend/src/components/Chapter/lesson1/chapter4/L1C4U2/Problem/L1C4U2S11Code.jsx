@@ -13,7 +13,7 @@ import Hint from "../../../../../../components/Contents/Hint";
 import HintButton from "../../../../../../components/Contents/HintButton";
 import ProblemSection from "../../../../../../components/Contents/ProblemSection";
 import Question from "../../../../../../components/Contents/Question";
-
+import { Base64 } from "js-base64";
 const L1C4U2S11Code = ({ read, ex, ans, difSuccess }) => {
   const [hide, setHide] = useState(true);
   const [tab, setTab] = useState("problem");
