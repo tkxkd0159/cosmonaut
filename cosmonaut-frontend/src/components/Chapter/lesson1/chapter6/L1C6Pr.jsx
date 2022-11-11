@@ -21,6 +21,8 @@ import { useBuild } from "../../../../core/hook/useBuild";
 import { BuildButton, NextButton } from "../../../Common/buttons";
 import { useTargetCode } from "../../../../core/hook/useTartgetCode";
 import { Base64 } from "js-base64";
+import { useRecoilState } from "recoil";
+import { buildFileState } from "../../../../core/state/buildFileState";
 
 export const L1C6Pr = () => {
   const { lessonID, chID } = useParams();
@@ -30,6 +32,7 @@ export const L1C6Pr = () => {
   const [tab, setTab] = useState("state.rs");
   const [readOnly, setReadOnly] = useState(false);
   const [getTargetCode, example, exLoading] = useTargetCode();
+  const [buildFile, setBuildFile] = useRecoilState(buildFileState);
 
   const key = tab + lessonID;
   let initCode = "";
@@ -43,8 +46,17 @@ export const L1C6Pr = () => {
 
   useEffect(() => {
     setFiles({ ...files, [tab]: Base64.encode(code) });
+    setBuildFile((prev) => {
+      return {
+        ...prev,
+        files,
+      };
+    });
     sessionStorage.setItem(key, code);
   }, [code]);
+
+  console.log("files: ", files);
+  console.log("buildFile: ", buildFile.files);
 
   const { postBuild, runSuccess, runError, runLoading, executeRes, queryRes } =
     useBuild();

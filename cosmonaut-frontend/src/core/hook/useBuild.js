@@ -24,15 +24,17 @@ export const useBuild = () => {
         files: files,
       }),
     };
+
     try {
       let res = await fetch(
         `${process.env.REACT_APP_API_ADDR}/v1/cosm/build`,
         option
       );
       let data = await res.json();
-      setExecuteRes(data.result[0]);
-      setQueryRes(data.result[1]);
+      setExecuteRes(data?.result[0]);
+      setQueryRes(data?.result[1]);
     } catch (err) {
+      console.error(err);
       setIsError(true);
     } finally {
       setIsLoading(false);
