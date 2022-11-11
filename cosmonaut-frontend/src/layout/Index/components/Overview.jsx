@@ -51,7 +51,6 @@ function Overview() {
         <div class="block object-cover mx-auto">
           <div class="px-4 bg-gray-50 rounded-2xl lg:pt-4 pt-6 border-indigo-900 border-4 md:pb-10 pb-6">
             <Title>Lesson Overview</Title>
-
             <SubTitle>
               <h2 class="text-center text-lg font-heading text-indigo-900">
                 {indexInfo[lessonID]?.num}.
