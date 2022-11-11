@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import Video from "../../assets/bg2-v5.mp4";
 import { handleModalAtom } from "../../core/state/handleModalState";
 import { indexInfo } from "../../core/config/indexInfo";
+import Footer from "../../components/Footer/Footer";
 
 const Curriculum = tw.div`w-full mb-14 lg:mb-0 lg:col-span-1 col-span-2 lg:order-2 order-1`;
 const Title = tw.h2`text-2xl md:text-4xl text-center lg:text-left mt-2 text-orange-400 lg:mb-8 mb-6 font-heading`;
@@ -178,6 +179,7 @@ function IndexPage() {
             </Curriculum>
           </div>
         </div>
+        <Footer />
       </div>
     </>
   );

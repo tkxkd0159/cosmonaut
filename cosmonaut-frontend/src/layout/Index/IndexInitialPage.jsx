@@ -5,6 +5,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import Video from "../../assets/bg2-v5.mp4";
 import { indexInfo } from "../../core/config/indexInfo";
 import { ReadyJourney } from "./components/ReadyJourney";
+import Footer from "../../components/Footer/Footer";
 // import spacehole from "../../assets/images/spacehole-2x.jpg";
 
 const Title = tw.h2`text-2xl md:text-4xl text-center lg:text-left mt-2 text-orange-400 lg:mb-8 mb-6 font-heading`;
@@ -72,6 +73,7 @@ function IndexInitialPage() {
             </Curriculum>
           </div>
         </div>
+        <Footer />
       </div>
     </>
   );
