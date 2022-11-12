@@ -1,6 +1,6 @@
 import React from "react";
 import Editor, { loader } from "@monaco-editor/react";
-import { useFormat } from "../../core/api/postFmt";
+import { useFormat } from "../../core/hook/useFormat";
 
 loader.config({
   paths: {

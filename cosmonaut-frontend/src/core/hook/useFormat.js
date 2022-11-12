@@ -1,43 +1,38 @@
 import { useState } from "react";
 
-export const useFormat = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+export const useFormat = (files) => {
   const [response, setResponse] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const postFormat = async (files) => {
-    const option = {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ files }),
-    };
+  const option = {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ files }),
+  };
 
+  const fetchData = async () => {
     try {
       let res = await fetch(
         `${process.env.REACT_APP_API_ADDR}/v1/rust/fmt`,
         option
       );
       const data = await res.json();
-      let responseResult = await Object.fromEntries(
+      let resResult = await Object.fromEntries(
         Object.entries(data.result).map(([key, value]) => [
           key,
           window.atob(value),
         ])
       );
 
-      setResponse(responseResult);
+      setResponse(resResult);
       setIsSuccess(true);
-    } catch (err) {
-      alert(err);
-    } finally {
-      setIsLoading(false);
+    } catch (error) {
+      alert(error);
     }
   };
 
-  console.log("format response", response);
-  console.log("format loading", isLoading);
-  return [response, isLoading, isSuccess, postFormat];
+  return [response, isSuccess, fetchData];
 };
