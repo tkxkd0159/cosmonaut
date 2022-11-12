@@ -9,8 +9,10 @@ export const useLogOut = () => {
 
   const fetchData = async () => {
     try {
-      let res = await fetch(`${process.env.REACT_APP_API_ADDR}/auth/logout`, option);
-      console.log(res);
+      let res = await fetch(
+        `${process.env.REACT_APP_API_ADDR}/auth/logout`,
+        option
+      );
       setLogout(res.ok);
     } catch (error) {
       console.log(error);
