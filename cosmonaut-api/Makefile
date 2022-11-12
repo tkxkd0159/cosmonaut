@@ -16,10 +16,14 @@ DOCKER_IMG ?="cosmo-rust:1.0"
 SAVE_ROOT ?="$(CURDIR)/cargo-projects"
 
 # Set docker volumes for container deployment. Default setting is Docker Compose
-COMPOSE_COSM_BASE ?= cosmonaut_cosmbase         # Where to store CosmWasm training sources
-COMPOSE_COSM_USER ?= cosmonaut_cosmproj         # Where to save user's project files
-COMPOSE_CARGO_REG ?= cosmonaut_cargo            # Where to save Rust packacge registry for caching
-COMPOSE_COSM_IMG ?= "tkxkd0159/cosmo-rust:latest" # For internal rust build
+# COMPOSE_COSM_BASE is where to store CosmWasm training sources
+# COMPOSE_COSM_USER is where to save user's project files
+# COMPOSE_CARGO_REG is where to save user's project files
+# COMPOSE_CARGO_IMG is docker image name for internal rust build 
+COMPOSE_COSM_BASE ?= cosmonaut_cosmbase
+COMPOSE_COSM_USER ?= cosmonaut_cosmproj
+COMPOSE_CARGO_REG ?= cosmonaut_cargo
+COMPOSE_COSM_IMG ?= "tkxkd0159/cosmo-rust:latest"
 
 .PHONY: test
 

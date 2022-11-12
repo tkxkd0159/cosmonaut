@@ -109,8 +109,6 @@ const cosmBuild = asyncUtil(async (req, res, next) => {
     throw new Error("This chapter does not exist on you");
   }
   await saveCodeFiles(req.body["files"], srcpath);
-  console.log("server_save_files:", req.body["files"]);
-  console.log("server_save_scrpath:", srcpath);
 
   const data = await cosm.Run("cosm-build", uid, lesson, chapter);
   const parsedData = data.trim().split("\n");
