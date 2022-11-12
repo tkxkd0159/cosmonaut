@@ -458,7 +458,6 @@ export const L3C3Pr = () => {
                   >
                     contract.rs
                   </button>
-
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-purple-500 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
                     onClick={(e) => {
@@ -532,7 +531,7 @@ export const L3C3Pr = () => {
                         path={key}
                         onChange={(e) => setCode(e)}
                         onMount={(editor) => (editorRef.current = editor)}
-                        files={files}
+                        files={file}
                         readOnly={readOnly}
                       />
                     </>

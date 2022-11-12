@@ -67,7 +67,7 @@ Set `BUILD_ENV` args in `compose.yml` according to your situation ( production /
 
 ```sh
 # Pull cosmo-rust image
-docker pull tkxkd0159/cosmo-rust:latest
+docker pull tkxkd0159/cosmo-rust:osx
 
 # Build react
 # if you want rebuild react code, execute a script without 'new'
