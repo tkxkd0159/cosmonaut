@@ -1,5 +1,3 @@
-const { keyframes } = require("styled-components");
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
@@ -14,10 +12,8 @@ module.exports = {
     colors: {
       current: "currentColor",
       transparent: "transparent",
-
       black: "#232323",
       white: "#fff",
-
       gray: {
         50: "#FAF8F0",
         100: "#E5E5E5",
@@ -347,6 +343,7 @@ module.exports = {
       mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
     },
     fontSize: {
+      xxs: ["0.3rem", { lineHeight: "0.75rem" }],
       xs: ["0.75rem", { lineHeight: "1rem" }],
       sm: ["0.875rem", { lineHeight: "1.25rem" }],
       base: ["1rem", { lineHeight: "1.875rem" }],

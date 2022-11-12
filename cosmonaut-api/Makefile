@@ -19,7 +19,7 @@ SAVE_ROOT ?="$(CURDIR)/cargo-projects"
 COMPOSE_COSM_BASE ?= cosmonaut_cosmbase         # Where to store CosmWasm training sources
 COMPOSE_COSM_USER ?= cosmonaut_cosmproj         # Where to save user's project files
 COMPOSE_CARGO_REG ?= cosmonaut_cargo            # Where to save Rust packacge registry for caching
-COMPOSE_COSM_IMG ?= "tkxkd0159/cosmo-rust:dind" # For internal rust build
+COMPOSE_COSM_IMG ?= "tkxkd0159/cosmo-rust:latest" # For internal rust build
 
 .PHONY: test
 

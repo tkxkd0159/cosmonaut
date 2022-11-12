@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import tw from "tailwind-styled-components";
-import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { chapterInfos } from "../../states/Information/chapterInfoAtoms";
-import { lessonEngInfo } from "../../states/Information/lessonInfoAtoms";
-import { usePostInitial } from "../../libs/api/postInitial";
 import classNames from "classnames";
-import { useGetUserProgress } from "../../libs/api/getUserProgress";
-import { handleModalAtom } from "../../states/handleModal";
-import { progressState } from "../../states/progressState";
+import { useNavigate, useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { usePostInitial } from "../../core/api/postInitial";
+import { useGetUserProgress } from "../../core/api/getUserProgress";
+import { handleModalAtom } from "../../core/state/handleModalState";
+import { progressState } from "../../core/state/progressState";
+import { chapterInfo } from "../../core/config/chapterInfo";
+import { lessonInfos } from "../../core/config/lessonInfo";
 
 const Navigate = tw.div`flex flex-wrap mt-5 mx-auto justify-center gap-3 rounded-3xl`;
 const Button = tw.button`bg-white h-40 flex items-center justify-center w-2/5 md:w-1/5 xl:w-1/8 rounded-xl border-2 border-indigo-900 ease-in-out duration-300`;
@@ -19,7 +19,7 @@ function StartModal() {
   const { lessonID, chID } = useParams();
   const navigate = useNavigate();
   const [build, setBuild] = useState(false);
-  const [key, setKey] = useState(String(chID));
+  const [key, setKey] = useState(chID ?? "1");
 
   // eslint-disable-next-line no-unused-vars
   const [initLoading, initRes, initFetch] = usePostInitial(
@@ -27,8 +27,6 @@ function StartModal() {
     String(key),
     build
   );
-  const engInfo = useRecoilValue(lessonEngInfo);
-  const chInfo = useRecoilValue(chapterInfos);
   const [adKey, setAdKey] = useState();
   // eslint-disable-next-line no-unused-vars
   const [handleModal, setHandleModal] = useRecoilState(handleModalAtom);
@@ -93,12 +91,14 @@ function StartModal() {
     const modal = document.querySelectorAll("#modal");
     modal[0].classList.add("hidden");
 
-    if (String(adKey) === "11") {
-      return navigate(`/advanced/1/index/0`);
-    } else if (String(adKey) === "22") {
-      return navigate(`/advanced/2/index/0`);
-    } else if (String(adKey) === "44") {
-      return navigate(`/advanced/3/index/0`);
+    switch (adKey) {
+      case "11":
+        return navigate(`/advanced/1/index/0`);
+      case "22":
+        return navigate(`/advanced/2/index/0`);
+      case "44":
+        return navigate(`/advanced/3/index/0`);
+      default:
     }
 
     if (lessonID === "1" && String(key) === "1") {
@@ -240,10 +240,10 @@ function StartModal() {
               Lesson {lessonID}
             </h3>
             <h4 class="md:text-2xl text-lg font-heading md:mb-4 mb-2 text-center">
-              {engInfo[lessonID]?.title}
+              {lessonInfos[lessonID]?.title}
             </h4>
             <Navigate>
-              {chInfo[lessonID].map((e) => {
+              {chapterInfo[lessonID].map((e) => {
                 return (
                   <Button
                     onClick={() => {

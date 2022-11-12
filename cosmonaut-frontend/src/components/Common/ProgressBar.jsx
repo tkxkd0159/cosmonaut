@@ -29,10 +29,10 @@ export const ProgressBar0 = (progress) => {
           </div>
         </div>
         <div class="flex w-full justify-between my-2">
-          <span class="flex justify-start md:text-sm text-xs font-mono text-gray-700">
+          <span class="flex justify-start xl:text-sm text-xs font-mono text-gray-700">
             <img class="w-4 h-4" src={flask} alt="flask" />
           </span>
-          <span class="flex md:text-sm text-xs justify-end font-mono text-gray-700">
+          <span class="flex xl:text-sm text-xs justify-end font-mono text-gray-700">
             <img class="w-4 h-4" src={check} alt="check" />
           </span>
         </div>
@@ -82,28 +82,28 @@ export const ProgressBar1 = (progress) => {
           </div>
         </div>
         <div class="flex w-full justify-between my-2">
-          <span class="flex justify-start md:text-sm text-xs font-mono text-gray-700">
+          <span class="flex justify-start xl:text-sm text-xs font-mono text-gray-700">
             <img class="w-4 h-4" src={flask} alt="flask" />
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
+          <span class="xl:text-sm text-xs font-medium text-gray-700">
             Chp.1
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
+          <span class="xl:text-sm text-xs font-medium text-gray-700">
             Chp.2
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
+          <span class="xl:text-sm text-xs font-medium text-gray-700">
             Chp.3
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
+          <span class="xl:text-sm text-xs font-medium text-gray-700">
             Chp.4
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
+          <span class="xl:text-sm text-xs font-medium text-gray-700">
             Chp.5
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
+          <span class="xl:text-sm text-xs font-medium text-gray-700">
             Chp.6
           </span>
-          <span class="flex md:text-sm text-xs justify-end font-mono text-gray-700">
+          <span class="flex xl:text-sm text-xs justify-end font-mono text-gray-700">
             <img class="w-4 h-4" src={check} alt="check" />
           </span>
         </div>
@@ -123,19 +123,19 @@ export const ProgressBar2 = (progress) => {
         setWidth(11);
         break;
       case 2:
-        setWidth(22);
+        setWidth(23);
         break;
       case 3:
-        setWidth(33);
+        setWidth(35);
         break;
       case 4:
-        setWidth(45);
+        setWidth(47);
         break;
       case 5:
-        setWidth(56);
+        setWidth(58);
         break;
       case 6:
-        setWidth(67);
+        setWidth(68);
         break;
       case 7:
         setWidth(79);
@@ -159,35 +159,43 @@ export const ProgressBar2 = (progress) => {
           </div>
         </div>
         <div class="flex w-full justify-between my-2">
-          <span class="flex justify-start md:text-sm text-xs font-mono text-gray-700">
-            <img class="w-4 h-4" src={flask} alt="flask" />
+          <span class="flex justify-start xl:text-sm text-xxs font-mono text-gray-700">
+            <img
+              class="w-[0.6rem] h-[0.6rem] xl:w-4 xl:h-4"
+              src={flask}
+              alt="flask"
+            />
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
+          <span class="xl:text-sm text-xxs font-medium text-gray-700">
             Chp.1
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
+          <span class="xl:text-sm text-xxs font-medium text-gray-700">
             Chp.2
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
+          <span class="xl:text-sm text-xxs font-medium text-gray-700">
             Chp.3
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
+          <span class="xl:text-sm text-xxs font-medium text-gray-700">
             Chp.4
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
+          <span class="xl:text-sm text-xxs font-medium text-gray-700">
             Chp.5
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
+          <span class="xl:text-sm text-xxs font-medium text-gray-700">
             Chp.6
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
+          <span class="xl:text-sm text-xxs font-medium text-gray-700">
             Chp.7
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
+          <span class="xl:text-sm text-xxs font-medium text-gray-700">
             Chp.8
           </span>
-          <span class="flex md:text-sm text-xs justify-end font-mono text-gray-700">
-            <img class="w-4 h-4" src={check} alt="check" />
+          <span class="flex xl:text-sm text-xxs justify-end font-mono text-gray-700">
+            <img
+              class="w-[0.6rem] h-[0.6rem] xl:w-4 xl:h-4"
+              src={check}
+              alt="check"
+            />
           </span>
         </div>
       </Container>

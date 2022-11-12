@@ -4,10 +4,9 @@ import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import tw from "tailwind-styled-components";
 import LogoV4 from "../../assets/images/logo-v4.svg";
-import { LoginState } from "../../states/login";
+import { LoginState } from "../../core/state/loginState";
 import Profile from "../Common/Profile";
-import SignIn from "../Common/SignIn";
-import { useIsLogin } from "../../libs/api/useIsLogin";
+import { useIsLogin } from "../../core/api/useIsLogin";
 
 const Container = tw.div`fixed top-0 w-full z-50`;
 const Logo = tw.a`text-lg font-bold ease-in-out duration-300 transform hover:scale-110`;
@@ -48,13 +47,16 @@ function Navbar() {
         <Logo href="/">
           <img class="md:h-9 h-8 py-1" src={LogoV4} alt="" width="auto" />
         </Logo>
-
         {isLoggedIn ? (
           <Profile name={userName} />
         ) : (
           <div class="flex items-center">
             <Link to="/signUp">
-              <SignIn />
+              <div class="items-center">
+                <div class="inline-block px-4 ml-2 text-center leading-6 text-sm text-white border-2 shadow-md transition duration-200 rounded-full py-0.5 bg-green-500 hover:bg-yellow-500 border-indigo-900 hover:text-indigo-900 font-heading ease-in-out transform hover:scale-110 ">
+                  SIGN IN
+                </div>
+              </div>
             </Link>
           </div>
         )}

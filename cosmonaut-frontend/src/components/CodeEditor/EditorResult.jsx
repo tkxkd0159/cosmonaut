@@ -1,23 +1,23 @@
 import React from "react";
 import Editor, { loader } from "@monaco-editor/react";
-import { useFmtApi } from "../../libs/api/postFmt";
+import { useFmtApi } from "../../core/api/postFmt";
 
 loader.config({
   paths: {
-    vs: "/monaco-editor/min/vs",
+    vs: "/monaco-editor/min/vs/loader.js",
   },
 });
 
 export default function EditorResult({
   read,
+  defaultLanguage,
+  difSuccess,
+  exCode,
   path,
   index,
-  difSuccess,
-  defaultLanguage,
-  exCode,
-  files,
   onChange,
   onMount,
+  files,
 }) {
   // eslint-disable-next-line no-unused-vars
   const [fmtRes, fmtLoading, fmtSuccess, fmtError, fmtFetch] = useFmtApi(

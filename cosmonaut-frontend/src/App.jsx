@@ -1,18 +1,20 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import NotFound from "./error/NotFound";
-import IndexPage from "./containers/Index/IndexPage";
-import MainPage from "./containers/Main/MainPage";
-import Profile from "./containers/Profile/Profile";
-import UnitPage from "./containers/Unit/UnitPage";
-import SignUp from "./containers/SignUp/SignUp";
-import ScrollToTop from "./components/Common/ScrollToTop";
-import { EpiloguePage } from "./containers/Epilogue/EpiloguePage";
-import { AppendixPage } from "./containers/Appendix/AppendixPage";
-import IndexInitialPage from "./containers/Index/IndexInitialPage";
-import ProblemPage from "./containers/Problem/ProblemPage";
-import AdvancePage from "./containers/Advanced/AdvancePage";
 import { useRecoilState } from "recoil";
-import { LoginState } from "./states/login";
+
+import ScrollToTop from "./components/Common/ScrollToTop";
+import Profile from "./components/Profile/Profile";
+
+import SignUp from "./components/SignUp/SignUp";
+import { LoginState } from "./core/state/loginState";
+import NotFound from "./error/NotFound";
+import AdvancePage from "./layout/Advanced/AdvancePage";
+import { AppendixPage } from "./layout/Appendix/AppendixPage";
+import { EpiloguePage } from "./layout/Epilogue/EpiloguePage";
+import IndexInitialPage from "./layout/Index/IndexInitialPage";
+import IndexPage from "./layout/Index/IndexPage";
+import MainPage from "./layout/Main/MainPage";
+import ProblemPage from "./layout/Problem/ProblemPage";
+import UnitPage from "./layout/Unit/UnitPage";
 
 function App() {
   // eslint-disable-next-line no-unused-vars

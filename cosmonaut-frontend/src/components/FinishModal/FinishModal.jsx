@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import tw from "tailwind-styled-components";
-import { useGetLessonPic } from "../../libs/api/getLessonPic";
-import { useGetUserProgress } from "../../libs/api/getUserProgress";
-import { lessonEngInfo } from "../../states/Information/lessonInfoAtoms";
 import {
   ProgressBar0,
   ProgressBar1,
@@ -13,14 +10,16 @@ import {
   ProgressBar4,
 } from "../Common/ProgressBar";
 import error from "../../assets/images/dummy-nft.jpg";
-import { handleModalAtom } from "../../states/handleModal";
+import { handleModalAtom } from "../../core/state/handleModalState";
+import { lessonInfos } from "../../core/config/lessonInfo";
+import { useGetUserProgress } from "../../core/api/getUserProgress";
+import { useGetLessonPic } from "../../core/api/getLessonPic";
 
 const Container = tw.div`fixed h-screen bottom-0 w-full z-50 flex items-center bg-gray-900 bg-opacity-80`;
 const Button = tw.button`animate-bounce block mx-auto lg:mt-8 md:mt-4 md:mb-4 text-center lg:text-lg md:text-sm border-3 transition duration-200 rounded-full py-2 px-8 bg-gradient-to-r to-orange-400 from-yellow-500 font-heading text-indigo-900 hover:from-green-500 border-indigo-900 hover:border-white hover:to-blue-500 hover:text-white mt-3 text-xs`;
 
 function FinishModal() {
   const { lessonID } = useParams();
-  const lessonInfos = useRecoilValue(lessonEngInfo);
   const navigate = useNavigate();
   const nextL = Number(lessonID) + 1;
   // eslint-disable-next-line no-unused-vars
@@ -34,15 +33,18 @@ function FinishModal() {
     navigate(`/epilogue`);
   };
 
-  const [lessonPic, picFetch] = useGetLessonPic(lessonID);
+  const [lessonPic, picFetch] = useGetLessonPic(Number(lessonID));
   // eslint-disable-next-line no-unused-vars
-  const [userLoading, userRes, userFetch] = useGetUserProgress(lessonID);
+  const [userLoading, userRes, userFetch] = useGetUserProgress(
+    Number(lessonID)
+  );
 
   useEffect(() => {
     userFetch();
-    !(userRes === -1) && picFetch();
+    // if (userRes !== -1) return picFetch();
+    picFetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [lessonID]);
 
   const onErrorImg = (e) => {
     e.target.src = error;
