@@ -28,7 +28,7 @@ export const L4C3Pr = () => {
   const [hide, setHide] = useState(true);
   const navigate = useNavigate();
   const editorRef = useRef(null);
-  const [tab, setTab] = useState("state.rs");
+  const [tab, setTab] = useState();
   const [readOnly, setReadOnly] = useState(false);
   const [getTargetCode, example, exLoading] = useTargetCode();
   const key = tab + lessonID;
@@ -37,14 +37,19 @@ export const L4C3Pr = () => {
     initCode = sessionStorage.getItem(key);
   } else if (example) {
     initCode = example[tab];
+  } else {
+    initCode = "";
   }
   const [code, setCode] = useState(initCode);
   const [files, setFiles] = useState({});
-
   useEffect(() => {
     setFiles({ ...files, [tab]: Base64.encode(code) });
     sessionStorage.setItem(key, code);
   }, [code]);
+  let executeCode = sessionStorage.getItem("execute.rs4");
+  let file = {
+    "execute.rs": Base64.encode(executeCode),
+  };
 
   const { postBuild, runSuccess, runError, runLoading, executeRes, queryRes } =
     useBuild();
@@ -53,9 +58,10 @@ export const L4C3Pr = () => {
     navigate(`/lesson/4/chapter/3/unit/2`);
   };
   const handleBuildButton = async () => {
-    await postBuild(lessonID, chID, files);
+    await postBuild(lessonID, chID, file);
   };
   const handleTargetCode = async () => {
+    setTab("execute.rs");
     await getTargetCode(lessonID, chID);
   };
 

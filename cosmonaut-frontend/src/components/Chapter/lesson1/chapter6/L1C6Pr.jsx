@@ -21,42 +21,40 @@ import { useBuild } from "../../../../core/hook/useBuild";
 import { BuildButton, NextButton } from "../../../Common/buttons";
 import { useTargetCode } from "../../../../core/hook/useTartgetCode";
 import { Base64 } from "js-base64";
-import { useRecoilState } from "recoil";
-import { buildFileState } from "../../../../core/state/buildFileState";
 
 export const L1C6Pr = () => {
   const { lessonID, chID } = useParams();
   const [hide, setHide] = useState(true);
   const navigate = useNavigate();
   const editorRef = useRef(null);
-  const [tab, setTab] = useState("state.rs");
+  const [tab, setTab] = useState();
   const [readOnly, setReadOnly] = useState(false);
   const [getTargetCode, example, exLoading] = useTargetCode();
-  const [buildFile, setBuildFile] = useRecoilState(buildFileState);
-
   const key = tab + lessonID;
   let initCode = "";
   if (sessionStorage.getItem(key)) {
     initCode = sessionStorage.getItem(key);
   } else if (example) {
     initCode = example[tab];
+  } else {
+    initCode = "";
   }
   const [code, setCode] = useState(initCode);
   const [files, setFiles] = useState({});
-
   useEffect(() => {
     setFiles({ ...files, [tab]: Base64.encode(code) });
-    setBuildFile((prev) => {
-      return {
-        ...prev,
-        files,
-      };
-    });
     sessionStorage.setItem(key, code);
   }, [code]);
-
-  console.log("files: ", files);
-  console.log("buildFile: ", buildFile.files);
+  let stateCode = sessionStorage.getItem("state.rs1");
+  let msgCode = sessionStorage.getItem("msg.rs1");
+  let contractCode = sessionStorage.getItem("contract.rs1");
+  let executeCode = sessionStorage.getItem("execute.rs1");
+  let file = {
+    "state.rs": Base64.encode(stateCode),
+    "msg.rs": Base64.encode(msgCode),
+    "contract.rs": Base64.encode(contractCode),
+    "execute.rs": Base64.encode(executeCode),
+  };
 
   const { postBuild, runSuccess, runError, runLoading, executeRes, queryRes } =
     useBuild();
@@ -65,9 +63,10 @@ export const L1C6Pr = () => {
     navigate(`/lesson/1/chapter/6/unit/2`);
   };
   const handleBuildButton = async () => {
-    await postBuild(lessonID, chID, files);
+    await postBuild(lessonID, chID, file);
   };
   const handleTargetCode = async () => {
+    setTab("state.rs");
     await getTargetCode(lessonID, chID);
   };
 
