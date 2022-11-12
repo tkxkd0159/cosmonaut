@@ -12,7 +12,7 @@ import Hint from "../../../../components/Contents/Hint";
 import { useNavigate, useParams } from "react-router-dom";
 import { Loading } from "../../../../components/Common/Loading";
 import PracticeCode from "../../../../components/CodeEditor/PracticeCode";
-import EditorPr from "../../../../components/CodeEditor/EditorPr";
+import EditorPractice from "../../../../components/CodeEditor/EditorPractice";
 import TabHeader from "../../../../components/Practice/TabHeader";
 import PracticeName from "../../../../components/Practice/PracticeName";
 import ResultTab from "../../../../components/CodeEditor/ResultTab";
@@ -271,7 +271,7 @@ export const L2C8Pr = () => {
                     <Loading />
                   ) : (
                     <>
-                      <EditorPr
+                      <EditorPractice
                         defaultLanguage="rust"
                         exCode={example[tab]}
                         path={key}
