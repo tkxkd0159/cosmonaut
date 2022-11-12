@@ -304,7 +304,7 @@ export const L4C3Pr = () => {
                         path={key}
                         onChange={(e) => setCode(e)}
                         onMount={(editor) => (editorRef.current = editor)}
-                        files={files}
+                        files={file}
                         readOnly={readOnly}
                       />
                     </>

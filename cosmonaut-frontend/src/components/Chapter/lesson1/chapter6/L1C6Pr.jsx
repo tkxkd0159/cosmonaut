@@ -356,7 +356,7 @@ export const L1C6Pr = () => {
                       path={key}
                       onChange={(e) => setCode(e)}
                       onMount={(editor) => (editorRef.current = editor)}
-                      files={files}
+                      files={file}
                       readOnly={readOnly}
                     />
                   )}
