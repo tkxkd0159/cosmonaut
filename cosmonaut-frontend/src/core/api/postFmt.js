@@ -1,10 +1,8 @@
 import { useState } from "react";
 
-export const useFmtApi = (files, tab) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+export const useFormat = (files) => {
   const [response, setResponse] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const option = {
     method: "POST",
@@ -16,9 +14,6 @@ export const useFmtApi = (files, tab) => {
   };
 
   const fetchData = async () => {
-    setIsError(false);
-    setIsLoading(true);
-
     try {
       let res = await fetch(
         `${process.env.REACT_APP_API_ADDR}/v1/rust/fmt`,
@@ -36,11 +31,8 @@ export const useFmtApi = (files, tab) => {
       setIsSuccess(true);
     } catch (error) {
       alert(error);
-      setIsError(true);
     }
-
-    setIsLoading(false);
   };
 
-  return [response, isLoading, isSuccess, isError, fetchData];
+  return [response, isSuccess, fetchData];
 };
