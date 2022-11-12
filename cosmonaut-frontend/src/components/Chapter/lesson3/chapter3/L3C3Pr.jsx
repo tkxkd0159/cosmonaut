@@ -13,7 +13,7 @@ import Markdown from "../../../../components/Contents/Markdown";
 import { useNavigate, useParams } from "react-router-dom";
 import PracticeCode from "../../../../components/CodeEditor/PracticeCode";
 import { Loading } from "../../../../components/Common/Loading";
-import EditorPr from "../../../../components/CodeEditor/EditorPr";
+import EditorPractice from "../../../../components/CodeEditor/EditorPractice";
 import ResultTab from "../../../../components/CodeEditor/ResultTab";
 import TabHeader from "../../../../components/Practice/TabHeader";
 import PracticeName from "../../../../components/Practice/PracticeName";
@@ -525,7 +525,7 @@ export const L3C3Pr = () => {
                     <Loading />
                   ) : (
                     <>
-                      <EditorPr
+                      <EditorPractice
                         defaultLanguage="rust"
                         exCode={example[tab]}
                         path={key}
