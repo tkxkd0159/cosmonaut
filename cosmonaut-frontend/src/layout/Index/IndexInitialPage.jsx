@@ -5,8 +5,6 @@ import Navbar from "../../components/Navbar/Navbar";
 import Video from "../../assets/bg2-v5.mp4";
 import { indexInfo } from "../../core/config/indexInfo";
 import { ReadyJourney } from "./components/ReadyJourney";
-import Footer from "../../components/Footer/Footer";
-// import spacehole from "../../assets/images/spacehole-2x.jpg";
 
 const Title = tw.h2`text-2xl md:text-4xl text-center lg:text-left mt-2 text-orange-400 lg:mb-8 mb-6 font-heading`;
 const LessonList = tw.div`md:space-y-5 space-y-3 md:mx-0 mx-6`;
@@ -25,7 +23,7 @@ function IndexInitialPage() {
   return (
     <>
       <Navbar />
-      <div className="h-[960px] overflow-y-scroll z-0 relative lg:pb-20 bg-cover bg-center bg-opacity-10 lg:pt-32">
+      <div className="h-[860px] overflow-y-scroll z-0 relative lg:pb-20 bg-cover bg-center bg-opacity-10 lg:pt-32">
         <div className="z-[-1] absolute bottom-0 w-full h-auto">
           <video autoPlay muted loop playsInline>
             <source src={Video} type="video/mp4" />
@@ -73,7 +71,6 @@ function IndexInitialPage() {
             </Curriculum>
           </div>
         </div>
-        <Footer />
       </div>
     </>
   );

@@ -49,7 +49,7 @@ function Overview() {
     <Container>
       <div class="animate-fadeInLtoR lg:border-b-0 lg:border-t-0 bg-green-500 rounded-3xl mx-6 lg:mx-0 md:px-2 px-1 md:py-2 py-1">
         <div class="block object-cover mx-auto">
-          <div class="px-4 bg-gray-50 rounded-2xl lg:pt-4 pt-6 border-indigo-900 border-4 md:pb-10 pb-6">
+          <div class="h-[580px] overflow-y-scroll px-4 bg-gray-50 rounded-2xl lg:pt-4 pt-6 border-indigo-900 border-4 md:pb-10 pb-6">
             <Title>Lesson Overview</Title>
             <SubTitle>
               <h2 class="text-center text-lg font-heading text-indigo-900">

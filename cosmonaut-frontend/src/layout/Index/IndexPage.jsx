@@ -10,7 +10,6 @@ import { useEffect } from "react";
 import Video from "../../assets/bg2-v5.mp4";
 import { handleModalAtom } from "../../core/state/handleModalState";
 import { indexInfo } from "../../core/config/indexInfo";
-import Footer from "../../components/Footer/Footer";
 
 const Curriculum = tw.div`w-full mb-14 lg:mb-0 lg:col-span-1 col-span-2 lg:order-2 order-1`;
 const Title = tw.h2`text-2xl md:text-4xl text-center lg:text-left mt-2 text-orange-400 lg:mb-8 mb-6 font-heading`;
@@ -111,7 +110,7 @@ function IndexPage() {
   return (
     <>
       <Navbar />
-      <div className="h-[960px] overflow-y-scroll z-0 relative lg:pb-20 bg-cover bg-center bg-opacity-10 lg:pt-32">
+      <div className="h-[860px] overflow-y-scroll z-0 relative lg:pb-20 bg-cover bg-center bg-opacity-10 lg:pt-32">
         <div className="z-[-1] absolute bottom-0 w-full h-auto">
           <video autoPlay muted loop playsInline>
             <source src={Video} type="video/mp4" />
@@ -179,7 +178,6 @@ function IndexPage() {
             </Curriculum>
           </div>
         </div>
-        <Footer />
       </div>
     </>
   );

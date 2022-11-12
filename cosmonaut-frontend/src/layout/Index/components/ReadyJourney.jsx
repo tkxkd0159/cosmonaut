@@ -11,7 +11,7 @@ export const ReadyJourney = () => {
   return (
     <Container>
       <div className="animate-fadeInLtoR lg:border-b-0 lg:border-t-0 bg-green-500 rounded-3xl mx-6 lg:mx-0 md:px-2 px-1 md:py-2 py-1">
-        <div className="block object-cover mx-auto">
+        <div className="h-[620px] overflow-y-scroll block object-cover mx-auto">
           <Background
             style={{
               backgroundImage: `url(${require("../../../assets/images/spacetrip.gif")})`,
