@@ -24,7 +24,6 @@ export const useBuild = () => {
         files: files,
       }),
     };
-    console.log("option.body", option.body);
 
     try {
       let res = await fetch(

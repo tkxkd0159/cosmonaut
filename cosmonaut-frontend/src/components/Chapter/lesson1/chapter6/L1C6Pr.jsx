@@ -70,6 +70,11 @@ export const L1C6Pr = () => {
     await getTargetCode(lessonID, chID);
   };
 
+  console.log("executeRes.result", executeRes.result);
+  console.log("queryRes.result", executeRes.result);
+  console.log("runSuccess", runSuccess);
+  console.log("runError", runError);
+
   let Button;
   if (executeRes.result === "success" && queryRes.result === "success") {
     Button = (
