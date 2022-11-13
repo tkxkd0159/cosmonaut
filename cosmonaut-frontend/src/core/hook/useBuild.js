@@ -8,9 +8,7 @@ export const useBuild = () => {
   const [queryRes, setQueryRes] = useState({});
 
   const postBuild = useCallback(async (lessonID, chID, files) => {
-    setIsError(false);
     setIsLoading(true);
-    setIsSuccess(false);
 
     let option = {
       method: "POST",
@@ -49,6 +47,5 @@ export const useBuild = () => {
       setIsLoading(false);
     }
   }, []);
-
-  return { postBuild, isSuccess, isError, isLoading, executeRes, queryRes };
+  return [postBuild, isSuccess, isError, isLoading, executeRes, queryRes];
 };

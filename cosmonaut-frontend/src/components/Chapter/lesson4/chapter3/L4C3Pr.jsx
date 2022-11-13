@@ -51,7 +51,7 @@ export const L4C3Pr = () => {
     "execute.rs": Base64.encode(executeCode),
   };
 
-  const { postBuild, runSuccess, runError, runLoading, executeRes, queryRes } =
+  const [postBuild, runSuccess, runError, runLoading, executeRes, queryRes] =
     useBuild();
 
   const handleNextLesson = () => {
