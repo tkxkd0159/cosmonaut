@@ -62,8 +62,8 @@ export const L1C6Pr = () => {
   const handleNextLesson = () => {
     navigate(`/lesson/1/chapter/6/unit/2`);
   };
-  const handleBuildButton = () => {
-    postBuild(lessonID, chID, file);
+  const handleBuildButton = async () => {
+    await postBuild(lessonID, chID, file);
   };
   const handleTargetCode = async () => {
     setTab("state.rs");
