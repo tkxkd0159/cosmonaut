@@ -41,7 +41,6 @@ function FinishModal() {
 
   useEffect(() => {
     userFetch();
-    // if (userRes !== -1) return picFetch();
     picFetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lessonID]);

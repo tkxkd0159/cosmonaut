@@ -12,7 +12,7 @@ import Hint from "../../../../components/Contents/Hint";
 import PracticeCode from "../../../../components/CodeEditor/PracticeCode";
 import { useNavigate, useParams } from "react-router-dom";
 import ResultTab from "../../../../components/CodeEditor/ResultTab";
-import EditorPr from "../../../../components/CodeEditor/EditorPr";
+import EditorPractice from "../../../CodeEditor/EditorPractice";
 import { Loading } from "../../../../components/Common/Loading";
 import TabHeader from "../../../../components/Practice/TabHeader";
 import PracticeName from "../../../../components/Practice/PracticeName";
@@ -56,7 +56,7 @@ export const L1C6Pr = () => {
     "execute.rs": Base64.encode(executeCode),
   };
 
-  const { postBuild, runSuccess, runError, runLoading, executeRes, queryRes } =
+  const [postBuild, runSuccess, runError, runLoading, executeRes, queryRes] =
     useBuild();
 
   const handleNextLesson = () => {
@@ -350,13 +350,13 @@ export const L1C6Pr = () => {
                   {runLoading ? (
                     <Loading />
                   ) : (
-                    <EditorPr
+                    <EditorPractice
                       defaultLanguage="rust"
                       exCode={example[tab]}
                       path={key}
                       onChange={(e) => setCode(e)}
                       onMount={(editor) => (editorRef.current = editor)}
-                      files={files}
+                      files={file}
                       readOnly={readOnly}
                     />
                   )}

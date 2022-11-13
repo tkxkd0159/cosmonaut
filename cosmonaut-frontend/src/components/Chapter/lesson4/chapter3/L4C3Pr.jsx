@@ -13,7 +13,7 @@ import Markdown from "../../../../components/Contents/Markdown";
 import { useNavigate, useParams } from "react-router-dom";
 import PracticeCode from "../../../../components/CodeEditor/PracticeCode";
 import { Loading } from "../../../../components/Common/Loading";
-import EditorPr from "../../../../components/CodeEditor/EditorPr";
+import EditorPractice from "../../../../components/CodeEditor/EditorPractice";
 import ResultTab from "../../../../components/CodeEditor/ResultTab";
 import TabHeader from "../../../../components/Practice/TabHeader";
 import PracticeName from "../../../../components/Practice/PracticeName";
@@ -51,7 +51,7 @@ export const L4C3Pr = () => {
     "execute.rs": Base64.encode(executeCode),
   };
 
-  const { postBuild, runSuccess, runError, runLoading, executeRes, queryRes } =
+  const [postBuild, runSuccess, runError, runLoading, executeRes, queryRes] =
     useBuild();
 
   const handleNextLesson = () => {
@@ -298,13 +298,13 @@ export const L4C3Pr = () => {
                     <Loading />
                   ) : (
                     <>
-                      <EditorPr
+                      <EditorPractice
                         defaultLanguage="rust"
                         exCode={example[tab]}
                         path={key}
                         onChange={(e) => setCode(e)}
                         onMount={(editor) => (editorRef.current = editor)}
-                        files={files}
+                        files={file}
                         readOnly={readOnly}
                       />
                     </>
@@ -314,7 +314,9 @@ export const L4C3Pr = () => {
             </PracticeCode>
           </div>
         </div>
-        {Button}
+        <div class="flex items-center justify-center md:mt-8 mt-3 ">
+          {Button}
+        </div>
       </div>
     </>
   );

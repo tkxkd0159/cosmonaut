@@ -18,20 +18,18 @@ function Curriculum() {
   const engInfo = useRecoilValue(indexInfo);
   const [userRes, userFetch] = useGetUserProgress(lessonID);
   const [initLoading, initRes, initFetch] = usePostInitial();
-  console.log(initRes);
 
-  const handleList = e => {
+  const handleList = (e) => {
     e.preventDefault();
     userFetch();
   };
-  console.log(userRes.chapter);
 
   return (
     <Container>
       <div class="max-w-lg px-4 mx-auto">
         <Title>Curriculum</Title>
         <LessonList onClick={handleList}>
-          {engInfo?.map(e => {
+          {engInfo?.map((e) => {
             const lessonUrl = `/lesson/${e?.id}`;
             return (
               <Link key={e?.id} to={lessonUrl}>

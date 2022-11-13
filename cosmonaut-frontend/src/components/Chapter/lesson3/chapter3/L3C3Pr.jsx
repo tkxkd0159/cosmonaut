@@ -13,7 +13,7 @@ import Markdown from "../../../../components/Contents/Markdown";
 import { useNavigate, useParams } from "react-router-dom";
 import PracticeCode from "../../../../components/CodeEditor/PracticeCode";
 import { Loading } from "../../../../components/Common/Loading";
-import EditorPr from "../../../../components/CodeEditor/EditorPr";
+import EditorPractice from "../../../../components/CodeEditor/EditorPractice";
 import ResultTab from "../../../../components/CodeEditor/ResultTab";
 import TabHeader from "../../../../components/Practice/TabHeader";
 import PracticeName from "../../../../components/Practice/PracticeName";
@@ -55,7 +55,7 @@ export const L3C3Pr = () => {
     "query.rs": Base64.encode(queryCode),
   };
 
-  const { postBuild, runSuccess, runError, runLoading, executeRes, queryRes } =
+  const [postBuild, runSuccess, runError, runLoading, executeRes, queryRes] =
     useBuild();
 
   const handleNextLesson = () => {
@@ -453,7 +453,6 @@ export const L3C3Pr = () => {
                   >
                     contract.rs
                   </button>
-
                   <button
                     class="block mr-[1px] py-3 px-2 md:px-4 md:mb-0 mb-1  bg-purple-500 font-bold text-xs rounded-t-md transform transition ease-in-out focus:scale-105 focus:text-gray-900 hover:scale-110"
                     onClick={(e) => {
@@ -521,13 +520,13 @@ export const L3C3Pr = () => {
                     <Loading />
                   ) : (
                     <>
-                      <EditorPr
+                      <EditorPractice
                         defaultLanguage="rust"
                         exCode={example[tab]}
                         path={key}
                         onChange={(e) => setCode(e)}
                         onMount={(editor) => (editorRef.current = editor)}
-                        files={files}
+                        files={file}
                         readOnly={readOnly}
                       />
                     </>
@@ -537,7 +536,9 @@ export const L3C3Pr = () => {
             </PracticeCode>
           </div>
         </div>
-        {Button}
+        <div class="flex items-center justify-center md:mt-8 mt-3 ">
+          {Button}
+        </div>
       </div>
     </>
   );

@@ -1,10 +1,10 @@
 import React from "react";
 import Editor, { loader } from "@monaco-editor/react";
-import { useFmtApi } from "../../core/api/postFmt";
+import { useFormat } from "../../core/hook/useFormat";
 
 loader.config({
   paths: {
-    vs: "/monaco-editor/min/vs/loader.js",
+    vs: "/monaco-editor/min/vs",
   },
 });
 
@@ -19,15 +19,11 @@ export default function EditorResult({
   onMount,
   files,
 }) {
-  // eslint-disable-next-line no-unused-vars
-  const [fmtRes, fmtLoading, fmtSuccess, fmtError, fmtFetch] = useFmtApi(
-    files,
-    path
-  );
-  const fmtBtn = async () => {
-    await fmtFetch();
-    if (fmtSuccess) {
-      sessionStorage.setItem(index, fmtRes[index]);
+  const [formatResponse, formatSuccess, postFormat] = useFormat(files);
+  const formatButton = async () => {
+    await postFormat();
+    if (formatSuccess) {
+      sessionStorage.setItem(index, formatResponse[index]);
     }
   };
 
@@ -63,7 +59,7 @@ export default function EditorResult({
       />
       <div class="flex justify-end px-2 mt-1">
         <button
-          onClick={fmtBtn}
+          onClick={formatButton}
           class="transform transition ease-in-out hover:scale-105 hover:text-yellow-500 font-heading text-orange-400 rounded-full py-1 text-sm text-center"
         >
           Click to Format
