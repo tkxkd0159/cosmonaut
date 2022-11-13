@@ -541,7 +541,9 @@ export const L3C3Pr = () => {
             </PracticeCode>
           </div>
         </div>
-        {Button}
+        <div class="flex items-center justify-center md:mt-8 mt-3 ">
+          {Button}
+        </div>
       </div>
     </>
   );
