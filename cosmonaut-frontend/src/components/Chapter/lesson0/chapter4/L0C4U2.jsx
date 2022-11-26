@@ -1,8 +1,19 @@
 import React from "react";
 import BasicP from "../../../../components/Contents/BasicP";
 import Markdown from "../../../../components/Contents/Markdown";
+import CodeBlock from "../../../Contents/CodeBlock";
 
 function L0C4U2() {
+  const stringNODE = "${NODE}";
+  const stringCHAIN_ID = "${CHAIN_ID}";
+  const stringFEE_DENOM = "${FEE_DENOM}";
+
+  const code0 = `
+  \`\`\`bash
+  export NODE="--node $RPC"
+  export TXFLAG="${stringNODE} --chain-id ${stringCHAIN_ID} --gas-prices 0.25${stringFEE_DENOM} --gas auto --gas-adjustment 1.3"
+  \`\`\``;
+
   const code1 = `
 \`\`\`bash
 # see how many codes we have now
@@ -83,23 +94,25 @@ $ wasmd tx wasm execute $CONTRACT "$TRANSFER" \
 
   return (
     <>
-      <Markdown code={code1} />
       <BasicP>
         You can upload the created wasm binary executable to the blockchain.
       </BasicP>
       <BasicP>
-        Bytecode can be downloaded through CODE_ID and verified by comparing it
-        with its own bytecode. Do diff.
+        Bytecode can be downloaded through <CodeBlock>CODE_ID</CodeBlock> and
+        verified by comparing it with its own bytecode. Do{" "}
+        <CodeBlock>diff</CodeBlock>.
       </BasicP>
+      <Markdown code={code0} />
+      <Markdown code={code1} />
 
-      <Markdown code={code2} />
       <BasicP>Now, you can instantiate the wasm contract.</BasicP>
+      <Markdown code={code2} />
 
-      <Markdown code={code3} />
       <BasicP>
         You can call the method to request a state change for this instance
         (execute) or get the data (query) after the instantiation.
       </BasicP>
+      <Markdown code={code3} />
     </>
   );
 }

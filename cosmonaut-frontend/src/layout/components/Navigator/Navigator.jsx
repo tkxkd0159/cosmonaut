@@ -65,7 +65,7 @@ function Navigator() {
       return navigate(`/lesson/0/chapter/2/unit/1`);
     } else if (lessonID === "0" && chID === "2" && uID === "1") {
       return navigate(`/lesson/0/chapter/3/unit/1`);
-    } else if (lessonID === "0" && chID === "3" && uID === "2") {
+    } else if (lessonID === "0" && chID === "3" && uID === "3") {
       return navigate(`/lesson/0/chapter/4/unit/1`);
 
       // lesson 1

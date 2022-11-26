@@ -18,8 +18,13 @@ export const unitInfo = [
     [{ id: 1, title: "wasm/wasmd", subTitle: "wasm/wasmd" }],
     // chapter3
     [
-      { id: 1, title: "Setup Go CLI", subTitle: "Setup Go CLI" },
-      { id: 2, title: "CosmJS", subTitle: "CosmJS" },
+      {
+        id: 1,
+        title: "Public Testnet: Malaga",
+        subTitle: "Public Testnet: Malaga",
+      },
+      { id: 2, title: "Setup Go CLI", subTitle: "Setup Go CLI" },
+      { id: 3, title: "CosmJS", subTitle: "CosmJS" },
     ],
     // chapter4
     [
