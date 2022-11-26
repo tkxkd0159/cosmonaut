@@ -181,8 +181,8 @@ function StartModal() {
     if (key === "999") {
       chState = (
         <>
-          <h3 class="text-center mb-2 md:text-lg mt-8 text-xs mx-auto text-white block w-full font-extrabold underline">
-            Ready to Try Advanced?
+          <h3 class="text-center mb-2 md:text-lg mt-8 text-xs mx-auto text-red-500 block w-full font-extrabold underline">
+            You don't have access to this advanced yet
           </h3>
         </>
       );
@@ -229,76 +229,74 @@ function StartModal() {
   }
 
   return (
-    <>
-      <div
-        id="modal"
-        class="fixed h-full bottom-0 w-full z-50 bg-black bg-opacity-80 flex"
-      >
-        <div class="container flex my-auto px-4 mx-auto justify-center py-4">
-          <div class="container md:mt-0 mt-8 mx-auto justify-center items-center">
-            <h3 class="md:text-xl text-base font-heading md:mb-1 mb-0 text-yellow-500 text-center">
-              Lesson {lessonID}
-            </h3>
-            <h4 class="md:text-2xl text-lg font-heading md:mb-4 mb-2 text-center">
-              {lessonInfos[lessonID]?.title}
-            </h4>
-            <Navigate>
-              {chapterInfo[lessonID].map((e) => {
-                return (
-                  <Button
-                    onClick={() => {
-                      setKey(e.id);
-                      setAdKey("");
-                    }}
-                    className={classNames(
-                      proChapter > String(e.id) || proChapter === "0"
-                        ? "bg-green-400 hover:bg-yellow-100 focus:bg-yellow-500 focus:outline-none hover:z-10 focus:z-10 focus:ring-4 focus:ring-inset focus:ring-orange-400 active:bg-yellow-500"
-                        : proChapter < String(e.id)
-                        ? "hover:z-10 hover:bg-yellow-100 bg-white"
-                        : proChapter === String(e.id)
-                        ? "ring-4 ring-inset ring-orange-400 bg-yellow-500"
-                        : "hover:z-10 hover:bg-yellow-100 bg-white"
-                    )}
-                  >
-                    <div
-                      id="btn"
-                      class="block w-full h-full p-6 items-center divide-y-2 divide-indigo-900 justify-center"
-                    >
-                      <ChNumber>Chapter {e.id}</ChNumber>
-                      <ChTitle>{e.title}</ChTitle>
-                    </div>
-                  </Button>
-                );
-              })}
-              <Button
-                onClick={() => {
-                  setAdKey(advKey);
-                  setKey("999");
-                }}
-                className="bg-white hover:bg-yellow-100 focus:bg-yellow-500 focus:outline-none hover:z-10 focus:z-10 focus:ring-4 focus:ring-inset focus:ring-orange-400 active:bg-yellow-500"
-              >
-                <div
-                  id="btn"
-                  class="block w-full h-full p-6 items-center divide-y-2 divide-indigo-900 justify-center"
+    <div
+      id="modal"
+      class="fixed h-full bottom-0 w-full z-50 bg-black bg-opacity-80 flex"
+    >
+      <div class="container flex my-auto px-4 mx-auto justify-center py-4">
+        <div class="container md:mt-0 mt-8 mx-auto justify-center items-center">
+          <h3 class="md:text-xl text-base font-heading md:mb-1 mb-0 text-yellow-500 text-center">
+            Lesson {lessonID}
+          </h3>
+          <h4 class="md:text-2xl text-lg font-heading md:mb-4 mb-2 text-center">
+            {lessonInfos[lessonID]?.title}
+          </h4>
+          <Navigate>
+            {chapterInfo[lessonID].map((e) => {
+              return (
+                <Button
+                  onClick={() => {
+                    setKey(e.id);
+                    setAdKey("");
+                  }}
+                  className={classNames(
+                    proChapter > String(e.id) || proChapter === "0"
+                      ? "bg-green-400 hover:bg-yellow-100 focus:bg-yellow-500 focus:outline-none hover:z-10 focus:z-10 focus:ring-4 focus:ring-inset focus:ring-orange-400 active:bg-yellow-500"
+                      : proChapter < String(e.id)
+                      ? "hover:z-10 hover:bg-yellow-100 bg-white"
+                      : proChapter === String(e.id)
+                      ? "ring-4 ring-inset ring-orange-400 bg-yellow-500"
+                      : "hover:z-10 hover:bg-yellow-100 bg-white"
+                  )}
                 >
-                  <ChNumber>Advanced</ChNumber>
-                  <ChTitle>{title}</ChTitle>
-                </div>
-              </Button>
-            </Navigate>
-            {chState}
-            {proChapter >= String(key) || proChapter === "0" ? (
-              <button
-                onClick={closeModal}
-                class="animate-moveUtoD block mt-6 mb-72 mx-auto md:mb-4 text-center text-lg border-3  transition duration-200 rounded-full py-2 px-8 bg-gradient-to-r to-orange-400 from-yellow-500 font-heading text-indigo-900 hover:from-green-500 border-indigo-900 hover:border-white hover:to-blue-500 hover:text-white"
+                  <div
+                    id="btn"
+                    class="block w-full h-full p-6 items-center divide-y-2 divide-indigo-900 justify-center"
+                  >
+                    <ChNumber>Chapter {e.id}</ChNumber>
+                    <ChTitle>{e.title}</ChTitle>
+                  </div>
+                </Button>
+              );
+            })}
+            <Button
+              onClick={() => {
+                setAdKey(advKey);
+                setKey("999");
+              }}
+              className="bg-white hover:bg-yellow-100 focus:bg-yellow-500 focus:outline-none hover:z-10 focus:z-10 focus:ring-4 focus:ring-inset focus:ring-orange-400 active:bg-yellow-500"
+            >
+              <div
+                id="btn"
+                class="block w-full h-full p-6 items-center divide-y-2 divide-indigo-900 justify-center"
               >
-                Start Chapter
-              </button>
-            ) : null}
-          </div>
+                <ChNumber>Advanced</ChNumber>
+                <ChTitle>{title}</ChTitle>
+              </div>
+            </Button>
+          </Navigate>
+          {chState}
+          {proChapter >= String(key) || proChapter === "0" ? (
+            <button
+              onClick={closeModal}
+              class="animate-moveUtoD block mt-6 mb-72 mx-auto md:mb-4 text-center text-lg border-3  transition duration-200 rounded-full py-2 px-8 bg-gradient-to-r to-orange-400 from-yellow-500 font-heading text-indigo-900 hover:from-green-500 border-indigo-900 hover:border-white hover:to-blue-500 hover:text-white"
+            >
+              Start Chapter
+            </button>
+          ) : null}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
