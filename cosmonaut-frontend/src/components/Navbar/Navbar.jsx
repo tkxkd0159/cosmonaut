@@ -48,7 +48,7 @@ function Navbar() {
           <img class="md:h-9 h-8 py-1" src={LogoV4} alt="" width="auto" />
         </Logo>
         {isLoggedIn ? (
-          <Profile name={userName} />
+          <Profile name={userName || "user_name"} />
         ) : (
           <div class="flex items-center">
             <Link to="/signUp">
