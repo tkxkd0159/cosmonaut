@@ -30,10 +30,10 @@ export const ProgressBar0 = (progress) => {
         </div>
         <div class="flex w-full justify-between my-2">
           <span class="flex justify-start xl:text-sm text-xs font-mono text-gray-700">
-            <img class="w-4 h-4" src={flask} alt="flask" />
+            <img class="w-3 h-3" src={flask} alt="flask" />
           </span>
           <span class="flex xl:text-sm text-xs justify-end font-mono text-gray-700">
-            <img class="w-4 h-4" src={check} alt="check" />
+            <img class="w-3 h-3" src={check} alt="check" />
           </span>
         </div>
       </Container>
@@ -49,22 +49,22 @@ export const ProgressBar1 = (progress) => {
         setWidth(100);
         break;
       case 1:
-        setWidth(14);
+        setWidth(19);
         break;
       case 2:
-        setWidth(29);
+        setWidth(32);
         break;
       case 3:
-        setWidth(43);
+        setWidth(45);
         break;
       case 4:
-        setWidth(58);
+        setWidth(59);
         break;
       case 5:
         setWidth(72);
         break;
       case 6:
-        setWidth(86);
+        setWidth(85);
         break;
       default:
         setWidth(5);
@@ -81,30 +81,18 @@ export const ProgressBar1 = (progress) => {
             <div class="block bg-white border-1 border-gray-200 md:h-1.5 md:w-1.5 h-1 w-1 rounded-full"></div>
           </div>
         </div>
-        <div class="flex w-full justify-between my-2">
+        <div class="flex justify-between my-2">
           <span class="flex justify-start xl:text-sm text-xs font-mono text-gray-700">
-            <img class="w-4 h-4" src={flask} alt="flask" />
+            <img class="w-3 h-3" src={flask} alt="flask" />
           </span>
-          <span class="xl:text-sm text-xs font-medium text-gray-700">
-            Chp.1
-          </span>
-          <span class="xl:text-sm text-xs font-medium text-gray-700">
-            Chp.2
-          </span>
-          <span class="xl:text-sm text-xs font-medium text-gray-700">
-            Chp.3
-          </span>
-          <span class="xl:text-sm text-xs font-medium text-gray-700">
-            Chp.4
-          </span>
-          <span class="xl:text-sm text-xs font-medium text-gray-700">
-            Chp.5
-          </span>
-          <span class="xl:text-sm text-xs font-medium text-gray-700">
-            Chp.6
-          </span>
+          <span class="xl:text-sm text-xs font-medium text-gray-700">1</span>
+          <span class="xl:text-sm text-xs font-medium text-gray-700">2</span>
+          <span class="xl:text-sm text-xs font-medium text-gray-700">3</span>
+          <span class="xl:text-sm text-xs font-medium text-gray-700">4</span>
+          <span class="xl:text-sm text-xs font-medium text-gray-700">5</span>
+          <span class="xl:text-sm text-xs font-medium text-gray-700">6</span>
           <span class="flex xl:text-sm text-xs justify-end font-mono text-gray-700">
-            <img class="w-4 h-4" src={check} alt="check" />
+            <img class="w-3 h-3" src={check} alt="check" />
           </span>
         </div>
       </Container>
@@ -120,28 +108,28 @@ export const ProgressBar2 = (progress) => {
         setWidth(100);
         break;
       case 1:
-        setWidth(11);
+        setWidth(16);
         break;
       case 2:
-        setWidth(23);
+        setWidth(26);
         break;
       case 3:
-        setWidth(35);
+        setWidth(36);
         break;
       case 4:
         setWidth(47);
         break;
       case 5:
-        setWidth(58);
+        setWidth(57);
         break;
       case 6:
-        setWidth(68);
+        setWidth(67);
         break;
       case 7:
-        setWidth(79);
+        setWidth(77);
         break;
       case 8:
-        setWidth(91);
+        setWidth(88);
         break;
       default:
         setWidth(5);
@@ -158,44 +146,20 @@ export const ProgressBar2 = (progress) => {
             <div class="block bg-white border-1 border-gray-200 md:h-1.5 md:w-1.5 h-1 w-1 rounded-full"></div>
           </div>
         </div>
-        <div class="flex w-full justify-between my-2">
-          <span class="flex justify-start xl:text-sm text-xxs font-mono text-gray-700">
-            <img
-              class="w-[0.6rem] h-[0.6rem] xl:w-4 xl:h-4"
-              src={flask}
-              alt="flask"
-            />
+        <div class="flex justify-between my-2">
+          <span class="flex justify-start xl:text-sm text-xs font-mono text-gray-700">
+            <img class="w-3 h-3" src={flask} alt="flask" />
           </span>
-          <span class="xl:text-sm text-xxs font-medium text-gray-700">
-            Chp.1
-          </span>
-          <span class="xl:text-sm text-xxs font-medium text-gray-700">
-            Chp.2
-          </span>
-          <span class="xl:text-sm text-xxs font-medium text-gray-700">
-            Chp.3
-          </span>
-          <span class="xl:text-sm text-xxs font-medium text-gray-700">
-            Chp.4
-          </span>
-          <span class="xl:text-sm text-xxs font-medium text-gray-700">
-            Chp.5
-          </span>
-          <span class="xl:text-sm text-xxs font-medium text-gray-700">
-            Chp.6
-          </span>
-          <span class="xl:text-sm text-xxs font-medium text-gray-700">
-            Chp.7
-          </span>
-          <span class="xl:text-sm text-xxs font-medium text-gray-700">
-            Chp.8
-          </span>
-          <span class="flex xl:text-sm text-xxs justify-end font-mono text-gray-700">
-            <img
-              class="w-[0.6rem] h-[0.6rem] xl:w-4 xl:h-4"
-              src={check}
-              alt="check"
-            />
+          <span class="xl:text-sm text-xs font-medium text-gray-700">1</span>
+          <span class="xl:text-sm text-xs font-medium text-gray-700">2</span>
+          <span class="xl:text-sm text-xs font-medium text-gray-700">3</span>
+          <span class="xl:text-sm text-xs font-medium text-gray-700">4</span>
+          <span class="xl:text-sm text-xs font-medium text-gray-700">5</span>
+          <span class="xl:text-sm text-xs font-medium text-gray-700">6</span>
+          <span class="xl:text-sm text-xs font-medium text-gray-700">7</span>
+          <span class="xl:text-sm text-xs font-medium text-gray-700">8</span>
+          <span class="flex xl:text-sm text-xs justify-end font-mono text-gray-700">
+            <img class="w-3 h-3" src={check} alt="check" />
           </span>
         </div>
       </Container>
@@ -211,10 +175,10 @@ export const ProgressBar3 = (progress) => {
         setWidth(100);
         break;
       case 1:
-        setWidth(25);
+        setWidth(29);
         break;
       case 2:
-        setWidth(50);
+        setWidth(52);
         break;
       case 3:
         setWidth(75);
@@ -234,21 +198,15 @@ export const ProgressBar3 = (progress) => {
             <div class="block bg-white border-1 border-gray-200 md:h-1.5 md:w-1.5 h-1 w-1 rounded-full"></div>
           </div>
         </div>
-        <div class="flex w-full justify-between my-2">
+        <div class="flex justify-between my-2">
           <span class="flex justify-start md:text-sm text-xs font-mono text-gray-700">
-            <img class="w-4 h-4" src={flask} alt="flask" />
+            <img class="w-3 h-3" src={flask} alt="flask" />
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
-            Chp.1
-          </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
-            Chp.2
-          </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
-            Chp.3
-          </span>
+          <span class="md:text-sm text-xs font-medium text-gray-700">1</span>
+          <span class="md:text-sm text-xs font-medium text-gray-700">2</span>
+          <span class="md:text-sm text-xs font-medium text-gray-700">3</span>
           <span class="flex md:text-sm text-xs justify-end font-mono text-gray-700">
-            <img class="w-4 h-4" src={check} alt="check" />
+            <img class="w-3 h-3" src={check} alt="check" />
           </span>
         </div>
       </Container>
@@ -264,10 +222,10 @@ export const ProgressBar4 = (progress) => {
         setWidth(100);
         break;
       case 1:
-        setWidth(25);
+        setWidth(29);
         break;
       case 2:
-        setWidth(50);
+        setWidth(52);
         break;
       case 3:
         setWidth(75);
@@ -287,21 +245,15 @@ export const ProgressBar4 = (progress) => {
             <div class="block bg-white border-1 border-gray-200 md:h-1.5 md:w-1.5 h-1 w-1 rounded-full"></div>
           </div>
         </div>
-        <div class="flex w-full justify-between my-2">
+        <div class="flex justify-between my-2">
           <span class="flex justify-start md:text-sm text-xs font-mono text-gray-700">
-            <img class="w-4 h-4" src={flask} alt="flask" />
+            <img class="w-3 h-3" src={flask} alt="flask" />
           </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
-            Chp.1
-          </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
-            Chp.2
-          </span>
-          <span class="md:text-sm text-xs font-medium text-gray-700">
-            Chp.3
-          </span>
+          <span class="md:text-sm text-xs font-medium text-gray-700">1</span>
+          <span class="md:text-sm text-xs font-medium text-gray-700">2</span>
+          <span class="md:text-sm text-xs font-medium text-gray-700">3</span>
           <span class="flex md:text-sm text-xs justify-end font-mono text-gray-700">
-            <img class="w-4 h-4" src={check} alt="check" />
+            <img class="w-3 h-3" src={check} alt="check" />
           </span>
         </div>
       </Container>
