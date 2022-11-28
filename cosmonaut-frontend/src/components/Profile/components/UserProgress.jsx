@@ -225,8 +225,11 @@ function UserProgress() {
               Get Ready for Terraforming
             </h3>
             <ProgressBar0 progress={zeroPro} />
-            <div class="block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading">
-              <button onClick={zeroProgressRouter}>{zero}</button>
+            <div
+              onClick={zeroProgressRouter}
+              class="cursor-pointer block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading"
+            >
+              {zero}
             </div>
           </div>
         </div>
@@ -247,8 +250,11 @@ function UserProgress() {
               Welcome to Spaceship Factory
             </h3>
             <ProgressBar1 progress={firPro} />
-            <div class="block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading">
-              <button onClick={firProgressRouter}>{fir}</button>
+            <div
+              onClick={firProgressRouter}
+              class="cursor-pointer block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading"
+            >
+              {fir}
             </div>
           </div>
         </div>
@@ -269,8 +275,11 @@ function UserProgress() {
               Fuel Up and Load the Freight
             </h3>
             <ProgressBar2 progress={secPro} />
-            <div class="block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading">
-              <button onClick={secProgressRouter}>{sec}</button>
+            <div
+              onClick={secProgressRouter}
+              class="cursor-pointer block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading"
+            >
+              {sec}
             </div>
           </div>
         </div>
@@ -291,8 +300,11 @@ function UserProgress() {
               Prepare to Launch
             </h3>
             <ProgressBar3 progress={thrPro} />
-            <div class="block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading">
-              <button onClick={thrProgressRouter}>{thr}</button>
+            <div
+              onClick={thrProgressRouter}
+              class="cursor-pointer block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading"
+            >
+              {thr}
             </div>
           </div>
         </div>
@@ -313,8 +325,11 @@ function UserProgress() {
               ESFERA Takeoff
             </h3>
             <ProgressBar4 progress={fourPro} />
-            <div class="block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading">
-              <button onClick={fourProgressRouter}>{four}</button>
+            <div
+              onClick={fourProgressRouter}
+              class="cursor-pointer block mx-auto px-4 py-0.5 rounded-full border-2 bg-gray-50 border-gray-500 text-gray-500 text-lg font-heading"
+            >
+              {four}
             </div>
           </div>
         </div>

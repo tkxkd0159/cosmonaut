@@ -28,10 +28,9 @@ $ RUSTFLAGS='-C link-arg=-s' cargo wasm
 
   return (
     <>
-      <Markdown code={code1} />
       <BasicP>
-        Let's compile an example contract and create a wasm binary executable. It
-        is based on
+        Let's compile an example contract and create a wasm binary executable.
+        It is based on
         <BasicA>
           <a
             target="_blank"
@@ -47,8 +46,8 @@ $ RUSTFLAGS='-C link-arg=-s' cargo wasm
         We will use a famous one, <CodeBlock>nameservice</CodeBlock>.
       </BasicP>
       <BasicP>First, get the code from Github.</BasicP>
+      <Markdown code={code1} />
 
-      <Markdown code={code2} />
       <BasicA>
         <a
           target="_blank"
@@ -59,18 +58,19 @@ $ RUSTFLAGS='-C link-arg=-s' cargo wasm
         </a>
       </BasicA>
       <BasicP>
-        rustup allows you to compile with a more explicitly specified toolchain.
-        The toolchain contains several lists and components. By specifying
-        it, a project can be compiled with a specific channel (stable, nightly,
-        beta) and settings.
+        <CodeBlock>rustup</CodeBlock> allows you to compile with a more
+        explicitly specified toolchain. The toolchain contains several lists and
+        components. By specifying it, a project can be compiled with a specific
+        channel (stable, nightly, beta) and settings.
       </BasicP>
       <BasicP>We will use the stable toolchain in this example.</BasicP>
+      <Markdown code={code2} />
 
-      <Markdown code={code3} />
       <BasicP>
         If you want to eliminate unnecessary code from compiling, type the
         following command.
       </BasicP>
+      <Markdown code={code3} />
     </>
   );
 }
