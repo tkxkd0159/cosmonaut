@@ -1,5 +1,5 @@
 [package]
-name = "main-contract"
+name = "main-contract_33"
 version = "0.1.0"
 edition = "2021"
 
@@ -15,7 +15,7 @@ cw20 = "0.13.2"
 cw20-base = { version = "0.13.2", features = ["library"] }
 cw721 = "0.13.2"
 cw721-base = { version = "0.13.2", features = ["library"] }
-base = {path= "/workspace/cargo-projects/cosm-base/packages/base" }
-cosmonaut-cw20 = {path= "/workspace/cargo-projects/cosm-base/packages/cosmonaut-cw20", features=["library"]}
-cosmonaut-cw721 = {path= "/workspace/cargo-projects/cosm-base/packages/cosmonaut-cw721", features=["library"]}
-cosmonaut-main = {path="../contracts/cosmonaut-main", features=["library"]}
+base = {path= "../../../../packages/base" }
+cosmonaut-cw20 = {path= "../../../../packages/cosmonaut-cw20", features=["library"], package = "p_cosmonaut-cw20"}
+cosmonaut-cw721 = {path= "../../../../packages/cosmonaut-cw721", features=["library"], package = "p_cosmonaut-cw721"}
+cosmonaut-main = {path="../../../../skeleton/lesson3/chapter3/contracts/cosmonaut-main", features=["library"], package = "cosmonaut-main_33"}

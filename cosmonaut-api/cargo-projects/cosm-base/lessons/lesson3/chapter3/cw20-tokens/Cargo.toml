@@ -1,5 +1,5 @@
 [package]
-name = "cw20-tokens"
+name = "cw20-tokens_3"
 version = "0.1.0"
 edition = "2021"
 
@@ -12,6 +12,6 @@ serde = { version = "1.0.137", default-features = false, features = ["derive"] }
 cosmwasm-std = { version = "1.0.0" }
 cw-multi-test = "0.13.2"
 cw20 = "0.13.4"
-base = {path= "/workspace/cargo-projects/cosm-base/packages/base" }
 cw20-base = { version = "0.13.2", features = ["library"] }
-cosmonaut-cw20 = {path= "/workspace/cargo-projects/cosm-base/packages/cosmonaut-cw20", features=["library"]}
+base = {path= "../../../../packages/base" }
+cosmonaut-cw20 = {path= "../../../../packages/cosmonaut-cw20", features=["library"], package = "p_cosmonaut-cw20"}

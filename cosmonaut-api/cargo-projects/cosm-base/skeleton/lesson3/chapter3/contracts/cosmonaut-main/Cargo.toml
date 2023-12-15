@@ -1,5 +1,5 @@
 [package]
-name = "cosmonaut-main"
+name = "cosmonaut-main_33"
 version = "0.1.0"
 authors = ["D3LAB-DAO"]
 edition = "2018"
@@ -36,8 +36,8 @@ cw721-base = { version = "0.13.2", features = ["library"] }
 schemars = "0.8.10"
 serde = { version = "1.0", default-features = false, features = ["derive"] }
 thiserror = { version = "1.0" }
-cosmonaut-cw721 = {path= "/workspace/cargo-projects/cosm-base/packages/cosmonaut-cw721", features=["library"]}
-cosmonaut-cw20 = {path= "/workspace/cargo-projects/cosm-base/packages/cosmonaut-cw20", features=["library"]}
+cosmonaut-cw721 = {path= "../../../../../packages/cosmonaut-cw721", features=["library"], package = "p_cosmonaut-cw721"}
+cosmonaut-cw20 = {path= "../../../../../packages/cosmonaut-cw20", features=["library"], package = "p_cosmonaut-cw20"}
 cw-multi-test = "0.13.4"
 
 [dev-dependencies]

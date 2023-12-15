@@ -1,0 +1,18 @@
+[workspace]
+members = [
+    "lessons/lesson1/chapter6/cw721-spaceship",
+    "lessons/lesson1/chapter6",
+    "lessons/lesson2/chapter8/cw20-tokens",
+    "lessons/lesson2/chapter8",
+    "lessons/lesson3/chapter3/cw20-tokens",
+    "lessons/lesson3/chapter3/cw721-spaceship",
+    "lessons/lesson3/chapter3/main-contract",
+    "lessons/lesson4/chapter3",
+    "packages/*",
+    "skeleton/lesson1/chapter6/contracts/*",
+    "skeleton/lesson2/chapter8/contracts/*",
+    "skeleton/lesson3/chapter3/contracts/*",
+    "skeleton/lesson4/chapter3/contracts/*",
+]
+
+resolver = "2"

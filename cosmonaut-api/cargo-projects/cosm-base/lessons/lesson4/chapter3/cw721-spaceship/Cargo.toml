@@ -14,5 +14,5 @@ cw721-base = { version = "0.13.2", features = ["library"] }
 anyhow = "1.0.57"
 serde = { version = "1.0.137", default-features = false, features = ["derive"] }
 schemars = "0.8.10"
-base = {path= "/workspace/cargo-projects/cosm-base/packages/base" }
-cosmonaut-cw721 = {path= "/workspace/cargo-projects/cosm-base/packages/cosmonaut-cw721", features=["library"]}
+base = {path= "../../../../packages/base" }
+cosmonaut-cw721 = {path= "../../../../packages/cosmonaut-cw721", features=["library"], package = "p_cosmonaut-cw721"}

@@ -55,7 +55,7 @@ pub fn main() {
     ).check_answer(
         "4",
         "2",
-        "/workspace/cargo-projects/cosm-base/answers/lesson4/chapter3/execute_result.json",
+        "../../../../answers/lesson4/chapter3/execute_result.json",
     ).print_serialized();
     // .write_answer_to_file("../../../answers/lesson4/chapter3/execute_result.json");
 
@@ -63,7 +63,7 @@ pub fn main() {
         .check_answer(
             "4",
             "2",
-            "/workspace/cargo-projects/cosm-base/answers/lesson4/chapter3/query_result.json",
+            "../../../../answers/lesson4/chapter3/query_result.json",
         ).print_serialized();
     // .write_answer_to_file("../../../answers/lesson4/chapter3/query_result.json");
 }

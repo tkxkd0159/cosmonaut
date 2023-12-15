@@ -1,5 +1,5 @@
 [package]
-name = "cosmonaut-cw721"
+name = "p_cosmonaut-cw721"
 version = "0.1.0"
 authors = ["D3LAB-DAO"]
 edition = "2018"
